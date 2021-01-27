@@ -1,8 +1,11 @@
+import "react-native-gesture-handler";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
+import { enableScreens } from "react-native-screens";
 import AppContainer from "./src";
+
+enableScreens();
 
 const Register: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -18,11 +21,7 @@ const Register: React.FC = () => {
     return <AppLoading />;
   }
 
-  return (
-    <SafeAreaView>
-      <AppContainer />
-    </SafeAreaView>
-  );
+  return <AppContainer />;
 };
 
 export default Register;

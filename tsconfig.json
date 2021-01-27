@@ -11,7 +11,9 @@
     "strict": true,
     "paths": {
       "*": ["src/*"],
+      "screens/*": ["screens/*"],
       "components/*": ["components/*"],
+      "navigation/*": ["navigation/*"],
       "utils/*": ["utils/*"],
       "theme/*": ["theme/*"]
     }
