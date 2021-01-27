@@ -42,5 +42,6 @@ module.exports = {
     "react/prop-types": 0,
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
+    "@typescript-eslint/ban-ts-comment": "off",
   },
 };
