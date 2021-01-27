@@ -43,5 +43,6 @@ module.exports = {
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/ban-ts-comment": "off",
+    "global-require": "off",
   },
 };
