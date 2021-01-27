@@ -19,11 +19,7 @@ const Navigation: React.FC = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Home"
-          headerMode="screen"
-          mode="card"
-        >
+        <Stack.Navigator initialRouteName="Home" headerMode="none" mode="card">
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Diary" component={DiaryScreen} />
         </Stack.Navigator>
