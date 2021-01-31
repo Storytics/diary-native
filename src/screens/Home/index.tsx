@@ -25,6 +25,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           title="Go to Diary"
           onPress={() => navigation.navigate("Diary")}
         />
+        <Button
+          title="Go to Editor"
+          onPress={() => navigation.navigate("Editor")}
+        />
       </Container>
     </SafeAreaView>
   );

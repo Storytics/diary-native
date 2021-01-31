@@ -1,5 +1,4 @@
 import React from "react";
-import { View, Text } from "react-native";
 // Utils
 import { SafeAreaProvider } from "react-native-safe-area-context";
 // Navigation
@@ -8,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // Screens
 import HomeScreen from "screens/Home";
 import DiaryScreen from "screens/Diary";
+import EditorScreen from "screens/Editor";
 // Types
 import { RootStackParamList } from "./types";
 
@@ -22,6 +22,7 @@ const Navigation: React.FC = () => {
         <Stack.Navigator initialRouteName="Home" headerMode="none" mode="card">
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Diary" component={DiaryScreen} />
+          <Stack.Screen name="Editor" component={EditorScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
