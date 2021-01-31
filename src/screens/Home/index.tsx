@@ -8,6 +8,8 @@ import Container from "components/Container";
 import { SafeAreaView } from "react-native-safe-area-context";
 // Types
 import { HomeScreenNavigationProp } from "navigation/types";
+// Locales
+import i18n from "locales/index";
 
 interface Props {
   navigation: HomeScreenNavigationProp;
@@ -17,8 +19,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView>
       <Container>
-        <Title>Fastics Native</Title>
-        <Description>Home Screen</Description>
+        <Title>{i18n.t("title")}</Title>
+        <Description>{i18n.t("description")}</Description>
         <Button
           title="Go to Diary"
           onPress={() => navigation.navigate("Diary")}
