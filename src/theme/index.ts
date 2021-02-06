@@ -1,7 +1,73 @@
+const colors = {
+  primary: "#276EF1",
+  yellow400: "#FFC043",
+  orange400: "#FF6937",
+  purple400: "#7356BF",
+  green400: "#05944F",
+  gray50: "#F6F6F6",
+  gray100: "#EEEEEE",
+  gray200: "#E2E2E2",
+  gray300: "#CBCBCB",
+  gray400: "#AFAFAF",
+  gray500: "#757575",
+  gray600: "#545454",
+  gray700: "#333333",
+  gray800: "#1F1F1F",
+  gray900: "#141414",
+  white: "#FFFFFF",
+  primaryUnderlayColor: "#E2E2E2",
+};
+
+const sizes = {
+  borderRadius: {
+    default: "10px",
+  },
+};
+
 const Theme = {
-  colors: {
-    title: "black",
-    description: "gray",
+  colors,
+  sizes,
+  typography: {
+    fontFamily: {
+      openSansRegular: "OpenSans-Regular",
+      openSansSemiBold: "OpenSans-SemiBold",
+      openSansBold: "OpenSans-Bold",
+      robotoRegular: "Roboto-Regular",
+      robotoMedium: "Roboto-Medium",
+      robotoBold: "Roboto-Bold",
+    },
+    defaultColors: {
+      smallTitle: colors.gray800,
+      mediumTitle: colors.gray800,
+      largeTitle: colors.gray800,
+      text: colors.gray600,
+      mediumText: colors.gray500,
+    },
+  },
+  container: {
+    backgroundColor: colors.gray100,
+  },
+  roundButton: {
+    underlayColor: colors.primaryUnderlayColor,
+  },
+  header: {
+    iconColor: colors.gray800,
+  },
+  diaryCard: {
+    backgroundColor: colors.white,
+    underlayColor: colors.primaryUnderlayColor,
+  },
+  bookIllustration: {
+    defaultBookColor: colors.primary,
+    fallbackBackgroundColor: colors.gray200,
+    linearGradient: [colors.gray200, colors.gray400],
+    lineColor: colors.gray100,
+  },
+  iconDefaultColor: colors.gray600,
+  activityCard: {
+    backgroundColor: colors.white,
+    leftIconBackgroundColor: colors.gray100,
+    underlayColor: colors.primaryUnderlayColor,
   },
 };
 

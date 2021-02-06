@@ -1,34 +1,30 @@
 import React from "react";
-import { Button } from "react-native";
 // Components
-import Title from "components/Title";
-import Description from "components/Description";
 import Container from "components/Container";
+import Header from "components/Header";
+import DiaryCardList from "components/DiaryCardList";
+import ActivityCardList from "components/ActivityCardList";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
 // Types
 import { HomeScreenNavigationProp } from "navigation/types";
 // Locales
 import i18n from "locales/index";
+// Mock data
+import { listData, activityData } from "./mockData";
 
 interface Props {
   navigation: HomeScreenNavigationProp;
 }
 
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
+const HomeScreen: React.FC<Props> = () => {
   return (
     <SafeAreaView>
       <Container>
-        <Title>{i18n.t("title")}</Title>
-        <Description>{i18n.t("description")}</Description>
-        <Button
-          title="Go to Diary"
-          onPress={() => navigation.navigate("Diary")}
-        />
-        <Button
-          title="Go to Editor"
-          onPress={() => navigation.navigate("Editor")}
-        />
+        <Header text={i18n.t("diariesSectionTitle")} />
+        <DiaryCardList data={listData} />
+        <Header text={i18n.t("recentActivitySectionTitle")} />
+        <ActivityCardList data={activityData} />
       </Container>
     </SafeAreaView>
   );

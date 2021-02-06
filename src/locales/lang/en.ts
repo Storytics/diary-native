@@ -1,4 +1,5 @@
 export default {
-  title: "Fastics Native",
-  description: "Home Screen",
+  // HomePage
+  diariesSectionTitle: "My Diaries",
+  recentActivitySectionTitle: "Recent Activity",
 };
