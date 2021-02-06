@@ -1,4 +1,12 @@
-export default `<!DOCTYPE html>
+interface Props {
+  data: string;
+  contentEditable: string;
+}
+
+const Page = ({
+  data = "",
+  contentEditable = "true",
+}: Props): string => `<!DOCTYPE html>
 <html>
 
 <head>
@@ -11,7 +19,7 @@ export default `<!DOCTYPE html>
 </head>
 
 <body>
-    <div id="textEditor" contenteditable="true" spellcheck="false"></div>
+    <div id="textEditor" contenteditable="${contentEditable}" spellcheck="false">${data}</div>
 </body>
 
 <script>
@@ -28,3 +36,5 @@ export default `<!DOCTYPE html>
 </script>
 
 </html>`;
+
+export default Page;

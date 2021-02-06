@@ -5,6 +5,7 @@ import EditorToolbar from "components/Editor/EditorToolbar";
 import Editor, { EditorRef } from "components/Editor/index";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
+import sanitize from "xss";
 // Types
 import { EditorScreenNavigationProp } from "navigation/types";
 
@@ -20,14 +21,22 @@ const EditorScreen: React.FC<Props> = ({ navigation }) => {
       <Button title="Go Back" onPress={() => navigation.navigate("Home")} />
       <ScrollView style={{ height: 500 }}>
         <EditorToolbar
-          onButtonPress={(event, customJS) =>
+          bold
+          italic
+          underline
+          justifyLeft
+          justifyCenter
+          justifyRight
+          onToolPress={(event, customJS) =>
             richTextEditorRef.current?.passToEditor(event, customJS)
           }
         />
-        <View style={{ height: 200, padding: 10 }}>
+        <View style={{ height: 400, padding: 10 }}>
           <Editor
             ref={richTextEditorRef}
-            onContentChange={(event) => console.log(event.data)}
+            content=""
+            isContentEditable
+            onContentChange={(event) => console.log(sanitize(event.data))}
           />
         </View>
       </ScrollView>

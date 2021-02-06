@@ -5,23 +5,24 @@ import EditorHtml from "./EditorHTML";
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onContentChange: (event: any) => void;
+  content?: string;
+  isContentEditable?: boolean;
 }
 
+type Events =
+  | string
+  | "bold"
+  | "underline"
+  | "italic"
+  | "justifyLeft"
+  | "justifyCenter"
+  | "justifyFull"
+  | "justifyRight"
+  | "insertUnorderedList"
+  | "insertOrderedList";
+
 export interface EditorRef {
-  passToEditor: (
-    event:
-      | string
-      | "bold"
-      | "underline"
-      | "italic"
-      | "justifyLeft"
-      | "justifyCenter"
-      | "justifyFull"
-      | "justifyRight"
-      | "insertUnorderedList"
-      | "insertOrderedList",
-    customJS?: boolean
-  ) => void;
+  passToEditor: (event: Events, customJS?: boolean) => void;
 }
 
 const Editor = forwardRef<EditorRef, Props>((props, passRef) => {
@@ -40,14 +41,19 @@ const Editor = forwardRef<EditorRef, Props>((props, passRef) => {
         WebViewRef = ref;
       }}
       originWhitelist={["*"]}
-      source={{ html: EditorHtml }}
+      source={{
+        html: EditorHtml({
+          data: props.content || "",
+          contentEditable: String(props.isContentEditable),
+        }),
+      }}
       onMessage={(event: WebViewMessageEvent) => {
         if (props.onContentChange) {
           props.onContentChange(event.nativeEvent);
         }
       }}
-      showsHorizontalScrollIndicator
-      showsVerticalScrollIndicator
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
     />
   );
 });
