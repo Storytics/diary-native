@@ -34,9 +34,11 @@ const EditorScreen: React.FC<Props> = ({ navigation }) => {
         <View style={{ height: 400, padding: 10 }}>
           <Editor
             ref={richTextEditorRef}
-            content=""
+            content="<div>Shnsja. Sbsjjs</div><div>Vekabsnd</div><div><br></div><div>Vamos ver isto a dar&nbsp;</div><div><br></div><div>Ok</div>"
             isContentEditable
-            onContentChange={(event) => console.log(sanitize(event.data))}
+            onContentChange={(event) =>
+              console.log("content = ", sanitize(event.data))
+            }
           />
         </View>
       </ScrollView>

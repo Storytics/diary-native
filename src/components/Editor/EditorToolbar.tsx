@@ -1,8 +1,21 @@
-import React, { useReducer } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
-import { Props, initialState, reducer } from "./types";
+import useEditorContext from "hooks/useEditorContext";
+
+export interface Props {
+  onToolPress: (event: string, customJS?: boolean) => void;
+  bold?: boolean;
+  underline?: boolean;
+  italic?: boolean;
+  insertUnorderedList?: boolean;
+  insertOrderedList?: boolean;
+  justifyLeft?: boolean;
+  justifyCenter?: boolean;
+  justifyFull?: boolean;
+  justifyRight?: boolean;
+}
 
 const EditorToolbar: React.FC<Props> = ({
   onToolPress,
@@ -16,7 +29,7 @@ const EditorToolbar: React.FC<Props> = ({
   justifyFull = false,
   justifyRight = false,
 }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { state, dispatch } = useEditorContext();
 
   return (
     <View style={{ flexDirection: "row", marginTop: 10, marginBottom: 20 }}>
@@ -30,6 +43,7 @@ const EditorToolbar: React.FC<Props> = ({
           }}
           onPress={() => {
             onToolPress("bold", false);
+
             dispatch({ type: "bold", payload: { active: !state.bold } });
           }}
         >

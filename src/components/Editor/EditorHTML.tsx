@@ -19,11 +19,10 @@ const Page = ({
 </head>
 
 <body>
-    <div id="textEditor" contenteditable="${contentEditable}" spellcheck="false">${data}</div>
+    <div id="textEditor" contenteditable="${contentEditable}" onmouseup="handleSelection()" spellcheck="false" autocomplete="off">${data}</div>
 </body>
 
 <script>
-    
     const observer = new MutationObserver(mutations => {
         window.ReactNativeWebView.postMessage(textEditor.innerHTML)
     })
@@ -33,6 +32,22 @@ const Page = ({
         characterData: true,
         subtree: true,
     })
+    function handleSelection(){
+        var sel = window.getSelection ? window.getSelection() : document.selection.createRange();
+        var output = sel;  
+
+        if (sel.anchorNode && (sel.anchorNode == sel.extentNode)) {
+            if (sel.toString() == sel.anchorNode.textContent) {
+                output = sel.anchorNode.parentElement.outerHTML;
+            }
+        }
+
+        if(window.getSelection().toString()){
+            setTimeout(function () {
+                window.ReactNativeWebView.postMessage("//isSelection://" + output);
+            }, 0);
+        }
+    }
 </script>
 
 </html>`;

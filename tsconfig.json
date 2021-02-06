@@ -16,6 +16,8 @@
       "navigation/*": ["navigation/*"],
       "locales/*": ["locales/*"],
       "utils/*": ["utils/*"],
+      "context/*": ["context/*"],
+      "hooks/*": ["hooks/*"],
       "theme/*": ["theme/*"]
     }
   },

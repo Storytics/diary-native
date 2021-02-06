@@ -1,3 +1,5 @@
+import React, { createContext, useReducer, useMemo } from "react";
+
 export interface State {
   bold?: boolean;
   underline?: boolean;
@@ -8,10 +10,6 @@ export interface State {
   justifyCenter?: boolean;
   justifyFull?: boolean;
   justifyRight?: boolean;
-}
-
-export interface Props extends State {
-  onToolPress: (event: string, customJS?: boolean) => void;
 }
 
 export const initialState = {
@@ -100,6 +98,16 @@ export type ReducerActions =
   | SetJustifyFullAction
   | SetJustifyRightAction;
 
+export interface EditorContextState {
+  state: State;
+  dispatch: ReducerActions;
+}
+
+export const EditorContext = React.createContext<{
+  state: State;
+  dispatch: React.Dispatch<ReducerActions>;
+}>({} as { state: State; dispatch: React.Dispatch<ReducerActions> });
+
 export const reducer = (state: State, action: ReducerActions): State => {
   switch (action.type) {
     case "bold":
@@ -147,4 +155,14 @@ export const reducer = (state: State, action: ReducerActions): State => {
     default:
       return state;
   }
+};
+
+export const EditorProvider: React.FC = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+
+  return (
+    <EditorContext.Provider value={value}>{children}</EditorContext.Provider>
+  );
 };
