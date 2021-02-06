@@ -31,7 +31,6 @@ module.exports = {
       "error",
       {
         singleQuote: false,
-        trailingComma: "all",
         arrowParens: "avoid",
         endOfLine: "auto",
       },
