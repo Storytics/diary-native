@@ -15,7 +15,10 @@
     "publish:dev": "expo publish --release-channel dev",
     "publish:staging": "expo publish --release-channel staging",
     "publish:prod": "expo publish --release-channel prod",
-    "build:android": "expo build:android"
+    "build:android:dev": "expo build:android --release-channel dev",
+    "build:android:staging": "expo build:android --release-channel staging",
+    "build:android:prod": "expo build:android --release-channel prod",
+    "url:apk": "expo url:apk"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
