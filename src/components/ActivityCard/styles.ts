@@ -18,7 +18,7 @@ export const LeftIconContainer = styled.View`
     theme.activityCard.leftIconBackgroundColor};
   height: 40px;
   width: 40px;
-  border-radius: 20;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;

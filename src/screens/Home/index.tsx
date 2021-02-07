@@ -4,6 +4,7 @@ import Container from "components/Container";
 import Header from "components/Header";
 import DiaryCardList from "components/DiaryCardList";
 import ActivityCardList from "components/ActivityCardList";
+import Navigation from "components/Navigation";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
 // Types
@@ -17,14 +18,40 @@ interface Props {
   navigation: HomeScreenNavigationProp;
 }
 
-const HomeScreen: React.FC<Props> = () => {
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView>
       <Container>
-        <Header text={i18n.t("diariesSectionTitle")} />
-        <DiaryCardList data={listData} />
-        <Header text={i18n.t("recentActivitySectionTitle")} />
-        <ActivityCardList data={activityData} />
+        <Header text={i18n.t("diaries.section.title")} />
+        <DiaryCardList
+          data={listData}
+          onPress={() => {
+            navigation.navigate("Diary");
+          }}
+          onPressMore={() => {
+            navigation.navigate("Diary");
+          }}
+          placeholderText={i18n.t("diaries.section.placeholderText")}
+        />
+        <Header text={i18n.t("activity.section.title")} />
+        <ActivityCardList
+          data={activityData}
+          onPress={() => {
+            navigation.navigate("Diary");
+          }}
+          placeholderText={i18n.t("activity.section.placeholderText")}
+        />
+        <Navigation
+          onPressUpload={() => {
+            navigation.navigate("Diary");
+          }}
+          onPressCreate={() => {
+            navigation.navigate("Diary");
+          }}
+          onPressMenu={() => {
+            navigation.navigate("Diary");
+          }}
+        />
       </Container>
     </SafeAreaView>
   );

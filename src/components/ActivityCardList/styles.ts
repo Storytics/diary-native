@@ -1,7 +1,11 @@
 import styled from "styled-components/native";
 
-const ActivityCardContainer = styled.View`
-  margin-bottom: 15px;
+export const Container = styled.View`
+  position: relative;
+  display: flex;
+  flex: 1;
 `;
 
-export default ActivityCardContainer;
+export const ActivityCardContainer = styled.View`
+  padding-bottom: 15px;
+`;

@@ -11,7 +11,7 @@ import {
   TextContainer,
 } from "./styles";
 
-export interface ActivityCardProps {
+interface ActivityCardProps {
   title: string;
   date: string;
   onPress: () => void;
