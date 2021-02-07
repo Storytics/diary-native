@@ -74,7 +74,7 @@ const Theme = {
   },
   navigation: {
     backgroundColor: colors.white,
-    createButton: {
+    mainButton: {
       iconColor: colors.white,
       backgroundColor: colors.primary,
       underlayColor: colors.primaryUnderlayColor,

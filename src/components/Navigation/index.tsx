@@ -2,44 +2,53 @@ import React from "react";
 import RoundButton from "components/RoundButton";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Container, Wrapper } from "./styles";
+import { Container, Wrapper, MainButtonContainer } from "./styles";
 
 export interface DiaryCardProps {
-  onPressUpload: () => void;
-  onPressCreate: () => void;
-  onPressMenu: () => void;
+  isPageNavigation?: boolean;
+  onPressLeft: () => void;
+  onPressMain: () => void;
+  onPressRight: () => void;
 }
 
 const Navigation: React.FC<DiaryCardProps> = ({
-  onPressUpload,
-  onPressCreate,
-  onPressMenu,
+  isPageNavigation,
+  onPressLeft,
+  onPressMain,
+  onPressRight,
 }) => {
   const theme = useTheme();
+
   return (
-    <Container>
+    <Container isPageNavigation={isPageNavigation}>
       <Wrapper>
-        <RoundButton size="large" onPress={onPressUpload}>
+        <RoundButton size="large" onPress={onPressLeft}>
           <MaterialIcons
-            name="backup"
+            name={isPageNavigation ? "chevron-left" : "backup"}
             size={24}
             color={theme.iconDefaultColor}
           />
         </RoundButton>
-        <RoundButton
-          size="large"
-          backgroundColor={theme.navigation.createButton.backgroundColor}
-          underlayColor={theme.navigation.createButton.underlayColor}
-          onPress={onPressCreate}
-        >
+        <MainButtonContainer>
+          <RoundButton
+            size="large"
+            backgroundColor={theme.navigation.mainButton.backgroundColor}
+            underlayColor={theme.navigation.mainButton.underlayColor}
+            onPress={onPressMain}
+          >
+            <MaterialIcons
+              name={isPageNavigation ? "create" : "add"}
+              size={24}
+              color={theme.navigation.mainButton.iconColor}
+            />
+          </RoundButton>
+        </MainButtonContainer>
+        <RoundButton size="large" onPress={onPressRight}>
           <MaterialIcons
-            name="add"
+            name={isPageNavigation ? "chevron-right" : "menu"}
             size={24}
-            color={theme.navigation.createButton.iconColor}
+            color={theme.iconDefaultColor}
           />
-        </RoundButton>
-        <RoundButton size="large" onPress={onPressMenu}>
-          <MaterialIcons name="menu" size={24} color={theme.iconDefaultColor} />
         </RoundButton>
       </Wrapper>
     </Container>

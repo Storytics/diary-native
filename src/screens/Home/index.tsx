@@ -42,13 +42,13 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           placeholderText={i18n.t("activity.section.placeholderText")}
         />
         <Navigation
-          onPressUpload={() => {
+          onPressLeft={() => {
             navigation.navigate("Diary");
           }}
-          onPressCreate={() => {
+          onPressMain={() => {
             navigation.navigate("Diary");
           }}
-          onPressMenu={() => {
+          onPressRight={() => {
             navigation.navigate("Diary");
           }}
         />

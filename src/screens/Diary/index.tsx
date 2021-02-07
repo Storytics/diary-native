@@ -25,13 +25,14 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         />
         <NoteBook date="23 Jan 2021" day="Friday" page="1" />
         <Navigation
-          onPressUpload={() => {
+          isPageNavigation
+          onPressLeft={() => {
             navigation.navigate("Home");
           }}
-          onPressCreate={() => {
+          onPressMain={() => {
             navigation.navigate("Home");
           }}
-          onPressMenu={() => {
+          onPressRight={() => {
             navigation.navigate("Home");
           }}
         />
