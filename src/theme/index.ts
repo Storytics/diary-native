@@ -1,5 +1,6 @@
 const colors = {
   primary: "#276EF1",
+  blue200: "#A0BFF8",
   yellow400: "#FFC043",
   orange400: "#FF6937",
   purple400: "#7356BF",
@@ -15,12 +16,14 @@ const colors = {
   gray800: "#1F1F1F",
   gray900: "#141414",
   white: "#FFFFFF",
-  primaryUnderlayColor: "#E2E2E2",
+  primaryUnderlayColor: "#A0BFF8",
+  mainUnderlayColor: "#E2E2E2",
 };
 
 const sizes = {
   borderRadius: {
     default: "10px",
+    large: "30px",
   },
 };
 
@@ -48,14 +51,14 @@ const Theme = {
     backgroundColor: colors.gray100,
   },
   roundButton: {
-    underlayColor: colors.primaryUnderlayColor,
+    underlayColor: colors.mainUnderlayColor,
   },
   header: {
     iconColor: colors.gray800,
   },
   diaryCard: {
     backgroundColor: colors.white,
-    underlayColor: colors.primaryUnderlayColor,
+    underlayColor: colors.mainUnderlayColor,
   },
   bookIllustration: {
     defaultBookColor: colors.primary,
@@ -67,7 +70,34 @@ const Theme = {
   activityCard: {
     backgroundColor: colors.white,
     leftIconBackgroundColor: colors.gray100,
-    underlayColor: colors.primaryUnderlayColor,
+    underlayColor: colors.mainUnderlayColor,
+  },
+  navigation: {
+    backgroundColor: colors.white,
+    mainButton: {
+      iconColor: colors.white,
+      backgroundColor: colors.primary,
+      underlayColor: colors.primaryUnderlayColor,
+    },
+  },
+  activityCardList: {
+    linearGradient: ["transparent", colors.gray100],
+  },
+  diaryCardList: {
+    linearGradient: ["transparent", colors.gray100],
+  },
+  placeHolder: {
+    backgroundColor: colors.gray100,
+    borderColor: colors.white,
+    linearGradient: [colors.gray100, colors.gray50],
+  },
+  noteBook: {
+    backgroundColor: colors.white,
+    linearGradient: [colors.gray100, colors.gray200],
+    lineColor: colors.gray100,
+    header: {
+      dayColor: colors.primary,
+    },
   },
 };
 

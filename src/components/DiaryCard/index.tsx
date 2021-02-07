@@ -13,7 +13,7 @@ import {
   StyledMediumTitle,
 } from "./styles";
 
-export interface DiaryCardProps {
+interface DiaryCardProps {
   onPress: () => void;
   onPressMore: () => void;
   title: string;

@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const theme = useTheme();
   return (
-    <Container>
+    <Container hasBackButton={hasBackButton}>
       {hasBackButton && (
         <IconContainer>
           <RoundButton onPress={onPress}>

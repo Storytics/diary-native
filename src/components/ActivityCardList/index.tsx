@@ -1,14 +1,19 @@
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
-import ActivityCard, { ActivityCardProps } from "components/ActivityCard";
-import ActivityCardContainer from "./styles";
-
-interface ActivityListProps extends ActivityCardProps {
-  id: string;
-}
+import { useTheme } from "styled-components/native";
+import { LinearGradient } from "expo-linear-gradient";
+import Placeholder from "components/Placeholder";
+import ActivityCard from "components/ActivityCard";
+import { Container, ActivityCardContainer } from "./styles";
 
 interface ActivityCardListProps {
-  data: Array<ActivityListProps>;
+  data: Array<{
+    id: string;
+    title: string;
+    date: string;
+  }>;
+  placeholderText: string;
+  onPress: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -18,27 +23,55 @@ const styles = StyleSheet.create({
   content: {
     paddingLeft: 30,
     paddingRight: 30,
+    paddingBottom: 5,
+  },
+  linearGradient: {
+    height: 60,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 
-const ActivityCardList: React.FC<ActivityCardListProps> = ({ data }) => {
+const ActivityCardList: React.FC<ActivityCardListProps> = ({
+  data,
+  placeholderText,
+  onPress,
+}) => {
+  const theme = useTheme();
   return (
-    <FlatList
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      data={data}
-      renderItem={({ item }) => (
-        <ActivityCardContainer>
-          <ActivityCard
-            title={item.title}
-            date={item.date}
-            onPress={item.onPress}
-          />
-        </ActivityCardContainer>
+    <Container>
+      <FlatList
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        data={data}
+        renderItem={({ item }) => (
+          <ActivityCardContainer>
+            <ActivityCard
+              title={item.title}
+              date={item.date}
+              onPress={onPress}
+            />
+          </ActivityCardContainer>
+        )}
+        keyExtractor={(item) => item.id}
+        initialNumToRender={10}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <Placeholder icon="text-snippet" text={placeholderText} />
+        }
+      />
+      {!!data.length && (
+        <LinearGradient
+          colors={[
+            theme.activityCardList.linearGradient[0],
+            theme.activityCardList.linearGradient[1],
+          ]}
+          style={styles.linearGradient}
+        />
       )}
-      keyExtractor={(item) => item.id}
-      showsVerticalScrollIndicator={false}
-    />
+    </Container>
   );
 };
 

@@ -7,9 +7,11 @@ interface RoundButtonProps {
   backgroundColor?: string;
 }
 
-const RoundButton = styled.TouchableHighlight.attrs(({ theme }) => ({
-  underlayColor: theme.roundButton.underlayColor,
-}))<RoundButtonProps>`
+const RoundButton = styled.TouchableHighlight.attrs(
+  ({ theme, underlayColor }) => ({
+    underlayColor: underlayColor || theme.roundButton.underlayColor,
+  })
+)<RoundButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,5 +1,15 @@
 export default {
   // HomePage
-  diariesSectionTitle: "My Diaries",
-  recentActivitySectionTitle: "Recent Activity",
+  diaries: {
+    section: {
+      title: "My Diaries",
+      placeHolderText: "Added diaries appear here",
+    },
+  },
+  activity: {
+    section: {
+      title: "Recent Activity",
+      placeHolderText: "Recent activity appears here",
+    },
+  },
 };

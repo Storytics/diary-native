@@ -1,10 +1,12 @@
 import React from "react";
-import { Button } from "react-native";
 // Components
-import { SmallTitle } from "components/Typography";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "components/Container";
+import NoteBook from "components/NoteBook";
 // Types
 import { DiaryScreenNavigationProp } from "navigation/types";
+import Header from "components/Header";
+import Navigation from "components/Navigation";
 
 interface Props {
   navigation: DiaryScreenNavigationProp;
@@ -12,16 +14,30 @@ interface Props {
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <Container>
-      <SmallTitle>Inside of my diary</SmallTitle>
-      <Button
-        title="Back"
-        onPress={() => {
-          navigation.navigate("Home");
-          console.log("hello");
-        }}
-      />
-    </Container>
+    <SafeAreaView>
+      <Container>
+        <Header
+          hasBackButton
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+          text="Story's"
+        />
+        <NoteBook date="23 Jan 2021" day="Friday" page="1" />
+        <Navigation
+          isPageNavigation
+          onPressLeft={() => {
+            navigation.navigate("Home");
+          }}
+          onPressMain={() => {
+            navigation.navigate("Home");
+          }}
+          onPressRight={() => {
+            navigation.navigate("Home");
+          }}
+        />
+      </Container>
+    </SafeAreaView>
   );
 };
 
