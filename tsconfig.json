@@ -18,6 +18,7 @@
       "utils/*": ["utils/*"],
       "context/*": ["context/*"],
       "hooks/*": ["hooks/*"],
+      "database/*": ["database/*"],
       "theme/*": ["theme/*"]
     }
   },
