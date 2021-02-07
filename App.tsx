@@ -33,7 +33,7 @@ const Register: React.FC = () => {
     loadDatabaseAsync();
   }, []);
 
-  if (!fontsLoaded && !isDatabaseLoading) {
+  if (!fontsLoaded && isDatabaseLoading) {
     return <AppLoading />;
   }
 

@@ -3,19 +3,17 @@ import { SQLiteDatabaseName } from "utils/constants";
 
 const Connection = SQLite.openDatabase(SQLiteDatabaseName, "1.0");
 
-/*  `create table if not exists gato (
-        id integer primary key autoincrement,
-        nome text,
-        animal_id int,
-        foreign key (animal_id) references animal (id)
-        );`, */
+// `DROP TABLE IF EXISTS book;`
 
 export const DatabaseInit = async (): Promise<unknown> => {
   return new Promise((resolve, reject) => {
     const SQLQueries = [
       `DROP TABLE IF EXISTS book;`,
-      `create table if not exists book (id integer primary key autoincrement, title text, color text);`,
+      `DROP TABLE IF EXISTS page;`,
+      `create table if not exists book (id integer primary key autoincrement, title text not null, color text);`,
+      `create table if not exists page (id integer primary key autoincrement, content text not null, createdAt text default current_timestamp, bookId int, foreign key (bookId) references book (id));`,
       `insert into book(title, color) values('nice book', 'red');`,
+      `insert into page(content, bookId) values('bela page', 1);`,
     ];
 
     Connection.transaction(
