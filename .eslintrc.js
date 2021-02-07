@@ -44,5 +44,6 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "off",
     "global-require": "off",
     "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
   },
 };
