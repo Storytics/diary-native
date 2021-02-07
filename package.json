@@ -11,7 +11,11 @@
     "update:packages": "yarn upgrade-interactive --latest",
     "lint": "eslint --fix --ext=jsx,ts,tsx src",
     "prettier:write": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "ts": "npx tsc"
+    "ts": "npx tsc",
+    "publish:dev": "expo publish --release-channel dev",
+    "publish:staging": "expo publish --release-channel staging",
+    "publish:prod": "expo publish --release-channel prod",
+    "build:android": "expo build:android"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",

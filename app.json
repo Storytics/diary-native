@@ -1,6 +1,7 @@
 {
   "expo": {
     "owner": "storytics",
+    "privacy": "hidden",
     "name": "diary-native",
     "slug": "diary-native",
     "version": "1.0.0",
