@@ -12,7 +12,7 @@ interface Props {
   navigation: DiaryScreenNavigationProp;
 }
 
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
+const DiaryScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView>
       <Container>
@@ -41,4 +41,4 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export default HomeScreen;
+export default DiaryScreen;
