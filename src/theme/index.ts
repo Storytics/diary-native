@@ -17,7 +17,9 @@ const colors = {
   gray900: "#141414",
   white: "#FFFFFF",
   primaryUnderlayColor: "#A0BFF8",
+  // underLay colors increment or decrement by 200
   mainUnderlayColor: "#E2E2E2",
+  shadowColor: "#141414",
 };
 
 const sizes = {
@@ -97,6 +99,27 @@ const Theme = {
     lineColor: colors.gray100,
     header: {
       dayColor: colors.primary,
+    },
+  },
+  modal: {
+    overLayBackgroundColor: "rgba(20,20,20,0.2)",
+    backgroundColor: colors.white,
+    header: {
+      textColor: colors.gray800,
+      iconColor: colors.gray800,
+      borderColor: colors.gray100,
+    },
+  },
+  button: {
+    primary: {
+      color: colors.white,
+      backgroundColor: colors.primary,
+      underlayColor: colors.primaryUnderlayColor,
+    },
+    default: {
+      color: colors.gray800,
+      backgroundColor: colors.gray100,
+      underlayColor: colors.gray300,
     },
   },
 };

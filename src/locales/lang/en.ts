@@ -12,4 +12,16 @@ export default {
       placeHolderText: "Recent activity appears here",
     },
   },
+  modal: {
+    create: {
+      title: "New Diary",
+      buttons: {
+        primary: "Save",
+        secondary: "Cancel",
+      },
+    },
+    menu: {
+      title: "Settings",
+    },
+  },
 };
