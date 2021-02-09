@@ -1,5 +1,10 @@
 import React from "react";
-import { Modal, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import {
+  Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  ScrollView,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 import RoundButton from "components/RoundButton";
@@ -80,19 +85,26 @@ const CustomModal: React.FC<ActivityCardProps> = ({
               />
             </RoundButton>
           </Header>
-          <ContentContainer>{children}</ContentContainer>
-          {hasActionButtons && (
-            <Footer>
-              <FooterButtonContainer>
-                <Button
-                  variant="primary"
-                  text={primaryButtonText}
-                  onPress={onPressPrimary}
-                />
-              </FooterButtonContainer>
-              <Button text={secondaryButtonText} onPress={onPressSecondary} />
-            </Footer>
-          )}
+          <ScrollView>
+            <ContentContainer>{children}</ContentContainer>
+            <>
+              {hasActionButtons && (
+                <Footer>
+                  <FooterButtonContainer>
+                    <Button
+                      variant="primary"
+                      text={primaryButtonText}
+                      onPress={onPressPrimary}
+                    />
+                  </FooterButtonContainer>
+                  <Button
+                    text={secondaryButtonText}
+                    onPress={onPressSecondary}
+                  />
+                </Footer>
+              )}
+            </>
+          </ScrollView>
         </Wrapper>
         {/* Fade in this overlay */}
         <OverLayBackground />

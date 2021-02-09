@@ -24,4 +24,9 @@ export default {
       title: "Settings",
     },
   },
+  // Input Component
+  input: {
+    placeholder: "Type something here",
+    error: "Input can't be empty",
+  },
 };

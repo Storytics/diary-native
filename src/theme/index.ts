@@ -1,5 +1,7 @@
 const colors = {
   primary: "#276EF1",
+  danger: "#E11900",
+  success: "#05944F",
   blue200: "#A0BFF8",
   yellow400: "#FFC043",
   orange400: "#FF6937",
@@ -120,6 +122,25 @@ const Theme = {
       color: colors.gray800,
       backgroundColor: colors.gray100,
       underlayColor: colors.gray300,
+    },
+  },
+  input: {
+    backgroundColor: colors.gray100,
+    color: colors.gray800,
+    borderColor: colors.gray100,
+    placeholder: {
+      color: colors.gray500,
+    },
+    focused: {
+      color: colors.gray800,
+      borderColor: colors.primary,
+    },
+    error: {
+      color: colors.danger,
+      borderColor: colors.danger,
+    },
+    success: {
+      iconColor: colors.success,
     },
   },
 };

@@ -6,6 +6,7 @@ import DiaryCardList from "components/DiaryCardList";
 import ActivityCardList from "components/ActivityCardList";
 import Navigation from "components/Navigation";
 import Modal from "components/Modal";
+import Input from "components/Input";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
 // Types
@@ -64,7 +65,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           onPressSecondary={() => console.log("Cancel")}
           primaryButtonText={i18n.t("modal.create.buttons.primary")}
           secondaryButtonText={i18n.t("modal.create.buttons.secondary")}
-        />
+        >
+          <Input title="Title" hasMarginBottom />
+          <Input title="Identifier" />
+        </Modal>
         {/* Menu Modal */}
         <Modal
           title={i18n.t("modal.menu.title")}
