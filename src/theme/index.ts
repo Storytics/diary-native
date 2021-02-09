@@ -2,11 +2,16 @@ const colors = {
   primary: "#276EF1",
   danger: "#E11900",
   success: "#05944F",
+  blue400: "#276EF1",
   blue200: "#A0BFF8",
   yellow400: "#FFC043",
+  yellow200: "#FFE3AC",
   orange400: "#FF6937",
+  orange200: "#FABDA5",
   purple400: "#7356BF",
+  purple200: "#C1B5E3",
   green400: "#05944F",
+  green200: "#66D19E",
   gray50: "#F6F6F6",
   gray100: "#EEEEEE",
   gray200: "#E2E2E2",
@@ -26,6 +31,7 @@ const colors = {
 
 const sizes = {
   borderRadius: {
+    small: "5px",
     default: "10px",
     large: "30px",
   },
@@ -141,6 +147,12 @@ const Theme = {
     },
     success: {
       iconColor: colors.success,
+    },
+  },
+  select: {
+    backgroundColor: colors.gray100,
+    button: {
+      borderColor: colors.gray800,
     },
   },
 };

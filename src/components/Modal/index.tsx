@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import {
   Modal,
   StyleSheet,
   TouchableWithoutFeedback,
-  ScrollView,
+  Animated,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
@@ -12,6 +12,7 @@ import Button from "components/Button";
 import { MediumTitle } from "components/Typography";
 import {
   Container,
+  StyledScrollView,
   OverLayBackground,
   Wrapper,
   Header,
@@ -45,7 +46,15 @@ const styles = StyleSheet.create({
     shadowRadius: 6.27,
     elevation: 10,
   },
+  scrollViewContent: {
+    display: "flex",
+    flexGrow: 1,
+  },
 });
+
+const AnimatedOverLayBackground = Animated.createAnimatedComponent(
+  OverLayBackground
+);
 
 const CustomModal: React.FC<ActivityCardProps> = ({
   isOpen = true,
@@ -58,36 +67,51 @@ const CustomModal: React.FC<ActivityCardProps> = ({
   primaryButtonText = "Text",
   secondaryButtonText = "Text",
 }) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    fadeAnim.setValue(0);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim, isOpen]);
+
+  const animationStyles = {
+    opacity: fadeAnim,
+  };
+
   const theme = useTheme();
   return (
-    <Modal
-      animationType="slide"
-      transparent
-      visible={isOpen}
-      onRequestClose={onClose}
-    >
-      <Container>
-        <TouchOutsideContainer>
-          <TouchableWithoutFeedback onPress={onClose}>
-            <TouchOutsideSpacer />
-          </TouchableWithoutFeedback>
-        </TouchOutsideContainer>
-        <Wrapper style={styles.wrapper}>
-          <Header>
-            <HeaderTextContainer>
-              <MediumTitle>{title}</MediumTitle>
-            </HeaderTextContainer>
-            <RoundButton size="medium" onPress={onClose}>
-              <MaterialIcons
-                name="close"
-                size={24}
-                color={theme.modal.header.iconColor}
-              />
-            </RoundButton>
-          </Header>
-          <ScrollView>
-            <ContentContainer>{children}</ContentContainer>
-            <>
+    <>
+      <Modal
+        animationType="slide"
+        transparent
+        visible={isOpen}
+        onRequestClose={onClose}
+      >
+        <Container>
+          <StyledScrollView contentContainerStyle={styles.scrollViewContent}>
+            <TouchOutsideContainer>
+              <TouchableWithoutFeedback onPress={onClose}>
+                <TouchOutsideSpacer />
+              </TouchableWithoutFeedback>
+            </TouchOutsideContainer>
+            <Wrapper style={styles.wrapper}>
+              <Header>
+                <HeaderTextContainer>
+                  <MediumTitle>{title}</MediumTitle>
+                </HeaderTextContainer>
+                <RoundButton size="medium" onPress={onClose}>
+                  <MaterialIcons
+                    name="close"
+                    size={24}
+                    color={theme.modal.header.iconColor}
+                  />
+                </RoundButton>
+              </Header>
+              <ContentContainer>{children}</ContentContainer>
               {hasActionButtons && (
                 <Footer>
                   <FooterButtonContainer>
@@ -103,13 +127,12 @@ const CustomModal: React.FC<ActivityCardProps> = ({
                   />
                 </Footer>
               )}
-            </>
-          </ScrollView>
-        </Wrapper>
-        {/* Fade in this overlay */}
-        <OverLayBackground />
-      </Container>
-    </Modal>
+            </Wrapper>
+          </StyledScrollView>
+        </Container>
+      </Modal>
+      {isOpen && <AnimatedOverLayBackground style={animationStyles} />}
+    </>
   );
 };
 

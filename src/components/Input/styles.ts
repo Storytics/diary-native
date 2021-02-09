@@ -20,14 +20,14 @@ export const InputContainer = styled.View<{
 
 export const StyledSmallTitle = styled(SmallTitle)`
   position: absolute;
-  left: 30px;
+  left: 20px;
   top: 18px;
   z-index: 1;
 `;
 
 export const IconContainer = styled(SmallTitle)`
   position: absolute;
-  right: 28px;
+  right: 18px;
   top: 18px;
   z-index: 1;
   line-height: 18px;

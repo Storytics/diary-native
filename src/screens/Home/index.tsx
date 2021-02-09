@@ -7,6 +7,7 @@ import ActivityCardList from "components/ActivityCardList";
 import Navigation from "components/Navigation";
 import Modal from "components/Modal";
 import Input from "components/Input";
+import Select from "components/Select";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
 // Types
@@ -67,7 +68,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           secondaryButtonText={i18n.t("modal.create.buttons.secondary")}
         >
           <Input title="Title" hasMarginBottom />
-          <Input title="Identifier" />
+          <Select title="Identifier" />
         </Modal>
         {/* Menu Modal */}
         <Modal

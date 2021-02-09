@@ -19,9 +19,9 @@ interface InputProps {
 const styles = (isMutedText: boolean, theme: typeof Theme, hasError: boolean) =>
   StyleSheet.create({
     input: {
-      paddingLeft: 30,
+      paddingLeft: 20,
       paddingTop: 36,
-      paddingRight: 30,
+      paddingRight: 20,
       paddingBottom: 14,
       fontFamily: "Roboto-Regular",
       fontSize: 16,

@@ -1,28 +1,36 @@
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
-export const Container = styled.View`
+const flexGrowSharedStyles = css`
   display: flex;
   flex-grow: 1;
-  justify-content: flex-end;
+`;
+
+export const Container = styled.View`
+  ${flexGrowSharedStyles};
   position: relative;
 `;
 
-export const OverLayBackground = styled.View`
-  background-color: ${({ theme }) => theme.modal.overLayBackgroundColor};
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
+export const StyledScrollView = styled.ScrollView`
+  /* content on top of overlay */
+  position: relative;
+  z-index: 1;
+`;
+
+// wrap TouchableWithoutFeedback
+export const TouchOutsideContainer = styled.View`
+  min-height: 20px;
+  ${flexGrowSharedStyles};
+`;
+
+// fill TouchableWithoutFeedback
+export const TouchOutsideSpacer = styled.View`
+  ${flexGrowSharedStyles};
 `;
 
 export const Wrapper = styled.View`
   background-color: ${({ theme }) => theme.modal.backgroundColor};
   border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius.large};
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius.large};
-  position: relative;
-  z-index: 1;
 `;
 
 export const Header = styled.View`
@@ -34,16 +42,6 @@ export const Header = styled.View`
   padding: 0 18px 0 30px;
   border-bottom-width: 1px;
   border-bottom-color: ${({ theme }) => theme.modal.header.borderColor};
-`;
-
-export const TouchOutsideContainer = styled.View`
-  display: flex;
-  flex-grow: 1;
-`;
-
-export const TouchOutsideSpacer = styled.View`
-  display: flex;
-  flex-grow: 1;
 `;
 
 export const HeaderTextContainer = styled.View`
@@ -59,5 +57,15 @@ export const Footer = styled.View`
 `;
 
 export const FooterButtonContainer = styled.View`
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+`;
+
+export const OverLayBackground = styled.View`
+  background-color: ${({ theme }) => theme.modal.overLayBackgroundColor};
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
 `;
