@@ -33,6 +33,7 @@ interface ActivityCardProps {
   hasActionButtons?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
+  hasContentPaddingTop?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -66,6 +67,7 @@ const CustomModal: React.FC<ActivityCardProps> = ({
   onPressSecondary,
   primaryButtonText = "Text",
   secondaryButtonText = "Text",
+  hasContentPaddingTop = true,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -111,7 +113,9 @@ const CustomModal: React.FC<ActivityCardProps> = ({
                   />
                 </RoundButton>
               </Header>
-              <ContentContainer>{children}</ContentContainer>
+              <ContentContainer hasContentPaddingTop={hasContentPaddingTop}>
+                {children}
+              </ContentContainer>
               {hasActionButtons && (
                 <Footer>
                   <FooterButtonContainer>

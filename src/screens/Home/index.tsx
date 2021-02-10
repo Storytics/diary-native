@@ -8,6 +8,7 @@ import Navigation from "components/Navigation";
 import Modal from "components/Modal";
 import Input from "components/Input";
 import Select from "components/Select";
+import BorderButton from "components/BorderButton";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
 // Types
@@ -78,7 +79,23 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           onPressPrimary={() => console.log("Save")}
           onPressSecondary={() => console.log("Cancel")}
           hasActionButtons={false}
-        />
+          hasContentPaddingTop={false}
+        >
+          <BorderButton
+            title="Dark Mode"
+            onPress={() => console.log("dark")}
+            hasArrowIcon={false}
+            hasSwitch
+          />
+          <BorderButton
+            title="Upload Data"
+            onPress={() => console.log("data")}
+          />
+          <BorderButton
+            title="Terms and Conditions"
+            onPress={() => console.log("terms")}
+          />
+        </Modal>
       </Container>
     </SafeAreaView>
   );

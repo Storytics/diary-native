@@ -4,6 +4,7 @@ const colors = {
   success: "#05944F",
   blue400: "#276EF1",
   blue200: "#A0BFF8",
+  blue300: "#5B91F5",
   yellow400: "#FFC043",
   yellow200: "#FFE3AC",
   orange400: "#FF6937",
@@ -153,6 +154,22 @@ const Theme = {
     backgroundColor: colors.gray100,
     button: {
       borderColor: colors.gray800,
+    },
+  },
+  borderButton: {
+    backgroundColor: colors.white,
+    borderColor: colors.gray100,
+    underlayColor: colors.mainUnderlayColor,
+    iconColor: colors.gray800,
+    switch: {
+      trackColor: {
+        on: colors.blue300,
+        off: colors.gray500,
+      },
+      thumbColor: {
+        on: colors.primary,
+        off: colors.gray300,
+      },
     },
   },
 };
