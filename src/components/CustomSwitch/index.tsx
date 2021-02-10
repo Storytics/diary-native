@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
+import { Animated } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 import {
@@ -18,14 +19,28 @@ const CustomSwitch: React.FC<CustomSwitchProps> = ({
   onChangeValue,
 }) => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => {
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  const toggleSwitch = useCallback(() => {
+    fadeAnim.setValue(0);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+
     setIsEnabled((previousState) => {
       if (onChangeValue) {
         onChangeValue(!previousState);
       }
       return !previousState;
     });
+  }, [fadeAnim, onChangeValue]);
+
+  const animationStyles = {
+    opacity: fadeAnim,
   };
+
   const theme = useTheme();
   return (
     <CustomSwitchContainer
@@ -35,7 +50,7 @@ const CustomSwitch: React.FC<CustomSwitchProps> = ({
       }
       isEnabled={isEnabled}
     >
-      <>
+      <Animated.View style={animationStyles}>
         <CustomSwitchThumbContainer isEnabled={isEnabled}>
           <MaterialIcons
             name={isEnabled && isThemeSwitch ? "nights-stay" : "circle"}
@@ -60,7 +75,7 @@ const CustomSwitch: React.FC<CustomSwitchProps> = ({
             />
           </SwitchIconsContainer>
         )}
-      </>
+      </Animated.View>
     </CustomSwitchContainer>
   );
 };

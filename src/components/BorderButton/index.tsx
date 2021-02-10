@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { SmallTitle, Text } from "components/Typography";
+import i18n from "locales/index";
 import CustomSwitch from "components/CustomSwitch";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
@@ -52,7 +53,7 @@ const BorderButton: React.FC<BorderButtonProps> = ({
                     : theme.borderButton.customSwitch.text.light.muted
                 }
               >
-                Light
+                {i18n.t("borderButton.theme.light")}
               </Text>
               <CustomSwitch
                 onChangeValue={(value: boolean) => {
@@ -70,7 +71,7 @@ const BorderButton: React.FC<BorderButtonProps> = ({
                     : theme.borderButton.customSwitch.text.light.muted
                 }
               >
-                Dark
+                {i18n.t("borderButton.theme.dark")}
               </Text>
             </SwitchAndTextWrapper>
           )}

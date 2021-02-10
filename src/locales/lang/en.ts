@@ -29,4 +29,11 @@ export default {
     placeholder: "Type something here",
     error: "Input can't be empty",
   },
+  // Border Button
+  borderButton: {
+    theme: {
+      dark: "Dark",
+      light: "Light",
+    },
+  },
 };
