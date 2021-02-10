@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Theme from "theme/index";
 import { useTheme } from "styled-components/native";
 import {
@@ -9,8 +9,9 @@ import {
   InnerButton,
 } from "./styles";
 
-interface DiaryCardProps {
+interface SelectProps {
   title: string;
+  onChange: (value: string) => void;
 }
 
 const buttons = [
@@ -71,7 +72,9 @@ const handleColorType = (color: string, theme: typeof Theme) => {
   }
 };
 
-const Select: React.FC<DiaryCardProps> = ({ title }) => {
+const Select: React.FC<SelectProps> = ({ title, onChange }) => {
+  const [isSelectedValue, setSelectedValue] = useState(0);
+
   const theme = useTheme();
   return (
     <Container>
@@ -81,12 +84,15 @@ const Select: React.FC<DiaryCardProps> = ({ title }) => {
           return (
             <Button
               key={index.toString()}
-              onPress={() => console.log("hey")}
+              onPress={() => {
+                onChange(button.color);
+                setSelectedValue(index);
+              }}
               underlayColor={handleColorType(button.color, theme).underlayColor}
               color={handleColorType(button.color, theme).backgroundColor}
               isLastChild={length === index + 1}
             >
-              <InnerButton isSelected={button.isSelected} />
+              <InnerButton isSelected={isSelectedValue === index} />
             </Button>
           );
         })}

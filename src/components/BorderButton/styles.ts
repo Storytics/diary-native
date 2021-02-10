@@ -28,3 +28,9 @@ export const SwitchContainer = styled.View`
   z-index: 2;
   left: 4px;
 `;
+
+export const SwitchAndTextWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;

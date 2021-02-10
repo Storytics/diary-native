@@ -44,5 +44,6 @@ module.exports = {
     "global-require": "off",
     "import/no-extraneous-dependencies": "off",
     "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
   },
 };

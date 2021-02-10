@@ -156,19 +156,31 @@ const Theme = {
       borderColor: colors.gray800,
     },
   },
+  customSwitch: {
+    thumb: {
+      on: colors.white,
+      off: colors.white,
+    },
+    track: {
+      on: colors.gray700,
+      off: colors.gray300,
+    },
+  },
   borderButton: {
     backgroundColor: colors.white,
     borderColor: colors.gray100,
     underlayColor: colors.mainUnderlayColor,
     iconColor: colors.gray800,
-    switch: {
-      trackColor: {
-        on: colors.blue300,
-        off: colors.gray500,
-      },
-      thumbColor: {
-        on: colors.primary,
-        off: colors.gray300,
+    customSwitch: {
+      text: {
+        light: {
+          active: colors.gray800,
+          muted: colors.gray400,
+        },
+        dark: {
+          active: colors.white,
+          muted: colors.gray400,
+        },
       },
     },
   },

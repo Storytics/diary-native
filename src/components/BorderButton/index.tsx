@@ -1,29 +1,38 @@
 import React, { useState } from "react";
-import { Switch } from "react-native";
-import { SmallTitle } from "components/Typography";
+import { SmallTitle, Text } from "components/Typography";
+import CustomSwitch from "components/CustomSwitch";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
-import { Container, Wrapper, IconContainer, SwitchContainer } from "./styles";
+import {
+  Container,
+  Wrapper,
+  IconContainer,
+  SwitchAndTextWrapper,
+} from "./styles";
 
 interface BorderButtonProps {
   title: string;
   onPress: () => void;
   hasArrowIcon?: boolean;
   hasSwitch?: boolean;
+  hasCustomSwitch?: boolean;
+  hasThemeSwitch?: boolean;
+  onChangeSwitch?: (value: boolean) => void;
 }
 
 const BorderButton: React.FC<BorderButtonProps> = ({
   title = "Title",
   onPress,
   hasArrowIcon = true,
-  hasSwitch = false,
+  hasCustomSwitch = false,
+  hasThemeSwitch = false,
+  onChangeSwitch,
 }) => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-
   const theme = useTheme();
+  const containerProps = hasCustomSwitch || hasThemeSwitch ? {} : { onPress };
   return (
-    <Container onPress={onPress}>
+    <Container {...containerProps}>
       <Wrapper>
         <SmallTitle>{title}</SmallTitle>
         <IconContainer>
@@ -34,24 +43,38 @@ const BorderButton: React.FC<BorderButtonProps> = ({
               color={theme.borderButton.iconColor}
             />
           )}
-          {hasSwitch && (
-            <SwitchContainer>
-              <Switch
-                trackColor={{
-                  false: theme.borderButton.switch.trackColor.off,
-                  true: theme.borderButton.switch.trackColor.on,
-                }}
-                thumbColor={
-                  isEnabled
-                    ? theme.borderButton.switch.thumbColor.on
-                    : theme.borderButton.switch.thumbColor.off
+          {hasThemeSwitch && (
+            <SwitchAndTextWrapper>
+              <Text
+                color={
+                  !isEnabled
+                    ? theme.borderButton.customSwitch.text.light.active
+                    : theme.borderButton.customSwitch.text.light.muted
                 }
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isEnabled}
+              >
+                Light
+              </Text>
+              <CustomSwitch
+                onChangeValue={(value: boolean) => {
+                  if (onChangeSwitch) {
+                    onChangeSwitch(value);
+                  }
+                  setIsEnabled(value);
+                }}
+                isThemeSwitch
               />
-            </SwitchContainer>
+              <Text
+                color={
+                  isEnabled
+                    ? theme.borderButton.customSwitch.text.light.active
+                    : theme.borderButton.customSwitch.text.light.muted
+                }
+              >
+                Dark
+              </Text>
+            </SwitchAndTextWrapper>
           )}
+          {hasCustomSwitch && <CustomSwitch onChangeValue={onChangeSwitch} />}
         </IconContainer>
       </Wrapper>
     </Container>

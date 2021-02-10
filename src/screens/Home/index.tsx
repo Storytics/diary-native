@@ -9,6 +9,7 @@ import Modal from "components/Modal";
 import Input from "components/Input";
 import Select from "components/Select";
 import BorderButton from "components/BorderButton";
+import CustomSwitch from "components/CustomSwitch";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
 // Types
@@ -69,7 +70,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           secondaryButtonText={i18n.t("modal.create.buttons.secondary")}
         >
           <Input title="Title" hasMarginBottom />
-          <Select title="Identifier" />
+          <Select
+            title="Identifier"
+            onChange={(value: string) => console.log("cor = ", value)}
+          />
         </Modal>
         {/* Menu Modal */}
         <Modal
@@ -82,14 +86,20 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           hasContentPaddingTop={false}
         >
           <BorderButton
-            title="Dark Mode"
+            title="Theme"
             onPress={() => console.log("dark")}
             hasArrowIcon={false}
-            hasSwitch
+            hasThemeSwitch
           />
           <BorderButton
             title="Upload Data"
             onPress={() => console.log("data")}
+          />
+          <BorderButton
+            title="Password Protection"
+            onPress={() => console.log("dark")}
+            hasArrowIcon={false}
+            hasCustomSwitch
           />
           <BorderButton
             title="Terms and Conditions"
