@@ -15,7 +15,7 @@ export const getAllPagesByBookId = async (
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
-          `select * from page where bookId = ?`,
+          `SELECT * FROM page WHERE bookId = ?;`,
           [bookId],
           // @ts-ignore
           (_, { rows: { _array } }) => {
@@ -37,7 +37,7 @@ export const createPage = async (
   return new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql("insert into page (content, bookId) values (?, ?)", [
+        tx.executeSql("INSERT INTO page (content, bookId) VALUES (?, ?);", [
           content,
           bookId,
         ]);
@@ -59,7 +59,7 @@ export const updatePageById = async (
   return new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql(`update page set content = ? where id = ?;`, [
+        tx.executeSql(`UPDATE page SET content = ? WHERE id = ?;`, [
           content,
           id,
         ]);
@@ -78,7 +78,7 @@ export const deletePageById = async (id: number): Promise<string> => {
   return new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql(`delete from page where id = ?;`, [id]);
+        tx.executeSql(`DELETE FROM page WHERE id = ?;`, [id]);
       },
       (error: SQLite.SQLError) => {
         reject(error);
