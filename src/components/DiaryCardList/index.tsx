@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
   linearGradient: {
-    width: 60,
+    width: 30,
     position: "absolute",
     top: 0,
     right: 0,
