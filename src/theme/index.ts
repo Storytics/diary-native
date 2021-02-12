@@ -194,6 +194,21 @@ const Theme = {
   brand: {
     textColor: colors.gray500,
   },
+  toolBox: {
+    backgroundColor: colors.white,
+    button: {
+      active: {
+        backgroundColor: colors.primary,
+        iconColor: colors.white,
+        underlayColor: colors.primaryUnderlayColor,
+      },
+      default: {
+        backgroundColor: colors.white,
+        iconColor: colors.gray600,
+        underlayColor: colors.mainUnderlayColor,
+      },
+    },
+  },
 };
 
 export type ThemeType = typeof Theme;

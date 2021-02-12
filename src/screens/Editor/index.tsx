@@ -1,12 +1,14 @@
 import React, { createRef } from "react";
 import { Button, ScrollView, View, Text } from "react-native";
+import { useTheme } from "styled-components/native";
+// Components
+import { MaterialIcons } from "@expo/vector-icons";
+import { FakeButton } from "components/RoundButton";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
 import sanitize from "xss";
 // Types
 import { EditorScreenNavigationProp } from "navigation/types";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { FontAwesome5 } from "@expo/vector-icons";
 
 import {
   RichEditor,
@@ -22,9 +24,71 @@ interface Props {
   navigation: EditorScreenNavigationProp;
 }
 
+const toolBarActions: Array<{
+  id: string;
+  name: keyof typeof MaterialIcons.glyphMap;
+}> = [
+  {
+    id: "justifyLeft",
+    name: "format-align-left",
+  },
+  {
+    id: "justifyCenter",
+    name: "format-align-justify",
+  },
+  {
+    id: "justifyRight",
+    name: "format-align-right",
+  },
+  {
+    id: "bold",
+    name: "format-bold",
+  },
+  {
+    id: "italic",
+    name: "format-italic",
+  },
+  {
+    id: "underline",
+    name: "format-underline",
+  },
+];
+
 const EditorScreen: React.FC<Props> = ({ navigation }) => {
   const RichTextRef = createRef<RichEditor>();
   const RichTextViewRef = createRef<RichEditor>();
+  const theme = useTheme();
+
+  const iconMap = toolBarActions.reduce(
+    (o, item) => ({
+      ...o,
+      [item.id]: ({
+        tintColor,
+        selected,
+        iconSize,
+        iconGab,
+      }: {
+        tintColor: string;
+        selected: boolean;
+        iconSize: number;
+        iconGab: number;
+      }) => {
+        return (
+          <FakeButton
+            size="medium"
+            backgroundColor={
+              selected
+                ? theme.toolBox.button.active.backgroundColor
+                : theme.toolBox.button.default.backgroundColor
+            }
+          >
+            <MaterialIcons name={item.name} size={iconSize} color={tintColor} />
+          </FakeButton>
+        );
+      },
+    }),
+    {}
+  );
 
   return (
     <SafeAreaView>
@@ -32,27 +96,22 @@ const EditorScreen: React.FC<Props> = ({ navigation }) => {
 
       <ScrollView style={{ height: 500 }}>
         <RichToolbar
+          style={{ backgroundColor: "white", height: 68 }}
+          flatContainerStyle={{ backgroundColor: "red" }}
           editor={RichTextRef}
           disabled={false}
-          iconTint="purple"
-          selectedIconTint="pink"
-          disabledIconTint="purple"
+          iconTint={theme.toolBox.button.default.iconColor}
+          selectedIconTint={theme.toolBox.button.active.iconColor}
+          iconSize={24}
           actions={[
-            actions.setBold,
-            actions.setItalic,
-            "underline",
             "justifyLeft",
             "justifyCenter",
             "justifyRight",
-            actions.insertBulletsList,
-            actions.insertOrderedList,
-            actions.undo,
+            "bold",
+            "italic",
+            "underline",
           ]}
-          iconMap={{
-            [actions.insertOrderedList]: ({ tintColor }) => (
-              <FontAwesome5 name="list-ul" size={16} color={tintColor} />
-            ),
-          }}
+          iconMap={iconMap}
         />
 
         <Text>Editable</Text>
