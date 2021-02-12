@@ -118,6 +118,8 @@ const Theme = {
   modal: {
     overLayBackgroundColor: "rgba(20,20,20,0.2)",
     backgroundColor: colors.white,
+    // mainly for ios
+    shadowColor: colors.gray900,
     header: {
       textColor: colors.gray800,
       iconColor: colors.gray800,

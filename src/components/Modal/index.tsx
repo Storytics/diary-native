@@ -6,6 +6,7 @@ import {
   Animated,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import Theme from "theme/index";
 import { useTheme } from "styled-components/native";
 import RoundButton from "components/RoundButton";
 import Button from "components/Button";
@@ -39,22 +40,23 @@ interface ActivityCardProps {
   hasContentPaddingBottom?: boolean;
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    shadowColor: "#141414",
-    shadowOffset: {
-      width: 0,
-      height: 5,
+const styles = (theme: typeof Theme) =>
+  StyleSheet.create({
+    wrapper: {
+      shadowColor: theme.modal.shadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 5,
+      },
+      shadowOpacity: 0.34,
+      shadowRadius: 6.27,
+      elevation: 10,
     },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
-  },
-  scrollViewContent: {
-    display: "flex",
-    flexGrow: 1,
-  },
-});
+    scrollViewContent: {
+      display: "flex",
+      flexGrow: 1,
+    },
+  });
 
 const AnimatedOverLayBackground = Animated.createAnimatedComponent(
   OverLayBackground
@@ -98,13 +100,15 @@ const CustomModal: React.FC<ActivityCardProps> = ({
         onRequestClose={onClose}
       >
         <Container>
-          <StyledScrollView contentContainerStyle={styles.scrollViewContent}>
+          <StyledScrollView
+            contentContainerStyle={styles(theme).scrollViewContent}
+          >
             <TouchOutsideContainer>
               <TouchableWithoutFeedback onPress={onClose}>
                 <TouchOutsideSpacer />
               </TouchableWithoutFeedback>
             </TouchOutsideContainer>
-            <Wrapper style={styles.wrapper}>
+            <Wrapper style={styles(theme).wrapper}>
               <SafeAreaView>
                 <Header>
                   <HeaderTextContainer>
