@@ -9,7 +9,6 @@ export const Container = styled.TouchableHighlight.attrs(({ theme }) => ({
 `;
 
 export const Wrapper = styled.View`
-  background-color: ${({ theme }) => theme.borderButton.backgroundColor};
   height: 60px;
   display: flex;
   flex-direction: row;

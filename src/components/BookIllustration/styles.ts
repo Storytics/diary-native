@@ -1,13 +1,23 @@
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
-export const Container = styled.View`
-  background-color: ${({ theme }) =>
-    theme.bookIllustration.fallbackBackgroundColor};
-  border-radius: ${({ theme }) => theme.sizes.borderRadius.default};
-  overflow: hidden;
+const sharedStyles = css`
   width: 60px;
   height: 80px;
+  border-radius: ${({ theme }) => theme.sizes.borderRadius.default};
+`;
+
+export const Container = styled.View`
+  ${sharedStyles};
+  background-color: ${({ theme }) =>
+    theme.bookIllustration.fallbackBackgroundColor};
   position: relative;
+`;
+
+// this extra wrapper is for ios, for shadow to work, the view with
+// the shadow styles, can't have overflow hidden
+export const Wrapper = styled.View`
+  ${sharedStyles};
+  overflow: hidden;
 `;
 
 export const BookIdentifier = styled.View<{ bookColor?: string }>`

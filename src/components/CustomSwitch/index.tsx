@@ -49,6 +49,7 @@ const CustomSwitch: React.FC<CustomSwitchProps> = ({
         isEnabled ? theme.customSwitch.track.on : theme.customSwitch.track.off
       }
       isEnabled={isEnabled}
+      isThemeSwitch={isThemeSwitch}
     >
       <Animated.View style={animationStyles}>
         <CustomSwitchThumbContainer isEnabled={isEnabled}>

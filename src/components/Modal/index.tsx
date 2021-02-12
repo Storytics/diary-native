@@ -10,6 +10,8 @@ import { useTheme } from "styled-components/native";
 import RoundButton from "components/RoundButton";
 import Button from "components/Button";
 import { MediumTitle } from "components/Typography";
+// Utils
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Container,
   StyledScrollView,
@@ -34,6 +36,7 @@ interface ActivityCardProps {
   primaryButtonText?: string;
   secondaryButtonText?: string;
   hasContentPaddingTop?: boolean;
+  hasContentPaddingBottom?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -68,6 +71,7 @@ const CustomModal: React.FC<ActivityCardProps> = ({
   primaryButtonText = "Text",
   secondaryButtonText = "Text",
   hasContentPaddingTop = true,
+  hasContentPaddingBottom = true,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -101,36 +105,41 @@ const CustomModal: React.FC<ActivityCardProps> = ({
               </TouchableWithoutFeedback>
             </TouchOutsideContainer>
             <Wrapper style={styles.wrapper}>
-              <Header>
-                <HeaderTextContainer>
-                  <MediumTitle>{title}</MediumTitle>
-                </HeaderTextContainer>
-                <RoundButton size="medium" onPress={onClose}>
-                  <MaterialIcons
-                    name="close"
-                    size={24}
-                    color={theme.modal.header.iconColor}
-                  />
-                </RoundButton>
-              </Header>
-              <ContentContainer hasContentPaddingTop={hasContentPaddingTop}>
-                {children}
-              </ContentContainer>
-              {hasActionButtons && (
-                <Footer>
-                  <FooterButtonContainer>
-                    <Button
-                      variant="primary"
-                      text={primaryButtonText}
-                      onPress={onPressPrimary}
+              <SafeAreaView>
+                <Header>
+                  <HeaderTextContainer>
+                    <MediumTitle>{title}</MediumTitle>
+                  </HeaderTextContainer>
+                  <RoundButton size="medium" onPress={onClose}>
+                    <MaterialIcons
+                      name="close"
+                      size={24}
+                      color={theme.modal.header.iconColor}
                     />
-                  </FooterButtonContainer>
-                  <Button
-                    text={secondaryButtonText}
-                    onPress={onPressSecondary}
-                  />
-                </Footer>
-              )}
+                  </RoundButton>
+                </Header>
+                <ContentContainer
+                  hasContentPaddingTop={hasContentPaddingTop}
+                  hasContentPaddingBottom={hasContentPaddingBottom}
+                >
+                  {children}
+                </ContentContainer>
+                {hasActionButtons && (
+                  <Footer>
+                    <FooterButtonContainer>
+                      <Button
+                        variant="primary"
+                        text={primaryButtonText}
+                        onPress={onPressPrimary}
+                      />
+                    </FooterButtonContainer>
+                    <Button
+                      text={secondaryButtonText}
+                      onPress={onPressSecondary}
+                    />
+                  </Footer>
+                )}
+              </SafeAreaView>
             </Wrapper>
           </StyledScrollView>
         </Container>

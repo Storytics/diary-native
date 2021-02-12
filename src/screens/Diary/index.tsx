@@ -1,8 +1,8 @@
 import React from "react";
 // Components
-import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "components/Container";
 import NoteBook from "components/NoteBook";
+import CustomSafeArea from "components/CustomSafeArea";
 // Types
 import { DiaryScreenNavigationProp } from "navigation/types";
 import Header from "components/Header";
@@ -14,7 +14,7 @@ interface Props {
 
 const DiaryScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <SafeAreaView>
+    <CustomSafeArea>
       <Container>
         <Header
           hasBackButton
@@ -37,7 +37,7 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
           }}
         />
       </Container>
-    </SafeAreaView>
+    </CustomSafeArea>
   );
 };
 

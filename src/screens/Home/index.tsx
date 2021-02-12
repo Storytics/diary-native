@@ -9,9 +9,8 @@ import Modal from "components/Modal";
 import Input from "components/Input";
 import Select from "components/Select";
 import BorderButton from "components/BorderButton";
-import CustomSwitch from "components/CustomSwitch";
-// Utils
-import { SafeAreaView } from "react-native-safe-area-context";
+import Brand from "components/Brand";
+import CustomSafeArea from "components/CustomSafeArea";
 // Types
 import { HomeScreenNavigationProp } from "navigation/types";
 // Locales
@@ -27,7 +26,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   return (
-    <SafeAreaView>
+    <CustomSafeArea>
       <Container>
         <Header text={i18n.t("diaries.section.title")} />
         <DiaryCardList
@@ -84,6 +83,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           onPressSecondary={() => console.log("Cancel")}
           hasActionButtons={false}
           hasContentPaddingTop={false}
+          hasContentPaddingBottom={false}
         >
           <BorderButton
             title="Theme"
@@ -105,9 +105,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             title="Terms and Conditions"
             onPress={() => console.log("terms")}
           />
+          <Brand />
         </Modal>
       </Container>
-    </SafeAreaView>
+    </CustomSafeArea>
   );
 };
 

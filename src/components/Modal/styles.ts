@@ -48,15 +48,22 @@ export const HeaderTextContainer = styled.View`
   margin-right: 10px;
 `;
 
-export const ContentContainer = styled.View<{ hasContentPaddingTop?: boolean }>`
+export const ContentContainer = styled.View<{
+  hasContentPaddingTop?: boolean;
+  hasContentPaddingBottom?: boolean;
+}>`
   padding-left: 30px;
   padding-right: 30px;
-  padding-bottom: 30px;
+  ${({ hasContentPaddingBottom }) =>
+    hasContentPaddingBottom &&
+    css`
+      padding-bottom: 30px;
+    `};
   ${({ hasContentPaddingTop }) =>
     hasContentPaddingTop &&
     css`
       padding-top: 30px;
-    `}
+    `};
 `;
 
 export const Footer = styled.View`

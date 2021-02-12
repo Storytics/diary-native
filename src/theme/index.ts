@@ -25,7 +25,7 @@ const colors = {
   gray900: "#141414",
   white: "#FFFFFF",
   primaryUnderlayColor: "#A0BFF8",
-  // underLay colors increment or decrement by 200
+  // most cases feedback colors increment or decrement by 200
   mainUnderlayColor: "#E2E2E2",
   shadowColor: "#141414",
 };
@@ -66,6 +66,7 @@ const Theme = {
   },
   header: {
     iconColor: colors.gray800,
+    underlayColor: colors.gray300,
   },
   diaryCard: {
     backgroundColor: colors.white,
@@ -76,6 +77,8 @@ const Theme = {
     fallbackBackgroundColor: colors.gray200,
     linearGradient: [colors.gray200, colors.gray400],
     lineColor: colors.gray100,
+    // mainly for ios
+    shadowColor: colors.gray700,
   },
   iconDefaultColor: colors.gray600,
   activityCard: {
@@ -92,10 +95,12 @@ const Theme = {
     },
   },
   activityCardList: {
-    linearGradient: ["transparent", colors.gray100],
+    // gray-100 in rgba, can't use transparent in ios
+    linearGradient: ["rgba(238, 238, 238, 0)", colors.gray100],
   },
   diaryCardList: {
-    linearGradient: ["transparent", colors.gray100],
+    // gray-100 in rgba, can't use transparent in ios
+    linearGradient: ["rgba(238, 238, 238, 0)", colors.gray100],
   },
   placeHolder: {
     backgroundColor: colors.gray100,
@@ -169,7 +174,7 @@ const Theme = {
   borderButton: {
     backgroundColor: colors.white,
     borderColor: colors.gray100,
-    underlayColor: colors.mainUnderlayColor,
+    underlayColor: colors.gray100,
     iconColor: colors.gray800,
     customSwitch: {
       text: {
@@ -183,6 +188,9 @@ const Theme = {
         },
       },
     },
+  },
+  brand: {
+    textColor: colors.gray500,
   },
 };
 

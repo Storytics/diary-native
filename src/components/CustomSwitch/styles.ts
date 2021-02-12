@@ -3,8 +3,13 @@ import styled, { css } from "styled-components/native";
 /* Custom Switch */
 export const CustomSwitchContainer = styled.TouchableHighlight<{
   isEnabled: boolean;
+  isThemeSwitch: boolean;
 }>`
-  margin: 0 8px;
+  ${({ isThemeSwitch }) =>
+    isThemeSwitch &&
+    css`
+      margin: 0 8px;
+    `};
   position: relative;
   width: 44px;
   height: 26px;
@@ -23,15 +28,12 @@ export const CustomSwitchThumbContainer = styled.View<{ isEnabled: boolean }>`
   width: 22px;
   height: 22px;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   top: 2px;
-  transform: scaleX(-1);
   ${({ isEnabled }) =>
     isEnabled
       ? css`
           left: 20px;
+          transform: scaleX(-1);
         `
       : css`
           left: 2px;
