@@ -20,7 +20,10 @@ const Header: React.FC<HeaderProps> = ({
     <Container hasBackButton={hasBackButton}>
       {hasBackButton && (
         <IconContainer>
-          <RoundButton onPress={onPress}>
+          <RoundButton
+            onPress={onPress}
+            underlayColor={theme.header.underlayColor}
+          >
             <MaterialIcons
               name="arrow-back"
               size={24}

@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
 import DiaryCardList from "components/DiaryCardList";
 import ActivityCardList from "components/ActivityCardList";
 import Navigation from "components/Navigation";
-// Utils
-import { SafeAreaView } from "react-native-safe-area-context";
+import Modal from "components/Modal";
+import Input from "components/Input";
+import Select from "components/Select";
+import BorderButton from "components/BorderButton";
+import Brand from "components/Brand";
+import CustomSafeArea from "components/CustomSafeArea";
 // Types
 import { HomeScreenNavigationProp } from "navigation/types";
 // Locales
@@ -19,8 +23,10 @@ interface Props {
 }
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   return (
-    <SafeAreaView>
+    <CustomSafeArea>
       <Container>
         <Header text={i18n.t("diaries.section.title")} />
         <DiaryCardList
@@ -46,14 +52,63 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             navigation.navigate("Diary");
           }}
           onPressMain={() => {
-            navigation.navigate("Diary");
+            setIsCreateModalOpen(true);
           }}
           onPressRight={() => {
-            navigation.navigate("Diary");
+            setIsMenuModalOpen(true);
           }}
         />
+        {/* Create New Diary Modal */}
+        <Modal
+          title={i18n.t("modal.create.title")}
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onPressPrimary={() => console.log("Save")}
+          onPressSecondary={() => console.log("Cancel")}
+          primaryButtonText={i18n.t("modal.create.buttons.primary")}
+          secondaryButtonText={i18n.t("modal.create.buttons.secondary")}
+        >
+          <Input title="Title" hasMarginBottom />
+          <Select
+            title="Identifier"
+            onChange={(value: string) => console.log("cor = ", value)}
+          />
+        </Modal>
+        {/* Menu Modal */}
+        <Modal
+          title={i18n.t("modal.menu.title")}
+          isOpen={isMenuModalOpen}
+          onClose={() => setIsMenuModalOpen(false)}
+          onPressPrimary={() => console.log("Save")}
+          onPressSecondary={() => console.log("Cancel")}
+          hasActionButtons={false}
+          hasContentPaddingTop={false}
+          hasContentPaddingBottom={false}
+        >
+          <BorderButton
+            title="Theme"
+            onPress={() => console.log("dark")}
+            hasArrowIcon={false}
+            hasThemeSwitch
+          />
+          <BorderButton
+            title="Upload Data"
+            onPress={() => console.log("data")}
+          />
+          <BorderButton
+            title="Password Protection"
+            onPress={() => console.log("dark")}
+            hasArrowIcon={false}
+            hasCustomSwitch
+          />
+          <BorderButton
+            title="Terms and Conditions"
+            onPress={() => console.log("terms")}
+          />
+          <Brand />
+        </Modal>
       </Container>
-    </SafeAreaView>
+    </CustomSafeArea>
   );
 };
 
