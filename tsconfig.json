@@ -19,7 +19,8 @@
       "context/*": ["context/*"],
       "hooks/*": ["hooks/*"],
       "database/*": ["database/*"],
-      "theme/*": ["theme/*"]
+      "theme/*": ["theme/*"],
+      "libs/*": ["libs/*"]
     }
   },
   "include": ["./src/**/*", "**/*.ts", "**/*.tsx"],

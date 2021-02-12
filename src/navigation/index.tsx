@@ -8,6 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "screens/Home";
 import DiaryScreen from "screens/Diary";
 import EditorScreen from "screens/Editor";
+import CloudScreen from "screens/Cloud";
 // Types
 import { RootStackParamList } from "./types";
 
@@ -23,6 +24,7 @@ const Navigation: React.FC = () => {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Diary" component={DiaryScreen} />
           <Stack.Screen name="Editor" component={EditorScreen} />
+          <Stack.Screen name="Cloud" component={CloudScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
