@@ -1,5 +1,7 @@
 import React from "react";
-import { Text, Button } from "react-native";
+import { Button } from "react-native";
+import { getNetworkStateAsync } from "expo-network";
+
 // Components
 import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "components/Container";
@@ -20,7 +22,7 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
   const onSignUp = async () => {
     try {
       const { user, error } = await supabase.auth.signUp({
-        email: "vitor.works@gmail.com",
+        email: "va.joe@baclmail.com",
         password: "#Qwerty123",
       });
 
@@ -34,7 +36,7 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
   const onSignIn = async () => {
     try {
       const { user, error } = await supabase.auth.signIn({
-        email: "vitor.works@gmail.com",
+        email: "va.works@hotmail.com",
         password: "#Qwerty123",
       });
 
@@ -42,22 +44,6 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
       console.log("error = ", error);
     } catch (error) {
       console.log("onSignIn Error = ", error);
-    }
-  };
-
-  const onCreateProfile = async () => {
-    try {
-      const { data, error } = await supabase.from("profile").insert([
-        {
-          name: "Vitor Amaral",
-          user_id: "6644bcd4-56ae-434c-b154-7ce8d2e3599d",
-        },
-      ]);
-
-      console.log("Profile data = ", data);
-      console.log("error = ", error);
-    } catch (error) {
-      console.log("onCreateProfile Error = ", error);
     }
   };
 
@@ -73,7 +59,7 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
       const { data, error } = await supabase.from("backup").insert([
         {
           data: JSON.stringify(allData),
-          user_id: "6644bcd4-56ae-434c-b154-7ce8d2e3599d",
+          user_id: "8dc8b3bc-faee-41d5-89ea-9697ecf4c05b",
         },
       ]);
 
@@ -89,7 +75,7 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
       const { data, error } = await supabase
         .from("backup")
         .select("*")
-        .eq("user_id", "6644bcd4-56ae-434c-b154-7ce8d2e3599d")
+        // .eq("user_id", "82e3e8cb-ff55-4453-bd1a-9734d2146a03")
         .order("created_at", { ascending: true })
         .limit(1);
 
@@ -100,15 +86,25 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
+  const onGetNeworkStatus = async () => {
+    try {
+      const res = await getNetworkStateAsync();
+      console.log("network is connect = ", res.isConnected);
+    } catch (error) {
+      console.log("onGetNeworkStatus Error = ", error);
+    }
+  };
+
   return (
     <SafeAreaView>
       <Container>
         <Button title="Create a new user" onPress={onSignUp} />
         <Button title="Sign In" onPress={onSignIn} />
+        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
         <Button title="Current User" onPress={getCurrentUser} />
-        <Button title="Create Profile" onPress={onCreateProfile} />
         <Button title="Create a backup" onPress={onCreateBackup} />
         <Button title="Get Backup" onPress={onGetBackup} />
+        <Button title="Get Network status" onPress={onGetNeworkStatus} />
       </Container>
     </SafeAreaView>
   );
