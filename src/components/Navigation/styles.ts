@@ -17,8 +17,8 @@ export const MainButtonContainer = styled.View`
 
 export const Wrapper = styled.View`
   background-color: ${({ theme }) => theme.navigation.backgroundColor};
-  height: 68px;
-  border-radius: 34px;
+  height: 60px;
+  border-radius: 30px;
   overflow: hidden;
   padding: 0 10px;
   display: flex;
