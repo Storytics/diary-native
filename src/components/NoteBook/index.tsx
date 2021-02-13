@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "styled-components/native";
 import { Text } from "components/Typography";
@@ -15,9 +15,11 @@ import {
 } from "./styles";
 
 interface ActivityCardProps {
-  page: string;
+  page: number;
   date: string;
   day: string;
+  hasPaddingBottom?: boolean;
+  noteBookHeight?: number;
 }
 
 const styles = StyleSheet.create({
@@ -30,13 +32,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const NoteBook: React.FC<ActivityCardProps> = ({ page = "1", date, day }) => {
+const NoteBook: React.FC<ActivityCardProps> = ({
+  page = "1",
+  date,
+  day,
+  hasPaddingBottom = true,
+  children,
+  noteBookHeight,
+}) => {
   const [numberOfLinesToRender, setNumberOfLinesToRender] = useState(0);
   const theme = useTheme();
   const lineHeight = 40;
 
   return (
-    <Container>
+    <Container hasPaddingBottom={hasPaddingBottom} height={noteBookHeight}>
       <Wrapper>
         <LinearGradient
           start={{ x: 0, y: 0 }}
@@ -54,16 +63,23 @@ const NoteBook: React.FC<ActivityCardProps> = ({ page = "1", date, day }) => {
           </HeaderWrapper>
         </Header>
         <Content>
-          <LinesWrapper
-            onLayout={(e) => {
-              const { height } = e.nativeEvent.layout;
-              setNumberOfLinesToRender(Math.ceil(height / lineHeight));
-            }}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
           >
-            {[...Array(numberOfLinesToRender)].map((e, i) => (
-              <Line key={i.toString()} height={lineHeight} />
-            ))}
-          </LinesWrapper>
+            <LinesWrapper
+              pointerEvents="none"
+              onLayout={(e) => {
+                const { height } = e.nativeEvent.layout;
+                setNumberOfLinesToRender(Math.floor(height / lineHeight));
+              }}
+            >
+              {[...Array(numberOfLinesToRender)].map((e, i) => (
+                <Line key={i.toString()} height={lineHeight} />
+              ))}
+            </LinesWrapper>
+            {children}
+          </ScrollView>
         </Content>
         <Footer>
           <Text>{page}</Text>

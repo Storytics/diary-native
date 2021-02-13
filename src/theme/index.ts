@@ -194,8 +194,15 @@ const Theme = {
   brand: {
     textColor: colors.gray500,
   },
-  toolBox: {
+  richEditor: {
     backgroundColor: colors.white,
+    textColor: colors.gray800,
+    placeholderColor: colors.gray500,
+  },
+  toolBar: {
+    backgroundColor: colors.white,
+    // mainly for ios
+    shadowColor: colors.gray700,
     button: {
       active: {
         backgroundColor: colors.primary,

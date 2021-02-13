@@ -11,7 +11,6 @@ import Select from "components/Select";
 import BorderButton from "components/BorderButton";
 import Brand from "components/Brand";
 import CustomSafeArea from "components/CustomSafeArea";
-import ToolBar from "components/ToolBar";
 // Types
 import { HomeScreenNavigationProp } from "navigation/types";
 // Locales
@@ -47,10 +46,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             navigation.navigate("Diary");
           }}
           placeholderText={i18n.t("activity.section.placeholderText")}
-        />
-        <ToolBar
-          onPressAlignLeft={() => console.log("align left")}
-          onChange={(value: string) => console.log("value = ", value)}
         />
         <Navigation
           onPressLeft={() => {

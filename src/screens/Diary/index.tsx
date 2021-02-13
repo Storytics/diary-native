@@ -23,14 +23,14 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
           }}
           text="Story's"
         />
-        <NoteBook date="23 Jan 2021" day="Friday" page="1" />
+        <NoteBook date="23 Jan 2021" day="Friday" page={1} />
         <Navigation
           isPageNavigation
           onPressLeft={() => {
             navigation.navigate("Home");
           }}
           onPressMain={() => {
-            navigation.navigate("Home");
+            navigation.navigate("Editor");
           }}
           onPressRight={() => {
             navigation.navigate("Home");
