@@ -1,5 +1,5 @@
-import React, { createRef, useEffect, useLayoutEffect, useState } from "react";
-import { Button, ScrollView, View, Text, StyleSheet } from "react-native";
+import React, { createRef } from "react";
+import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 // Components
@@ -16,7 +16,6 @@ import Header from "components/Header";
 import Theme from "theme/index";
 // styled components
 import { ContentWrapper, ToolBarWrapper, EditorContainer } from "./styles";
-import { LinesWrapper } from "components/NoteBook/styles";
 
 function unescapeHtml(html: string) {
   return html.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -24,6 +23,11 @@ function unescapeHtml(html: string) {
 
 interface Props {
   navigation: EditorScreenNavigationProp;
+  route: {
+    params: {
+      noteBookHeight: number;
+    };
+  };
 }
 
 const toolBarActions: Array<{
@@ -99,12 +103,11 @@ const styles = (theme: typeof Theme) =>
     },
   });
 
-const EditorScreen: React.FC<Props> = ({ navigation }) => {
+const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
   const RichTextRef = createRef<RichEditor>();
-  const RichTextViewRef = createRef<RichEditor>();
+  // const RichTextViewRef = createRef<RichEditor>();
   // Keyboard Hook
   const { isKeyboardOpen } = useKeyboard();
-  const [noteBookHeight, setNoteBookHeight] = useState(0);
   const theme = useTheme();
 
   const iconMap = toolBarActions.reduce(
@@ -138,25 +141,18 @@ const EditorScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <CustomSafeArea>
-      <ContentWrapper isKeyboardOpen={false}>
-        <Header
-          hasBackButton
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
-          text="Story's"
-        />
-        <View
-          style={{ flexGrow: 1 }}
-          onLayout={(e) => {
-            const { height } = e.nativeEvent.layout;
-            if (noteBookHeight <= 0) {
-              setNoteBookHeight(height);
-            }
-          }}
-        >
+      <KeyboardAvoidingView style={{ flexGrow: 1 }}>
+        <ContentWrapper isKeyboardOpen={false}>
+          <Header
+            hasBackButton
+            onPress={() => {
+              navigation.navigate("Home");
+            }}
+            text="Story's"
+          />
+
           <NoteBook
-            noteBookHeight={noteBookHeight}
+            noteBookHeight={route.params.noteBookHeight}
             hasPaddingBottom={false}
             page={1}
             date="12 Jan 2021"
@@ -190,9 +186,38 @@ const EditorScreen: React.FC<Props> = ({ navigation }) => {
               />
             </EditorContainer>
           </NoteBook>
-        </View>
 
-        {/*
+          {/* ToolBar */}
+          <ToolBarWrapper isKeyboardOpen={false}>
+            <View style={styles(theme).richToolBarContainer}>
+              <RichToolbar
+                style={
+                  isKeyboardOpen
+                    ? styles(theme).richToolBarFloating
+                    : styles(theme).richToolBar
+                }
+                // @ts-ignore
+                flatContainerStyle={styles(theme).flatContainer}
+                editor={RichTextRef}
+                disabled={false}
+                iconTint={theme.toolBar.button.default.iconColor}
+                selectedIconTint={theme.toolBar.button.active.iconColor}
+                iconSize={24}
+                actions={[
+                  "justifyLeft",
+                  "justifyCenter",
+                  "justifyRight",
+                  "bold",
+                  "italic",
+                  "underline",
+                ]}
+                iconMap={iconMap}
+              />
+            </View>
+          </ToolBarWrapper>
+          {/* TODO make navigation bar the same height as tool bar */}
+
+          {/*
             <Text>Read Only</Text>
             <View style={{ height: 100, padding: 10 }}>
               <RichEditor
@@ -220,36 +245,8 @@ const EditorScreen: React.FC<Props> = ({ navigation }) => {
               />
             </View>
             */}
-
-        {/* ToolBar */}
-        <ToolBarWrapper isKeyboardOpen={false}>
-          <View style={styles(theme).richToolBarContainer}>
-            <RichToolbar
-              style={
-                isKeyboardOpen
-                  ? styles(theme).richToolBarFloating
-                  : styles(theme).richToolBar
-              }
-              // @ts-ignore
-              flatContainerStyle={styles(theme).flatContainer}
-              editor={RichTextRef}
-              disabled={false}
-              iconTint={theme.toolBar.button.default.iconColor}
-              selectedIconTint={theme.toolBar.button.active.iconColor}
-              iconSize={24}
-              actions={[
-                "justifyLeft",
-                "justifyCenter",
-                "justifyRight",
-                "bold",
-                "italic",
-                "underline",
-              ]}
-              iconMap={iconMap}
-            />
-          </View>
-        </ToolBarWrapper>
-      </ContentWrapper>
+        </ContentWrapper>
+      </KeyboardAvoidingView>
     </CustomSafeArea>
   );
 };

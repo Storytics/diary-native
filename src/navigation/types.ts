@@ -3,7 +3,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 export type RootStackParamList = {
   Home: undefined;
   Diary: undefined;
-  Editor: undefined;
+  Editor: {
+    noteBookHeight: number;
+  };
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
