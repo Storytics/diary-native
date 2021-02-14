@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Button } from "react-native";
+import React from "react";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
@@ -9,14 +8,13 @@ import Navigation from "components/Navigation";
 import CustomSafeArea from "components/CustomSafeArea";
 // Hooks
 import useModals from "hooks/useModals";
+import useStore from "hooks/useStore";
 // Types
 import { HomeScreenNavigationProp } from "navigation/types";
 // Locales
 import i18n from "locales/index";
 // Mock data
 import { listData, activityData } from "./mockData";
-// Database
-import { getAllBooks } from "database/Book";
 
 interface Props {
   navigation: HomeScreenNavigationProp;
@@ -24,25 +22,16 @@ interface Props {
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const modalsContext = useModals();
-  const [diaries, setDiaries] = useState([]);
-
-  const onLoadDiaries = async () => {
-    try {
-      const result = await getAllBooks();
-      setDiaries(result);
-      console.log(result);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const {
+    state: { books, activity },
+  } = useStore();
 
   return (
     <CustomSafeArea>
       <Container>
-        <Button title="load diaries" onPress={onLoadDiaries} />
         <Header text={i18n.t("diaries.section.title")} />
         <DiaryCardList
-          data={diaries}
+          data={books}
           onPress={() => {
             navigation.navigate("Diary");
           }}
@@ -53,7 +42,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         />
         <Header text={i18n.t("activity.section.title")} />
         <ActivityCardList
-          data={activityData}
+          data={activity}
           onPress={() => {
             navigation.navigate("Diary");
           }}

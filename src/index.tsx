@@ -7,19 +7,23 @@ import theme from "theme/index";
 import Navigation from "navigation/index";
 // Contexts
 import { ModalsContextProvider } from "context/ModalsContext";
+import { StoreContextProvider } from "context/StoreContext";
+// Modals
 import Modals from "modals/index";
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
-      <ModalsContextProvider>
-        <StatusBar
-          backgroundColor={theme.container.backgroundColor}
-          barStyle="dark-content"
-        />
-        <Navigation />
-        <Modals />
-      </ModalsContextProvider>
+      <StoreContextProvider>
+        <ModalsContextProvider>
+          <StatusBar
+            backgroundColor={theme.container.backgroundColor}
+            barStyle="dark-content"
+          />
+          <Navigation />
+          <Modals />
+        </ModalsContextProvider>
+      </StoreContextProvider>
     </ThemeProvider>
   );
 };

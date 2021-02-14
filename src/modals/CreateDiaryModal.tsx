@@ -2,16 +2,18 @@ import React, { useCallback, useState } from "react";
 import i18n from "locales/index";
 // Hooks
 import useModals from "hooks/useModals";
+import useStore from "hooks/useStore";
 // Components
 import Input from "components/Input";
 import Select from "components/Select";
 import Modal from "components/Modal";
 // Database
-import { createBook } from "database/Book";
+import { createBook, getAllBooks } from "database/Book";
 
 const CreateDiaryModal: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [color, setColor] = useState("blue");
+  const store = useStore();
 
   const {
     dispatch,
@@ -29,8 +31,13 @@ const CreateDiaryModal: React.FC = () => {
     try {
       if (inputText) {
         const result = await createBook(inputText, color);
+        const books = await getAllBooks();
 
         if (result === "success") {
+          store.dispatch({
+            type: "LOAD_BOOKS",
+            payload: { books },
+          });
           setInputText("");
           onClose();
         }

@@ -2,9 +2,17 @@ import * as SQLite from "expo-sqlite";
 import Connection from "./DatabaseConnection";
 
 export interface BookProps {
+  color: string;
+  createdAt: string;
   id: number;
   title: string;
-  color: string;
+}
+
+interface ActivityProps {
+  title: string;
+  id: number;
+  createdAt: string;
+  bookId: number;
 }
 
 export const getAllBooks = async (): Promise<BookProps[]> => {
@@ -13,6 +21,26 @@ export const getAllBooks = async (): Promise<BookProps[]> => {
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
           "SELECT * FROM book ORDER BY createdAt DESC;",
+          [],
+          // @ts-ignore
+          (_, { rows: { _array } }) => {
+            resolve(_array);
+          }
+        );
+      },
+      (error: SQLite.SQLError) => {
+        reject(error);
+      }
+    );
+  });
+};
+
+export const getAllActivity = async (): Promise<ActivityProps[]> => {
+  return new Promise((resolve, reject) => {
+    Connection.transaction(
+      (tx: SQLite.SQLTransaction) => {
+        tx.executeSql(
+          "SELECT book.title, page.createdAt, page.bookId, page.id FROM book INNER JOIN page ON page.bookId = book.id ORDER BY page.createdAt DESC;",
           [],
           // @ts-ignore
           (_, { rows: { _array } }) => {

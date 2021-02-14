@@ -8,9 +8,10 @@ import { Container, ActivityCardContainer } from "./styles";
 
 interface ActivityCardListProps {
   data: Array<{
-    id: string;
     title: string;
-    date: string;
+    id: number;
+    createdAt: string;
+    bookId: number;
   }>;
   placeholderText: string;
   onPress: () => void;
@@ -50,12 +51,12 @@ const ActivityCardList: React.FC<ActivityCardListProps> = ({
           <ActivityCardContainer>
             <ActivityCard
               title={item.title}
-              date={item.date}
+              date={item.createdAt}
               onPress={onPress}
             />
           </ActivityCardContainer>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         initialNumToRender={10}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
