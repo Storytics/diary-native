@@ -22,10 +22,6 @@ import {
   EditorContainer,
 } from "./styles";
 
-function unescapeHtml(html: string) {
-  return html.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-}
-
 interface Props {
   navigation: EditorScreenNavigationProp;
   route: {
@@ -110,7 +106,6 @@ const styles = (theme: typeof Theme) =>
 
 const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
   const RichTextRef = createRef<RichEditor>();
-  // const RichTextViewRef = createRef<RichEditor>();
   // Keyboard Hook
   const { isKeyboardOpen } = useKeyboard();
   const theme = useTheme();
@@ -156,8 +151,8 @@ const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
               }}
               text="Story's"
             />
-
             <NoteBook
+              /* TODO check if value is correct will be needed when keyboard is open */
               // noteBookHeight={route.params.noteBookHeight}
               hasPaddingBottom={false}
               page={1}
@@ -192,34 +187,6 @@ const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
                 />
               </EditorContainer>
             </NoteBook>
-            {/*
-            <Text>Read Only</Text>
-            <View style={{ height: 100, padding: 10 }}>
-              <RichEditor
-                ref={RichTextViewRef}
-                placeholder="Start Writing Here"
-                disabled
-                initialContentHTML={unescapeHtml(
-                  `<div>&lt;b&gt;cena&lt;/b&gt; isto a &lt;i&gt;dar&lt;/i&gt;&nbsp;</div><div>&lt;br&gt;</div><div style="text-align:right;">agira &lt;u&gt;sim&lt;/u&gt;</div>`
-                )}
-                useContainer={false}
-              />
-            </View>
-            <View style={{ marginTop: 10 }}>
-              <Button
-                title="Set Html"
-                onPress={() =>
-                  RichTextViewRef.current?.setContentHTML(
-                    sanitize(
-                      unescapeHtml(
-                        `<div>&lt;b&gt;cena&lt;/b&gt; isto a &lt;i&gt;dar&lt;/i&gt;&nbsp;</div><div>&lt;br&gt;</div><div style="text-align:right;">agira &lt;u&gt;sim&lt;/u&gt;</div>`
-                      )
-                    )
-                  )
-                }
-              />
-            </View>
-            */}
           </ContentWrapper>
         </ScrollView>
         {/* ToolBar */}
