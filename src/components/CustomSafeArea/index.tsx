@@ -8,6 +8,7 @@ const styles = (theme: typeof Theme) =>
   StyleSheet.create({
     safeArea: {
       backgroundColor: theme.container.backgroundColor,
+      flexGrow: 1,
     },
   });
 

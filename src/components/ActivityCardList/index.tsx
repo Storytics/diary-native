@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   linearGradient: {
-    height: 20,
+    height: 30,
     position: "absolute",
     left: 0,
     right: 0,
@@ -64,6 +64,7 @@ const ActivityCardList: React.FC<ActivityCardListProps> = ({
       />
       {!!data.length && (
         <LinearGradient
+          pointerEvents="none"
           colors={[
             theme.activityCardList.linearGradient[0],
             theme.activityCardList.linearGradient[1],

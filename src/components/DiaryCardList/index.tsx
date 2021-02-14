@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
   linearGradient: {
-    width: 30,
+    width: 50,
     position: "absolute",
     top: 0,
     right: 0,
@@ -69,6 +69,7 @@ const DiaryCardList: React.FC<DiaryCardListProps> = ({
       />
       {!!data.length && (
         <LinearGradient
+          pointerEvents="none"
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           colors={[

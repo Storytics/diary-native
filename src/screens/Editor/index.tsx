@@ -1,5 +1,5 @@
 import React, { createRef } from "react";
-import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 // Components
@@ -15,7 +15,12 @@ import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import Header from "components/Header";
 import Theme from "theme/index";
 // styled components
-import { ContentWrapper, ToolBarWrapper, EditorContainer } from "./styles";
+import {
+  Container,
+  ContentWrapper,
+  ToolBarWrapper,
+  EditorContainer,
+} from "./styles";
 
 function unescapeHtml(html: string) {
   return html.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -141,83 +146,53 @@ const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <CustomSafeArea>
-      <KeyboardAvoidingView style={{ flexGrow: 1 }}>
-        <ContentWrapper isKeyboardOpen={false}>
-          <Header
-            hasBackButton
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
-            text="Story's"
-          />
+      <Container>
+        <ScrollView contentContainerStyle={styles(theme).scrollViewContent}>
+          <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
+            <Header
+              hasBackButton
+              onPress={() => {
+                navigation.navigate("Home");
+              }}
+              text="Story's"
+            />
 
-          <NoteBook
-            noteBookHeight={route.params.noteBookHeight}
-            hasPaddingBottom={false}
-            page={1}
-            date="12 Jan 2021"
-            day="Friday"
-          >
-            <EditorContainer>
-              <RichEditor
-                ref={RichTextRef}
-                editorStyle={{
-                  backgroundColor: theme.richEditor.backgroundColor,
-                  color: theme.richEditor.textColor,
-                  placeholderColor: theme.richEditor.placeholderColor,
-                  contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
-                }}
-                placeholder="Start Writing Here"
-                initialFocus={false}
-                disabled={false}
-                useContainer={false}
-                onChange={(text: string) =>
-                  console.log(
-                    "text = ",
-                    sanitize(text, { whiteList: { div: ["style"] } })
-                  )
-                }
-                editorInitializedCallback={() =>
-                  console.log("o Editor esta pronto")
-                }
-                onHeightChange={(height: number) =>
-                  console.log("altura mudou = ", height)
-                }
-              />
-            </EditorContainer>
-          </NoteBook>
-
-          {/* ToolBar */}
-          <ToolBarWrapper isKeyboardOpen={false}>
-            <View style={styles(theme).richToolBarContainer}>
-              <RichToolbar
-                style={
-                  isKeyboardOpen
-                    ? styles(theme).richToolBarFloating
-                    : styles(theme).richToolBar
-                }
-                // @ts-ignore
-                flatContainerStyle={styles(theme).flatContainer}
-                editor={RichTextRef}
-                disabled={false}
-                iconTint={theme.toolBar.button.default.iconColor}
-                selectedIconTint={theme.toolBar.button.active.iconColor}
-                iconSize={24}
-                actions={[
-                  "justifyLeft",
-                  "justifyCenter",
-                  "justifyRight",
-                  "bold",
-                  "italic",
-                  "underline",
-                ]}
-                iconMap={iconMap}
-              />
-            </View>
-          </ToolBarWrapper>
-          {/* TODO make navigation bar the same height as tool bar */}
-
-          {/*
+            <NoteBook
+              // noteBookHeight={route.params.noteBookHeight}
+              hasPaddingBottom={false}
+              page={1}
+              date="12 Jan 2021"
+              day="Friday"
+            >
+              <EditorContainer>
+                <RichEditor
+                  ref={RichTextRef}
+                  editorStyle={{
+                    backgroundColor: theme.richEditor.backgroundColor,
+                    color: theme.richEditor.textColor,
+                    placeholderColor: theme.richEditor.placeholderColor,
+                    contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
+                  }}
+                  placeholder="Start Writing Here"
+                  initialFocus={false}
+                  disabled={false}
+                  useContainer={false}
+                  onChange={(text: string) =>
+                    console.log(
+                      "text = ",
+                      sanitize(text, { whiteList: { div: ["style"] } })
+                    )
+                  }
+                  editorInitializedCallback={() =>
+                    console.log("o Editor esta pronto")
+                  }
+                  onHeightChange={(height: number) =>
+                    console.log("altura mudou = ", height)
+                  }
+                />
+              </EditorContainer>
+            </NoteBook>
+            {/*
             <Text>Read Only</Text>
             <View style={{ height: 100, padding: 10 }}>
               <RichEditor
@@ -245,8 +220,37 @@ const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
               />
             </View>
             */}
-        </ContentWrapper>
-      </KeyboardAvoidingView>
+          </ContentWrapper>
+        </ScrollView>
+        {/* ToolBar */}
+        <ToolBarWrapper isKeyboardOpen={isKeyboardOpen}>
+          <View style={styles(theme).richToolBarContainer}>
+            <RichToolbar
+              style={
+                isKeyboardOpen
+                  ? styles(theme).richToolBarFloating
+                  : styles(theme).richToolBar
+              }
+              // @ts-ignore
+              flatContainerStyle={styles(theme).flatContainer}
+              editor={RichTextRef}
+              disabled={false}
+              iconTint={theme.toolBar.button.default.iconColor}
+              selectedIconTint={theme.toolBar.button.active.iconColor}
+              iconSize={24}
+              actions={[
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "bold",
+                "italic",
+                "underline",
+              ]}
+              iconMap={iconMap}
+            />
+          </View>
+        </ToolBarWrapper>
+      </Container>
     </CustomSafeArea>
   );
 };
