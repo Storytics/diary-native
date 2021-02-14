@@ -12,7 +12,7 @@ export const getAllBooks = async (): Promise<BookProps[]> => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         // @ts-ignore
-        tx.executeSql("select * from book", [], (_, { rows: { _array } }) => {
+        tx.executeSql("SELECT * FROM book;", [], (_, { rows: { _array } }) => {
           resolve(_array);
         });
       },
@@ -28,7 +28,7 @@ export const getBookById = async (id: number): Promise<BookProps[]> => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
-          `select * from book where id = ?`,
+          `SELECT * FROM book WHERE id = ?;`,
           [id],
           // @ts-ignore
           (_, { rows: { _array } }) => {
@@ -50,7 +50,7 @@ export const createBook = async (
   return new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql("insert into book (title, color) values (?, ?)", [
+        tx.executeSql("INSERT INTO book (title, color) VALUES (?, ?);", [
           title,
           color,
         ]);
@@ -73,7 +73,7 @@ export const updateBookById = async (
   return new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql(`update book set title = ?, color = ? where id = ?;`, [
+        tx.executeSql(`UPDATE book SET title = ?, color = ? WHERE id = ?;`, [
           title,
           color,
           id,
@@ -93,7 +93,7 @@ export const deleteBookById = async (id: number): Promise<string> => {
   return new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql(`delete from book where id = ?;`, [id]);
+        tx.executeSql(`DELETE FROM book WHERE id = ?;`, [id]);
       },
       (error: SQLite.SQLError) => {
         reject(error);
