@@ -4,6 +4,7 @@ import { useTheme } from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 import Placeholder from "components/Placeholder";
 import ActivityCard from "components/ActivityCard";
+import dayjs from "dayjs";
 import { Container, ActivityCardContainer } from "./styles";
 
 interface ActivityCardListProps {
@@ -51,7 +52,7 @@ const ActivityCardList: React.FC<ActivityCardListProps> = ({
           <ActivityCardContainer>
             <ActivityCard
               title={item.title}
-              date={item.createdAt}
+              date={dayjs(item.createdAt).format("DD MMM YYYY HH:MM")}
               onPress={onPress}
             />
           </ActivityCardContainer>
