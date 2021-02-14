@@ -194,6 +194,28 @@ const Theme = {
   brand: {
     textColor: colors.gray500,
   },
+  richEditor: {
+    backgroundColor: colors.white,
+    textColor: colors.gray800,
+    placeholderColor: colors.gray500,
+  },
+  toolBar: {
+    backgroundColor: colors.white,
+    // mainly for ios
+    shadowColor: colors.gray700,
+    button: {
+      active: {
+        backgroundColor: colors.primary,
+        iconColor: colors.white,
+        underlayColor: colors.primaryUnderlayColor,
+      },
+      default: {
+        backgroundColor: colors.white,
+        iconColor: colors.gray600,
+        underlayColor: colors.mainUnderlayColor,
+      },
+    },
+  },
 };
 
 export type ThemeType = typeof Theme;

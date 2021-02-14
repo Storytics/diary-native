@@ -1,10 +1,18 @@
 import styled, { css } from "styled-components/native";
 
-export const Container = styled.View`
-  padding-right: 30px;
-  padding-bottom: 30px;
+export const Container = styled.View<{
+  hasPaddingBottom?: boolean;
+  height?: number;
+}>`
+  padding-right: 20px;
   display: flex;
   flex-grow: 1;
+  ${({ hasPaddingBottom }) =>
+    hasPaddingBottom &&
+    css`
+      padding-bottom: 30px;
+    `};
+  height: ${({ height }) => (height ? `${height}px` : "auto")};
 `;
 
 export const Wrapper = styled.View`
@@ -46,10 +54,11 @@ export const Content = styled.View`
 export const LinesWrapper = styled.View`
   flex: 1;
   overflow: hidden;
+  z-index: 1;
 `;
 
 export const Line = styled.View<{ height?: number }>`
-  height: ${({ height }) => `${height}px` || "40px"};
+  height: ${({ height }) => (height ? `${height}px` : "40px")};
   ${borderStyle};
 `;
 

@@ -1,111 +1,224 @@
 import React, { createRef } from "react";
-import { Button, ScrollView, View, Text } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useTheme } from "styled-components/native";
+import { MaterialIcons } from "@expo/vector-icons";
+// Components
+import CustomSafeArea from "components/CustomSafeArea";
+import NoteBook from "components/NoteBook";
+import { FakeButton } from "components/RoundButton";
 // Utils
-import { SafeAreaView } from "react-native-safe-area-context";
 import sanitize from "xss";
+import { useKeyboard } from "utils/hooks";
 // Types
 import { EditorScreenNavigationProp } from "navigation/types";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { FontAwesome5 } from "@expo/vector-icons";
-
+import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
+import Header from "components/Header";
+import Theme from "theme/index";
+// styled components
 import {
-  RichEditor,
-  RichToolbar,
-  actions,
-} from "react-native-pell-rich-editor";
-
-function unescapeHtml(html: string) {
-  return html.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-}
+  Container,
+  ContentWrapper,
+  ToolBarWrapper,
+  EditorContainer,
+} from "./styles";
 
 interface Props {
   navigation: EditorScreenNavigationProp;
+  route: {
+    params: {
+      noteBookHeight: number;
+    };
+  };
 }
 
-const EditorScreen: React.FC<Props> = ({ navigation }) => {
+const toolBarActions: Array<{
+  id: string;
+  name: keyof typeof MaterialIcons.glyphMap;
+}> = [
+  {
+    id: "justifyLeft",
+    name: "format-align-left",
+  },
+  {
+    id: "justifyCenter",
+    name: "format-align-justify",
+  },
+  {
+    id: "justifyRight",
+    name: "format-align-right",
+  },
+  {
+    id: "bold",
+    name: "format-bold",
+  },
+  {
+    id: "italic",
+    name: "format-italic",
+  },
+  {
+    id: "underline",
+    name: "format-underline",
+  },
+];
+
+const styles = (theme: typeof Theme) =>
+  StyleSheet.create({
+    // Tool Bar
+    richToolBarContainer: {
+      paddingLeft: 20,
+      paddingRight: 20,
+    },
+    // Normal state
+    richToolBar: {
+      backgroundColor: theme.toolBar.backgroundColor,
+      height: 60,
+      borderRadius: 30,
+    },
+    // Add shadow when writing
+    richToolBarFloating: {
+      backgroundColor: theme.toolBar.backgroundColor,
+      height: 60,
+      borderRadius: 30,
+      shadowColor: theme.toolBar.shadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      shadowOpacity: 0.22,
+      shadowRadius: 2.22,
+      elevation: 3,
+    },
+    // Icons wrapper
+    flatContainer: {
+      display: "flex",
+      flexGrow: 1,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      paddingRight: 10,
+      paddingLeft: 10,
+    },
+    // Container inside a scroll view
+    scrollViewContent: {
+      display: "flex",
+      flexGrow: 1,
+    },
+  });
+
+const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
   const RichTextRef = createRef<RichEditor>();
-  const RichTextViewRef = createRef<RichEditor>();
+  // Keyboard Hook
+  const { isKeyboardOpen } = useKeyboard();
+  const theme = useTheme();
+
+  const iconMap = toolBarActions.reduce(
+    (o, item) => ({
+      ...o,
+      [item.id]: ({
+        tintColor,
+        selected,
+        iconSize,
+      }: {
+        tintColor: string;
+        selected: boolean;
+        iconSize: number;
+      }) => {
+        return (
+          <FakeButton
+            size="medium"
+            backgroundColor={
+              selected
+                ? theme.toolBar.button.active.backgroundColor
+                : theme.toolBar.button.default.backgroundColor
+            }
+          >
+            <MaterialIcons name={item.name} size={iconSize} color={tintColor} />
+          </FakeButton>
+        );
+      },
+    }),
+    {}
+  );
 
   return (
-    <SafeAreaView>
-      <Button title="Go Back" onPress={() => navigation.navigate("Home")} />
-
-      <ScrollView style={{ height: 500 }}>
-        <RichToolbar
-          editor={RichTextRef}
-          disabled={false}
-          iconTint="purple"
-          selectedIconTint="pink"
-          disabledIconTint="purple"
-          actions={[
-            actions.setBold,
-            actions.setItalic,
-            "underline",
-            "justifyLeft",
-            "justifyCenter",
-            "justifyRight",
-            actions.insertBulletsList,
-            actions.insertOrderedList,
-            actions.undo,
-          ]}
-          iconMap={{
-            [actions.insertOrderedList]: ({ tintColor }) => (
-              <FontAwesome5 name="list-ul" size={16} color={tintColor} />
-            ),
-          }}
-        />
-
-        <Text>Editable</Text>
-        <View style={{ height: 200, padding: 10 }}>
-          <RichEditor
-            ref={RichTextRef}
-            placeholder="Start Writing Here"
-            initialFocus={false}
-            disabled={false}
-            useContainer={false}
-            onChange={(text: string) =>
-              console.log(
-                "text = ",
-                sanitize(text, { whiteList: { div: ["style"] } })
-              )
-            }
-            editorInitializedCallback={() =>
-              console.log("o Editor esta pronto")
-            }
-            onHeightChange={(height: number) =>
-              console.log("altura mudou = ", height)
-            }
-          />
-        </View>
-
-        <Text>Read Only</Text>
-        <View style={{ height: 100, padding: 10 }}>
-          <RichEditor
-            ref={RichTextViewRef}
-            placeholder="Start Writing Here"
-            disabled
-            initialContentHTML={unescapeHtml(
-              `<div>&lt;b&gt;cena&lt;/b&gt; isto a &lt;i&gt;dar&lt;/i&gt;&nbsp;</div><div>&lt;br&gt;</div><div style="text-align:right;">agira &lt;u&gt;sim&lt;/u&gt;</div>`
-            )}
-            useContainer={false}
-          />
-        </View>
-        <View style={{ marginTop: 10 }}>
-          <Button
-            title="Set Html"
-            onPress={() =>
-              RichTextViewRef.current?.setContentHTML(
-                sanitize(
-                  unescapeHtml(
-                    `<div>&lt;b&gt;cena&lt;/b&gt; isto a &lt;i&gt;dar&lt;/i&gt;&nbsp;</div><div>&lt;br&gt;</div><div style="text-align:right;">agira &lt;u&gt;sim&lt;/u&gt;</div>`
-                  )
-                )
-              )
-            }
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <CustomSafeArea>
+      <Container>
+        <ScrollView contentContainerStyle={styles(theme).scrollViewContent}>
+          <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
+            <Header
+              hasBackButton
+              onPress={() => {
+                navigation.navigate("Home");
+              }}
+              text="Story's"
+            />
+            <NoteBook
+              /* TODO check if value is correct will be needed when keyboard is open */
+              // noteBookHeight={route.params.noteBookHeight}
+              hasPaddingBottom={false}
+              page={1}
+              date="12 Jan 2021"
+              day="Friday"
+            >
+              <EditorContainer>
+                <RichEditor
+                  ref={RichTextRef}
+                  editorStyle={{
+                    backgroundColor: theme.richEditor.backgroundColor,
+                    color: theme.richEditor.textColor,
+                    placeholderColor: theme.richEditor.placeholderColor,
+                    contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
+                  }}
+                  placeholder="Start Writing Here"
+                  initialFocus={false}
+                  disabled={false}
+                  useContainer={false}
+                  onChange={(text: string) =>
+                    console.log(
+                      "text = ",
+                      sanitize(text, { whiteList: { div: ["style"] } })
+                    )
+                  }
+                  editorInitializedCallback={() =>
+                    console.log("o Editor esta pronto")
+                  }
+                  onHeightChange={(height: number) =>
+                    console.log("altura mudou = ", height)
+                  }
+                />
+              </EditorContainer>
+            </NoteBook>
+          </ContentWrapper>
+        </ScrollView>
+        {/* ToolBar */}
+        <ToolBarWrapper isKeyboardOpen={isKeyboardOpen}>
+          <View style={styles(theme).richToolBarContainer}>
+            <RichToolbar
+              style={
+                isKeyboardOpen
+                  ? styles(theme).richToolBarFloating
+                  : styles(theme).richToolBar
+              }
+              // @ts-ignore
+              flatContainerStyle={styles(theme).flatContainer}
+              editor={RichTextRef}
+              disabled={false}
+              iconTint={theme.toolBar.button.default.iconColor}
+              selectedIconTint={theme.toolBar.button.active.iconColor}
+              iconSize={24}
+              actions={[
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "bold",
+                "italic",
+                "underline",
+              ]}
+              iconMap={iconMap}
+            />
+          </View>
+        </ToolBarWrapper>
+      </Container>
+    </CustomSafeArea>
   );
 };
 

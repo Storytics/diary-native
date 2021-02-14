@@ -1,19 +1,30 @@
 import React from "react";
 import Theme from "theme/index";
 import { useTheme } from "styled-components/native";
-import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const styles = (theme: typeof Theme) =>
+const styles = (theme: typeof Theme, insets: { top: number; bottom: number }) =>
   StyleSheet.create({
-    safeArea: {
+    safeAreaContainer: {
+      height: "100%",
       backgroundColor: theme.container.backgroundColor,
+    },
+    safeArea: {
+      flexGrow: 1,
+      paddingTop: insets.top,
+      paddingBottom: insets.bottom,
     },
   });
 
 const ActivityCard: React.FC = ({ children }) => {
+  const insets = useSafeAreaInsets();
   const theme = useTheme();
-  return <SafeAreaView style={styles(theme).safeArea}>{children}</SafeAreaView>;
+  return (
+    <View style={styles(theme, insets).safeAreaContainer}>
+      <View style={styles(theme, insets).safeArea}>{children}</View>
+    </View>
+  );
 };
 
 export default ActivityCard;

@@ -8,6 +8,8 @@ export const Wrapper = styled.View`
 `;
 
 export const Container = styled.View`
+  overflow: hidden;
+  height: 182px;
   width: 160px;
   padding-bottom: 20px;
 `;
