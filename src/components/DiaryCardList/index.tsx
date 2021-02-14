@@ -8,9 +8,9 @@ import { Container, DiaryCardContainer, PlaceholderContainer } from "./styles";
 
 interface DiaryCardListProps {
   data: Array<{
-    id: string;
+    id: number;
     title: string;
-    bookColor: string;
+    color: string;
   }>;
   placeholderText: string;
   onPress: () => void;
@@ -51,13 +51,13 @@ const DiaryCardList: React.FC<DiaryCardListProps> = ({
           <DiaryCardContainer>
             <DiaryCard
               title={item.title}
-              bookColor={item.bookColor}
+              bookColor={item.color}
               onPress={onPress}
               onPressMore={onPressMore}
             />
           </DiaryCardContainer>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         horizontal={!!data.length}
         showsHorizontalScrollIndicator={false}
         initialNumToRender={10}

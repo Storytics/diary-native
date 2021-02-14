@@ -8,7 +8,7 @@ import NoteBook from "components/NoteBook";
 import { FakeButton } from "components/RoundButton";
 // Utils
 import sanitize from "xss";
-import { useKeyboard } from "utils/hooks";
+import useKeyboard from "hooks/useKeyboard";
 // Types
 import { EditorScreenNavigationProp } from "navigation/types";
 import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";

@@ -2,24 +2,24 @@ export const listEmpty = [];
 
 export const listData = [
   {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    id: 1,
     title: "Story's",
-    bookColor: "#276EF1",
+    color: "#276EF1",
   },
   {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    id: 2,
     title: "Travels",
-    bookColor: "#FF6937",
+    color: "#FF6937",
   },
   {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    id: 3,
     title: "Dark Secrets",
-    bookColor: "#7356BF",
+    color: "#7356BF",
   },
   {
-    id: "58694a0f-3da1-471f-bd96-145571e29d73",
+    id: 4,
     title: "Memories",
-    bookColor: "#05944F",
+    color: "#05944F",
   },
 ];
 

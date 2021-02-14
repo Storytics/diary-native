@@ -11,10 +11,14 @@ export const getAllBooks = async (): Promise<BookProps[]> => {
   return new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        // @ts-ignore
-        tx.executeSql("SELECT * FROM book;", [], (_, { rows: { _array } }) => {
-          resolve(_array);
-        });
+        tx.executeSql(
+          "SELECT * FROM book ORDER BY createdAt DESC;",
+          [],
+          // @ts-ignore
+          (_, { rows: { _array } }) => {
+            resolve(_array);
+          }
+        );
       },
       (error: SQLite.SQLError) => {
         reject(error);
