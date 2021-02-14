@@ -10,10 +10,17 @@ export const DatabaseInit = async (): Promise<unknown> => {
     const SQLQueries = [
       `DROP TABLE IF EXISTS book;`,
       `DROP TABLE IF EXISTS page;`,
-      `create table if not exists book (id integer primary key autoincrement, title text not null, color text);`,
-      `create table if not exists page (id integer primary key autoincrement, content text not null, createdAt text default current_timestamp, bookId int, foreign key (bookId) references book (id));`,
-      `insert into book(title, color) values('nice book', 'red');`,
-      `insert into page(content, bookId) values('bela page', 1);`,
+      `CREATE TABLE IF NOT EXISTS book (id INTEGER PRIMARY KEY  AUTOINCREMENT, title TEXT NOT NULL, color TEXT);`,
+      `CREATE TABLE IF NOT EXISTS page (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL, createdAt TEXT DEFAULT CURRENT_TIMESTAMP, bookId INT, FOREIGN KEY (bookId) REFERENCES book (id));`,
+      `INSERT INTO book (title, color) VALUES ('nice book', 'red');`,
+      `INSERT INTO page (content, bookId) VALUES ('bela page', 1);`,
+      `INSERT INTO page (content, bookId) VALUES ('bela page 2', 1);`,
+      `INSERT INTO page (content, bookId) VALUES ('bela page 3', 1);`,
+      `INSERT INTO page (content, bookId) VALUES ('bela page 4', 1);`,
+      `INSERT INTO page (content, bookId) VALUES ('bela page 5', 1);`,
+      `INSERT INTO page (content, bookId) VALUES ('bela page 6', 1);`,
+      `INSERT INTO book (title, color) VALUES ('A pequena seria', 'blue');`,
+      `INSERT INTO page (content, bookId) VALUES ('Grande livro', 2);`,
     ];
 
     Connection.transaction(
