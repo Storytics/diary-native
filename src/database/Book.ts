@@ -1,19 +1,9 @@
 import * as SQLite from "expo-sqlite";
+// Types
+import { BookProps } from "types/book";
+import { ActivityProps } from "types/activity";
+// DB Connection
 import Connection from "./DatabaseConnection";
-
-export interface BookProps {
-  color: string;
-  createdAt: string;
-  id: number;
-  title: string;
-}
-
-interface ActivityProps {
-  title: string;
-  id: number;
-  createdAt: string;
-  bookId: number;
-}
 
 export const getAllBooks = async (): Promise<BookProps[]> => {
   return new Promise((resolve, reject) => {

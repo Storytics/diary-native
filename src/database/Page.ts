@@ -1,12 +1,8 @@
 import * as SQLite from "expo-sqlite";
+// Types
+import { PageProps } from "types/page";
+// DB Connection
 import Connection from "./DatabaseConnection";
-
-export interface PageProps {
-  id: number;
-  content: string;
-  createdAt: string;
-  bookId: number;
-}
 
 export const getAllPagesByBookId = async (
   bookId: number
@@ -15,7 +11,7 @@ export const getAllPagesByBookId = async (
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
-          `SELECT * FROM page WHERE bookId = ?;`,
+          `SELECT * FROM page WHERE bookId = ? ORDER BY page.createdAt DESC;`,
           [bookId],
           // @ts-ignore
           (_, { rows: { _array } }) => {

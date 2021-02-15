@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,11 +9,14 @@ import { FakeButton } from "components/RoundButton";
 // Utils
 import sanitize from "xss";
 import useKeyboard from "hooks/useKeyboard";
+import dayjs from "dayjs";
 // Types
-import { EditorScreenNavigationProp } from "navigation/types";
+import { EditorNavigationProps } from "types/navigation";
 import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import Header from "components/Header";
 import Theme from "theme/index";
+// Database
+import { createPage } from "database/Page";
 // styled components
 import {
   Container,
@@ -21,15 +24,6 @@ import {
   ToolBarWrapper,
   EditorContainer,
 } from "./styles";
-
-interface Props {
-  navigation: EditorScreenNavigationProp;
-  route: {
-    params: {
-      noteBookHeight: number;
-    };
-  };
-}
 
 const toolBarActions: Array<{
   id: string;
@@ -104,7 +98,11 @@ const styles = (theme: typeof Theme) =>
     },
   });
 
-const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
+const EditorScreen: React.FC<EditorNavigationProps> = ({
+  navigation,
+  route,
+}) => {
+  const [content, setContent] = useState("");
   const RichTextRef = createRef<RichEditor>();
   // Keyboard Hook
   const { isKeyboardOpen } = useKeyboard();
@@ -139,25 +137,31 @@ const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
     {}
   );
 
+  const onSave = async () => {
+    try {
+      if (content) {
+        await createPage(content, route.params.bookId);
+      }
+
+      navigation.goBack();
+    } catch (e) {
+      console.log("Error saving the page = ", e);
+    }
+  };
+
   return (
     <CustomSafeArea>
       <Container>
         <ScrollView contentContainerStyle={styles(theme).scrollViewContent}>
           <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
-            <Header
-              hasBackButton
-              onPress={() => {
-                navigation.navigate("Home");
-              }}
-              text="Story's"
-            />
+            <Header hasBackButton onPress={onSave} text="Story's" />
             <NoteBook
               /* TODO check if value is correct will be needed when keyboard is open */
               // noteBookHeight={route.params.noteBookHeight}
               hasPaddingBottom={false}
               page={1}
-              date="12 Jan 2021"
-              day="Friday"
+              date={dayjs().format("DD MMM YYYY")}
+              day={dayjs().format("dddd")}
             >
               <EditorContainer>
                 <RichEditor
@@ -173,8 +177,7 @@ const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
                   disabled={false}
                   useContainer={false}
                   onChange={(text: string) =>
-                    console.log(
-                      "text = ",
+                    setContent(
                       sanitize(text, { whiteList: { div: ["style"] } })
                     )
                   }

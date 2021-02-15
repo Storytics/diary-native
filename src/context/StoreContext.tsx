@@ -1,64 +1,22 @@
-import React, { createContext, useReducer, useEffect } from "react";
-import { getAllBooks, getAllActivity } from "database/Book";
-
-interface Book {
-  color: string;
-  createdAt: string;
-  id: number;
-  title: string;
-}
-
-interface Activity {
-  title: string;
-  id: number;
-  createdAt: string;
-  bookId: number;
-}
-
-export interface State {
-  books: Array<Book>;
-  activity: Array<Activity>;
-}
+import React, { createContext, useEffect, useReducer } from "react";
+import { getAllActivity, getAllBooks } from "database/Book";
+// Utils
+import { getNetworkStateAsync } from "expo-network";
+// Types
+import { Context, NetworkStatus, StoreActions, StoreState } from "types/store";
 
 const initialState = {
   books: [],
   activity: [],
+  networkStatus: NetworkStatus.loading,
 };
-
-export interface AddBookPayload {
-  type: "ADD_BOOK";
-  payload: {
-    book: Book;
-  };
-}
-
-export interface LoadBooksPayload {
-  type: "LOAD_BOOKS";
-  payload: {
-    books: Array<Book>;
-  };
-}
-
-export interface LoadActivityPayload {
-  type: "LOAD_ACTIVITY";
-  payload: {
-    activity: Array<Activity>;
-  };
-}
-
-export type Actions = AddBookPayload | LoadBooksPayload | LoadActivityPayload;
-
-export interface Context {
-  state: State;
-  dispatch: React.Dispatch<any>;
-}
 
 export const StoreContext = createContext<Context>({
   state: initialState,
   dispatch: () => null,
 });
 
-export const Reducer = (state: State, action: Actions) => {
+export const Reducer = (state: StoreState, action: StoreActions) => {
   switch (action.type) {
     case "ADD_BOOK":
       return {
@@ -74,6 +32,11 @@ export const Reducer = (state: State, action: Actions) => {
       return {
         ...state,
         activity: action.payload.activity,
+      };
+    case "SET_NETWORK_STATUS":
+      return {
+        ...state,
+        networkStatus: action.payload.status,
       };
     default:
       return state;
@@ -110,6 +73,23 @@ export const StoreContextProvider: React.FC = ({ children }) => {
 
     loadBooks();
     loadActivity();
+  }, []);
+
+  useEffect(() => {
+    const getNetworkStatus = async () => {
+      try {
+        const { isConnected } = await getNetworkStateAsync();
+        dispatch({
+          type: "SET_NETWORK_STATUS",
+          payload: {
+            status: isConnected ? NetworkStatus.online : NetworkStatus.offline,
+          },
+        });
+      } catch (e) {
+        console.log("Error loading network status = ", e);
+      }
+    };
+    getNetworkStatus();
   }, []);
 
   return (

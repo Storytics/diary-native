@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect, useMemo } from "react";
 import { useTheme } from "styled-components/native";
 // Components
 import Container from "components/Container";
@@ -6,25 +6,72 @@ import NoteBook from "components/NoteBook";
 import CustomSafeArea from "components/CustomSafeArea";
 // Utils
 import { unescapeHtml } from "utils/functions";
+import dayjs from "dayjs";
 // Types
-import { DiaryScreenNavigationProp } from "navigation/types";
+import { DiaryNavigationProps } from "types/navigation";
+import { PageProps } from "types/page";
 import Header from "components/Header";
 import Navigation from "components/Navigation";
 import { RichEditor } from "react-native-pell-rich-editor";
+// Database
+import { getAllPagesByBookId } from "database/Page";
 import {
   NoteBookContainer,
   NavigationContainer,
   EditorContainer,
 } from "./styles";
 
-interface Props {
-  navigation: DiaryScreenNavigationProp;
-}
-
-const DiaryScreen: React.FC<Props> = ({ navigation }) => {
+const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
   const RichTextViewRef = createRef<RichEditor>();
+  const [bookPages, setBookPages] = useState<Array<PageProps>>([]);
+  const [pageNumber, setPageNumber] = useState(0);
   const [noteBookHeight, setNoteBookHeight] = useState(0);
   const theme = useTheme();
+
+  const currentPage = useMemo(() => {
+    console.log("aqui ");
+
+    return bookPages.length > 0
+      ? bookPages[pageNumber]
+      : {
+          id: 0,
+          content: "",
+          createdAt: "",
+          bookId: "",
+        };
+  }, [bookPages, pageNumber]);
+
+  console.log("currentPage = ", currentPage);
+
+  useEffect(() => {
+    const onLoadPages = async () => {
+      try {
+        const pages = await getAllPagesByBookId(route.params.bookId);
+        setBookPages(pages);
+      } catch (e) {
+        console.log("error loading pages for this book ", e);
+      }
+    };
+    onLoadPages();
+  }, [route.params.bookId, navigation]);
+
+  const onPrevPage = () => {
+    const prevPage = pageNumber - 1;
+    const isValidPage = bookPages[prevPage];
+
+    if (isValidPage) {
+      setPageNumber(prevPage);
+    }
+  };
+
+  const onNextPage = () => {
+    const nextPage = pageNumber + 1;
+    const isValidPage = bookPages[nextPage];
+
+    if (isValidPage) {
+      setPageNumber(nextPage);
+    }
+  };
 
   return (
     <CustomSafeArea>
@@ -45,8 +92,9 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
           }}
         >
           <NoteBook
-            date="23 Jan 2021"
-            day="Friday"
+            key={currentPage.id}
+            date={dayjs(currentPage.createdAt).format("DD MMM YYYY")}
+            day={dayjs(currentPage.createdAt).format("dddd")}
             page={1}
             hasPaddingBottom={false}
           >
@@ -61,9 +109,7 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
                 }}
                 placeholder="Start Writing Here"
                 disabled
-                initialContentHTML={unescapeHtml(
-                  `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
-                )}
+                initialContentHTML={unescapeHtml(currentPage.content)}
                 useContainer={false}
               />
             </EditorContainer>
@@ -72,17 +118,14 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
         <NavigationContainer>
           <Navigation
             isPageNavigation
-            onPressLeft={() => {
-              navigation.navigate("Home");
-            }}
+            onPressLeft={onPrevPage}
             onPressMain={() => {
               navigation.navigate("Editor", {
                 noteBookHeight,
+                bookId: route.params.bookId,
               });
             }}
-            onPressRight={() => {
-              navigation.navigate("Home");
-            }}
+            onPressRight={onNextPage}
           />
         </NavigationContainer>
       </Container>

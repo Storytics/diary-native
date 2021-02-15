@@ -10,7 +10,7 @@ import DiaryScreen from "screens/Diary";
 import EditorScreen from "screens/Editor";
 import CloudScreen from "screens/Cloud";
 // Types
-import { RootStackParamList } from "./types";
+import { RootStackParamList } from "types/navigation";
 
 const Stack = createStackNavigator<RootStackParamList>();
 

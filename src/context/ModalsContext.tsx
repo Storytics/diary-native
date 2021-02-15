@@ -1,42 +1,18 @@
 import React, { createContext, useReducer } from "react";
-
-export interface State {
-  isCreateDiaryOpen: boolean;
-  isMenuModalOpen: boolean;
-}
+// Types
+import { ModalsState, ModalsActions, Context } from "types/modals";
 
 const initialState = {
   isCreateDiaryOpen: false,
   isMenuModalOpen: false,
 };
 
-export interface CreateDiaryModalPayload {
-  type: "CREATE_DIARY_MODAL";
-  payload: {
-    isOpen: boolean;
-  };
-}
-
-export interface MenuModalPayload {
-  type: "MENU_MODAL";
-  payload: {
-    isOpen: boolean;
-  };
-}
-
-export type Actions = CreateDiaryModalPayload | MenuModalPayload;
-
-export interface Context {
-  state: State;
-  dispatch: React.Dispatch<any>;
-}
-
 export const ModalsContext = createContext<Context>({
   state: initialState,
   dispatch: () => null,
 });
 
-export const Reducer = (state: State, action: Actions) => {
+export const Reducer = (state: ModalsState, action: ModalsActions) => {
   switch (action.type) {
     case "CREATE_DIARY_MODAL":
       return {
