@@ -4,13 +4,15 @@ import { useTheme } from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 import Placeholder from "components/Placeholder";
 import ActivityCard from "components/ActivityCard";
+import dayjs from "dayjs";
 import { Container, ActivityCardContainer } from "./styles";
 
 interface ActivityCardListProps {
   data: Array<{
-    id: string;
     title: string;
-    date: string;
+    id: number;
+    createdAt: string;
+    bookId: number;
   }>;
   placeholderText: string;
   onPress: () => void;
@@ -50,12 +52,12 @@ const ActivityCardList: React.FC<ActivityCardListProps> = ({
           <ActivityCardContainer>
             <ActivityCard
               title={item.title}
-              date={item.date}
+              date={dayjs(item.createdAt).format("DD MMM YYYY HH:MM")}
               onPress={onPress}
             />
           </ActivityCardContainer>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         initialNumToRender={10}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={

@@ -17,23 +17,18 @@ interface SelectProps {
 const buttons = [
   {
     color: "blue",
-    isSelected: true,
   },
   {
     color: "yellow",
-    isSelected: false,
   },
   {
     color: "orange",
-    isSelected: false,
   },
   {
     color: "purple",
-    isSelected: false,
   },
   {
     color: "green",
-    isSelected: false,
   },
 ];
 
@@ -85,7 +80,7 @@ const Select: React.FC<SelectProps> = ({ title, onChange }) => {
             <Button
               key={index.toString()}
               onPress={() => {
-                onChange(button.color);
+                onChange(handleColorType(button.color, theme).backgroundColor);
                 setSelectedValue(index);
               }}
               underlayColor={handleColorType(button.color, theme).underlayColor}

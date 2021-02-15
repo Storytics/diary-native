@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Keyboard, KeyboardEvent } from "react-native";
 
 /* Get height of keyboard and if is open */
-export const useKeyboard = (): {
+const useKeyboard = (): {
   keyboardHeight: number;
   isKeyboardOpen: boolean;
 } => {
@@ -33,3 +33,5 @@ export const useKeyboard = (): {
     isKeyboardOpen,
   };
 };
+
+export default useKeyboard;

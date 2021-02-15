@@ -3,13 +3,13 @@ export default {
   diaries: {
     section: {
       title: "My Diaries",
-      placeHolderText: "Added diaries appear here",
+      placeholderText: "Added diaries appear here",
     },
   },
   activity: {
     section: {
       title: "Recent Activity",
-      placeHolderText: "Recent activity appears here",
+      placeholderText: "Recent activity appears here",
     },
   },
   modal: {

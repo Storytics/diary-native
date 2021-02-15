@@ -20,7 +20,8 @@
       "hooks/*": ["hooks/*"],
       "database/*": ["database/*"],
       "theme/*": ["theme/*"],
-      "libs/*": ["libs/*"]
+      "libs/*": ["libs/*"],
+      "modals/*": ["modals/*"]
     }
   },
   "include": ["./src/**/*", "**/*.ts", "**/*.tsx"],
