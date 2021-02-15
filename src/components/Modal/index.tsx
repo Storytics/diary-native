@@ -10,6 +10,7 @@ import Theme from "theme/index";
 import { useTheme } from "styled-components/native";
 import RoundButton from "components/RoundButton";
 import Button from "components/Button";
+import HoldButton from "components/HoldButton";
 import { MediumTitle } from "components/Typography";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -130,6 +131,12 @@ const CustomModal: React.FC<ActivityCardProps> = ({
                 </ContentContainer>
                 {hasActionButtons && (
                   <Footer>
+                    <FooterButtonContainer>
+                      <HoldButton
+                        text="Hold to delete"
+                        onLongPress={() => console.log("yo")}
+                      />
+                    </FooterButtonContainer>
                     <FooterButtonContainer>
                       <Button
                         variant="primary"
