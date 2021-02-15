@@ -6,6 +6,7 @@ import { Container, Wrapper, MainButtonContainer } from "./styles";
 
 export interface DiaryCardProps {
   isPageNavigation?: boolean;
+  pageNavigationIcon?: string;
   onPressLeft: () => void;
   onPressMain: () => void;
   onPressRight: () => void;
@@ -13,6 +14,7 @@ export interface DiaryCardProps {
 
 const Navigation: React.FC<DiaryCardProps> = ({
   isPageNavigation,
+  pageNavigationIcon = "create",
   onPressLeft,
   onPressMain,
   onPressRight,
@@ -37,7 +39,11 @@ const Navigation: React.FC<DiaryCardProps> = ({
             onPress={onPressMain}
           >
             <MaterialIcons
-              name={isPageNavigation ? "create" : "add"}
+              name={
+                isPageNavigation
+                  ? (pageNavigationIcon as keyof typeof MaterialIcons.glyphMap)
+                  : "add"
+              }
               size={24}
               color={theme.navigation.mainButton.iconColor}
             />

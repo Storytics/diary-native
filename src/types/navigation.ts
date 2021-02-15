@@ -7,6 +7,8 @@ export interface EditorNavigationParams {
 
 export interface DiaryNavigationParams {
   bookId: number;
+  bookTitle: string;
+  pageNumber?: number;
 }
 
 export type RootStackParamList = {

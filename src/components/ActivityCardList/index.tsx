@@ -15,7 +15,7 @@ interface ActivityCardListProps {
     bookId: number;
   }>;
   placeholderText: string;
-  onPress: () => void;
+  onPress: (bookId: number, bookTitle: string, pageNumber: number) => void;
 }
 
 const styles = StyleSheet.create({
@@ -53,7 +53,7 @@ const ActivityCardList: React.FC<ActivityCardListProps> = ({
             <ActivityCard
               title={item.title}
               date={dayjs(item.createdAt).format("DD MMM YYYY HH:MM")}
-              onPress={onPress}
+              onPress={() => onPress(item.bookId, item.title, item.id)}
             />
           </ActivityCardContainer>
         )}

@@ -13,7 +13,7 @@ interface DiaryCardListProps {
     color: string;
   }>;
   placeholderText: string;
-  onPress: (bookId: number) => void;
+  onPress: (bookId: number, title: string) => void;
   onPressMore: () => void;
 }
 
@@ -52,7 +52,7 @@ const DiaryCardList: React.FC<DiaryCardListProps> = ({
             <DiaryCard
               title={item.title}
               bookColor={item.color}
-              onPress={() => onPress(item.id)}
+              onPress={() => onPress(item.id, item.title)}
               onPressMore={onPressMore}
             />
           </DiaryCardContainer>

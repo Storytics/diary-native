@@ -159,7 +159,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
               /* TODO check if value is correct will be needed when keyboard is open */
               // noteBookHeight={route.params.noteBookHeight}
               hasPaddingBottom={false}
-              page={1}
+              page="1"
               date={dayjs().format("DD MMM YYYY")}
               day={dayjs().format("dddd")}
             >

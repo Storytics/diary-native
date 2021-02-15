@@ -11,7 +11,7 @@ export const getAllPagesByBookId = async (
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
-          `SELECT * FROM page WHERE bookId = ? ORDER BY page.createdAt DESC;`,
+          `SELECT * FROM page WHERE bookId = ?;`,
           [bookId],
           // @ts-ignore
           (_, { rows: { _array } }) => {
