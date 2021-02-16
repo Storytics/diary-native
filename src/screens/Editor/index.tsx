@@ -16,7 +16,8 @@ import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import Header from "components/Header";
 import Theme from "theme/index";
 // Database
-import { createPage } from "database/Page";
+import { createPage, updatePageById } from "database/Page";
+import { unescapeHtml } from "utils/functions";
 // styled components
 import {
   Container,
@@ -100,9 +101,9 @@ const styles = (theme: typeof Theme) =>
 
 const EditorScreen: React.FC<EditorNavigationProps> = ({
   navigation,
-  route,
+  route: { params },
 }) => {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(params.page?.content || "");
   const RichTextRef = createRef<RichEditor>();
   // Keyboard Hook
   const { isKeyboardOpen } = useKeyboard();
@@ -139,13 +140,21 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
 
   const onSave = async () => {
     try {
-      if (content) {
-        await createPage(content, route.params.bookId);
+      if (content && !params.isEdit) {
+        await createPage(content, params.bookId);
+      }
+
+      if (content && params.isEdit && params.page) {
+        await updatePageById(params.page.id, content);
       }
 
       navigation.goBack();
     } catch (e) {
-      console.log("Error saving the page = ", e);
+      if (params.isEdit) {
+        console.log("Error editing the page = ", e);
+      } else {
+        console.log("Error saving the page = ", e);
+      }
     }
   };
 
@@ -176,6 +185,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                   initialFocus={false}
                   disabled={false}
                   useContainer={false}
+                  initialContentHTML={unescapeHtml(content)}
                   onChange={(text: string) =>
                     setContent(
                       sanitize(text, { whiteList: { div: ["style"] } })

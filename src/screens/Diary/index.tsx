@@ -36,6 +36,11 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
   const [noteBookHeight, setNoteBookHeight] = useState(0);
   const theme = useTheme();
 
+  const isCreatePage = useMemo(() => pageNumber + 1 === bookPages.length, [
+    pageNumber,
+    bookPages,
+  ]);
+
   const currentPage = useMemo(
     () => (bookPages.length > 0 ? bookPages[pageNumber] : defaultPage),
     [bookPages, pageNumber]
@@ -73,6 +78,17 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
     if (isValidPage) {
       setPageNumber(nextPage);
     }
+  };
+
+  const onHandleAction = () => {
+    const page = !isCreatePage ? currentPage : defaultPage;
+
+    navigation.navigate("Editor", {
+      noteBookHeight,
+      bookId: route.params.bookId,
+      isEdit: !isCreatePage,
+      page,
+    });
   };
 
   return (
@@ -120,16 +136,9 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
         <NavigationContainer>
           <Navigation
             isPageNavigation
-            pageNavigationIcon={
-              pageNumber + 1 === bookPages.length ? "add" : "create"
-            }
+            pageNavigationIcon={isCreatePage ? "add" : "create"}
             onPressLeft={onPrevPage}
-            onPressMain={() => {
-              navigation.navigate("Editor", {
-                noteBookHeight,
-                bookId: route.params.bookId,
-              });
-            }}
+            onPressMain={onHandleAction}
             onPressRight={onNextPage}
           />
         </NavigationContainer>

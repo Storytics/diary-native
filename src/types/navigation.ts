@@ -1,8 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
+import { PageProps } from "types/page";
 
 export interface EditorNavigationParams {
   noteBookHeight: number;
   bookId: number;
+  isEdit?: boolean;
+  page?: PageProps;
 }
 
 export interface DiaryNavigationParams {
