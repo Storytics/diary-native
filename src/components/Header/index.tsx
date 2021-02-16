@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
           </RoundButton>
         </IconContainer>
       )}
-      <StyledLargeTitle>{text}</StyledLargeTitle>
+      <StyledLargeTitle numberOfLines={1}>{text}</StyledLargeTitle>
     </Container>
   );
 };

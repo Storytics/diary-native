@@ -1,7 +1,6 @@
 const colors = {
   primary: "#276EF1",
   danger: "#E11900",
-  red300: "#E85C4A",
   success: "#05944F",
   blue400: "#276EF1",
   blue200: "#A0BFF8",
@@ -220,7 +219,7 @@ const Theme = {
   holdButton: {
     color: colors.gray800,
     backgroundColor: colors.gray100,
-    animationColor: colors.red300,
+    animationColor: colors.gray400,
   },
 };
 

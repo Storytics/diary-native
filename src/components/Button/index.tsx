@@ -31,7 +31,7 @@ const Button = styled.TouchableHighlight.attrs(({ theme, underlayColor }) => ({
 interface ButtonComponentProps {
   variant?: variant;
   text: string;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 const ButtonComponent: React.FC<ButtonComponentProps> = ({

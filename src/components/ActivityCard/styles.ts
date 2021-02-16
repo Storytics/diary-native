@@ -25,7 +25,7 @@ export const LeftIconContainer = styled.View`
 `;
 
 export const ContentContainer = styled.View`
-  margin: 0 20px;
+  padding: 0 20px;
   flex-grow: 1;
 `;
 

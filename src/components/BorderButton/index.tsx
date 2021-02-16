@@ -35,7 +35,7 @@ const BorderButton: React.FC<BorderButtonProps> = ({
   return (
     <Container {...containerProps}>
       <Wrapper>
-        <SmallTitle>{title}</SmallTitle>
+        <SmallTitle numberOfLines={1}>{title}</SmallTitle>
         <IconContainer>
           {hasArrowIcon && (
             <MaterialIcons

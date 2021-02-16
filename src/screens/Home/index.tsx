@@ -13,8 +13,6 @@ import useStore from "hooks/useStore";
 import { HomeScreenNavigationProp } from "navigation/types";
 // Locales
 import i18n from "locales/index";
-// Mock data
-import { listData, activityData } from "./mockData";
 
 interface Props {
   navigation: HomeScreenNavigationProp;
@@ -36,7 +34,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             navigation.navigate("Diary");
           }}
           onPressMore={() => {
-            navigation.navigate("Diary");
+            modalsContext.dispatch({
+              type: "DIARY_ACTIONS_MODAL",
+              payload: { isOpen: true },
+            });
           }}
           placeholderText={i18n.t("diaries.section.placeholderText")}
         />

@@ -45,7 +45,7 @@ export const Header = styled.View`
 `;
 
 export const HeaderTextContainer = styled.View`
-  margin-right: 10px;
+  margin-right: 20px;
 `;
 
 export const ContentContainer = styled.View<{
@@ -66,8 +66,9 @@ export const ContentContainer = styled.View<{
     `};
 `;
 
-export const Footer = styled.View`
-  padding: 0 30px 20px 30px;
+export const Footer = styled.View<{ modalHasContent?: boolean }>`
+  padding: ${({ modalHasContent }) => (modalHasContent ? "0" : "30px")} 30px
+    20px 30px;
 `;
 
 export const FooterButtonContainer = styled.View`

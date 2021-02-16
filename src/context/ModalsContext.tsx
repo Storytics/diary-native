@@ -3,11 +3,13 @@ import React, { createContext, useReducer } from "react";
 export interface State {
   isCreateDiaryOpen: boolean;
   isMenuModalOpen: boolean;
+  isDiaryActionsModalOpen: boolean;
 }
 
 const initialState = {
   isCreateDiaryOpen: false,
   isMenuModalOpen: false,
+  isDiaryActionsModalOpen: false,
 };
 
 export interface CreateDiaryModalPayload {
@@ -24,7 +26,17 @@ export interface MenuModalPayload {
   };
 }
 
-export type Actions = CreateDiaryModalPayload | MenuModalPayload;
+export interface DiaryActionsModalPayload {
+  type: "DIARY_ACTIONS_MODAL";
+  payload: {
+    isOpen: boolean;
+  };
+}
+
+export type Actions =
+  | CreateDiaryModalPayload
+  | MenuModalPayload
+  | DiaryActionsModalPayload;
 
 export interface Context {
   state: State;
@@ -47,6 +59,11 @@ export const Reducer = (state: State, action: Actions) => {
       return {
         ...state,
         isMenuModalOpen: action.payload.isOpen,
+      };
+    case "DIARY_ACTIONS_MODAL":
+      return {
+        ...state,
+        isDiaryActionsModalOpen: action.payload.isOpen,
       };
     default:
       return state;
