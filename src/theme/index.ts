@@ -56,6 +56,7 @@ const Theme = {
       largeTitle: colors.gray800,
       text: colors.gray600,
       mediumText: colors.gray500,
+      largeText: colors.gray600,
     },
   },
   container: {
@@ -220,6 +221,21 @@ const Theme = {
     color: colors.gray800,
     backgroundColor: colors.gray100,
     animationColor: colors.gray400,
+  },
+  passwordScreen: {
+    header: {
+      iconColor: colors.gray800,
+    },
+    circles: {
+      backgroundColor: colors.gray500,
+      feedbackColor: colors.primary,
+    },
+    logo: {
+      color: colors.gray800,
+    },
+    numbers: {
+      color: colors.gray800,
+    },
   },
 };
 

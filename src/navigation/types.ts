@@ -7,6 +7,7 @@ export type RootStackParamList = {
     noteBookHeight: number;
   };
   Cloud: undefined;
+  Password: undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -27,4 +28,9 @@ export type EditorScreenNavigationProp = StackNavigationProp<
 export type CloudScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Cloud"
+>;
+
+export type PasswordScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Password"
 >;

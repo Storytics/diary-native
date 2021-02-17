@@ -13,7 +13,7 @@ import {
 
 interface BorderButtonProps {
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
   hasArrowIcon?: boolean;
   hasSwitch?: boolean;
   hasCustomSwitch?: boolean;

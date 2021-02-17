@@ -50,3 +50,11 @@ export const MediumText = styled.Text<TextProps>`
   color: ${({ theme, color }) =>
     color || theme.typography.defaultColors.mediumText};
 `;
+
+export const LargeText = styled.Text<TextProps>`
+  ${textSharedStyles};
+  font-size: 26px;
+  line-height: 30px;
+  color: ${({ theme, color }) =>
+    color || theme.typography.defaultColors.largeText};
+`;
