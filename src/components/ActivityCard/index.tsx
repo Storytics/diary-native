@@ -39,9 +39,9 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
           </LeftIconContainer>
           <ContentContainer>
             <TextContainer>
-              <MediumTitle>{title}</MediumTitle>
+              <MediumTitle numberOfLines={1}>{title}</MediumTitle>
             </TextContainer>
-            <Text>{date}</Text>
+            <Text numberOfLines={1}>{date}</Text>
           </ContentContainer>
           <MaterialIcons
             name="chevron-right"

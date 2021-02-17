@@ -47,7 +47,7 @@ const DiaryCard: React.FC<DiaryCardProps> = ({
             <BookIllustration bookColor={bookColor} />
           </BookContainer>
           <TextContainer>
-            <StyledMediumTitle>{title}</StyledMediumTitle>
+            <StyledMediumTitle numberOfLines={1}>{title}</StyledMediumTitle>
           </TextContainer>
         </Container>
       </TouchableHighlight>

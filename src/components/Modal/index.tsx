@@ -4,12 +4,14 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Animated,
+  GestureResponderEvent,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Theme from "theme/index";
 import { useTheme } from "styled-components/native";
 import RoundButton from "components/RoundButton";
 import Button from "components/Button";
+import HoldButton from "components/HoldButton";
 import { MediumTitle } from "components/Typography";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -28,14 +30,48 @@ import {
 } from "./styles";
 
 interface ActivityCardProps {
+  /**
+   Modal title
+   */
+  title: string;
+  /**
+   Modal main actions, open and close
+   */
   isOpen: boolean;
   onClose: () => void;
-  onPressPrimary: () => void;
-  onPressSecondary: () => void;
-  title: string;
+  /**
+   Removes footer, true by default
+   */
   hasActionButtons?: boolean;
+  /**
+   Main buttons shown by default
+   */
+  hasPrimaryButton?: boolean;
+  hasSecondaryButton?: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
+  /**
+   Main buttons actions
+   */
+  onPressPrimary?: () => void;
+  onPressSecondary?: () => void;
+  /**
+   Hold button props
+   */
+  hasHoldButton?: boolean;
+  holdButtonText?: string;
+  holdButtonTextFeedback?: string;
+  /**
+   After 5s set Event
+   */
+  onLongPress?: (event: GestureResponderEvent) => void;
+  /**
+   Set Children true by default
+   */
+  hasContent?: boolean;
+  /**
+   Padding of content has by default
+   */
   hasContentPaddingTop?: boolean;
   hasContentPaddingBottom?: boolean;
 }
@@ -74,6 +110,13 @@ const CustomModal: React.FC<ActivityCardProps> = ({
   secondaryButtonText = "Text",
   hasContentPaddingTop = true,
   hasContentPaddingBottom = true,
+  onLongPress,
+  hasPrimaryButton = true,
+  hasSecondaryButton = true,
+  hasHoldButton,
+  holdButtonText,
+  holdButtonTextFeedback,
+  hasContent = true,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -112,7 +155,7 @@ const CustomModal: React.FC<ActivityCardProps> = ({
               <SafeAreaView>
                 <Header>
                   <HeaderTextContainer>
-                    <MediumTitle>{title}</MediumTitle>
+                    <MediumTitle numberOfLines={1}>{title}</MediumTitle>
                   </HeaderTextContainer>
                   <RoundButton size="medium" onPress={onClose}>
                     <MaterialIcons
@@ -122,25 +165,38 @@ const CustomModal: React.FC<ActivityCardProps> = ({
                     />
                   </RoundButton>
                 </Header>
-                <ContentContainer
-                  hasContentPaddingTop={hasContentPaddingTop}
-                  hasContentPaddingBottom={hasContentPaddingBottom}
-                >
-                  {children}
-                </ContentContainer>
+                {hasContent && (
+                  <ContentContainer
+                    hasContentPaddingTop={hasContentPaddingTop}
+                    hasContentPaddingBottom={hasContentPaddingBottom}
+                  >
+                    {children}
+                  </ContentContainer>
+                )}
                 {hasActionButtons && (
-                  <Footer>
-                    <FooterButtonContainer>
+                  <Footer modalHasContent={hasContent}>
+                    {hasPrimaryButton && (
+                      <FooterButtonContainer>
+                        <Button
+                          variant="primary"
+                          text={primaryButtonText}
+                          onPress={onPressPrimary}
+                        />
+                      </FooterButtonContainer>
+                    )}
+                    {hasSecondaryButton && (
                       <Button
-                        variant="primary"
-                        text={primaryButtonText}
-                        onPress={onPressPrimary}
+                        text={secondaryButtonText}
+                        onPress={onPressSecondary}
                       />
-                    </FooterButtonContainer>
-                    <Button
-                      text={secondaryButtonText}
-                      onPress={onPressSecondary}
-                    />
+                    )}
+                    {hasHoldButton && (
+                      <HoldButton
+                        initialText={holdButtonText}
+                        feedbackText={holdButtonTextFeedback}
+                        onLongPress={onLongPress}
+                      />
+                    )}
                   </Footer>
                 )}
               </SafeAreaView>

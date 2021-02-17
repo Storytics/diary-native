@@ -216,6 +216,11 @@ const Theme = {
       },
     },
   },
+  holdButton: {
+    color: colors.gray800,
+    backgroundColor: colors.gray100,
+    animationColor: colors.gray400,
+  },
 };
 
 export type ThemeType = typeof Theme;

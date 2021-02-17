@@ -17,7 +17,7 @@ export const Wrapper = styled.View`
 `;
 
 export const IconContainer = styled.View`
-  margin-left: 10px;
+  margin-left: 20px;
 `;
 
 export const SwitchContainer = styled.View`
