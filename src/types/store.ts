@@ -6,6 +6,9 @@ export enum NetworkStatus {
   loading = "loading",
   online = "online",
   offline = "offline",
+  authenticated = "authenticated",
+  lock = "lock",
+  sync = "sync",
 }
 
 export interface StoreState {

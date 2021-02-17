@@ -2,6 +2,9 @@ import React, { createContext, useEffect, useReducer } from "react";
 import { getAllActivity, getAllBooks } from "database/Book";
 // Utils
 import { getNetworkStateAsync } from "expo-network";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import dayjs from "dayjs";
+import { userAuthenticatedItem, userCloudLastSyncItem } from "utils/constants";
 // Types
 import { Context, NetworkStatus, StoreActions, StoreState } from "types/store";
 
@@ -79,10 +82,28 @@ export const StoreContextProvider: React.FC = ({ children }) => {
     const getNetworkStatus = async () => {
       try {
         const { isConnected } = await getNetworkStateAsync();
+        const isAuthenticated = await AsyncStorage.getItem(
+          userAuthenticatedItem
+        );
+        const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
+
+        const isSync =
+          lastCloudSync && dayjs(lastCloudSync).isAfter(dayjs(new Date()));
+
+        let status = NetworkStatus.loading;
+
+        if (isConnected && isAuthenticated) {
+          status = NetworkStatus.authenticated;
+        } else if (isConnected && !isAuthenticated) {
+          status = NetworkStatus.online;
+        } else if (isConnected && isAuthenticated && isSync) {
+          status = NetworkStatus.sync;
+        }
+
         dispatch({
           type: "SET_NETWORK_STATUS",
           payload: {
-            status: isConnected ? NetworkStatus.online : NetworkStatus.offline,
+            status: isConnected ? status : NetworkStatus.offline,
           },
         });
       } catch (e) {
