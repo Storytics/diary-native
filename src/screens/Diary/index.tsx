@@ -1,6 +1,6 @@
 import React, { useState, createRef, useMemo, useCallback } from "react";
 import { useTheme } from "styled-components/native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 // Components
 import Container from "components/Container";
 import NoteBook from "components/NoteBook";
@@ -29,12 +29,16 @@ const defaultPage = {
   bookId: 0,
 };
 
-const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
+const DiaryScreen: React.FC<DiaryNavigationProps> = ({
+  navigation,
+  route: { params },
+}) => {
   const RichTextViewRef = createRef<RichEditor>();
   const [bookPages, setBookPages] = useState<Array<PageProps>>([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [noteBookHeight, setNoteBookHeight] = useState(0);
   const theme = useTheme();
+  const isFocused = useIsFocused();
 
   const isCreatePage = useMemo(() => pageNumber + 1 === bookPages.length, [
     pageNumber,
@@ -50,16 +54,22 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
     useCallback(() => {
       const onLoadPages = async () => {
         try {
-          const pages = await getAllPagesByBookId(route.params.bookId);
+          const pages = await getAllPagesByBookId(params.bookId);
+          // This gets the page from the index and focus on the page
+          // this is for activities and when the user edits or creates a page
+          const activityIndex = pages.findIndex(
+            (page: PageProps) => page.id === params.activityPageId
+          );
+
           setBookPages([...pages, defaultPage]);
-          setPageNumber(pages.length);
+          setPageNumber(activityIndex === -1 ? pages.length : activityIndex);
         } catch (e) {
           console.log("error loading pages for this book ", e);
         }
       };
 
       onLoadPages();
-    }, [route.params.bookId])
+    }, [params.bookId, params.activityPageId])
   );
 
   const onPrevPage = () => {
@@ -83,10 +93,16 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
   const onHandleAction = () => {
     const page = !isCreatePage ? currentPage : defaultPage;
 
+    const pageIndex = bookPages.findIndex(
+      (item: PageProps) => item.id === page.id
+    );
+
     navigation.navigate("Editor", {
       noteBookHeight,
-      bookId: route.params.bookId,
+      bookId: params.bookId,
       isEdit: !isCreatePage,
+      bookTitle: params.bookTitle,
+      pageNumber: isCreatePage ? bookPages.length : pageIndex + 1,
       page,
     });
   };
@@ -99,7 +115,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
           onPress={() => {
             navigation.navigate("Home");
           }}
-          text={route.params.bookTitle}
+          text={params.bookTitle}
         />
         <NoteBookContainer
           onLayout={(e) => {
@@ -110,7 +126,9 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({ navigation, route }) => {
           }}
         >
           <NoteBook
-            key={currentPage.id}
+            key={`page-${currentPage.id.toString()}-${
+              isFocused ? "focus" : "blur"
+            }`}
             date={dayjs(currentPage.createdAt).format("DD MMM YYYY")}
             day={dayjs(currentPage.createdAt).format("dddd")}
             page={`${pageNumber + 1} / ${bookPages.length}`}

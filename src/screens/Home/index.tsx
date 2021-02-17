@@ -38,11 +38,15 @@ const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
         <Header text={i18n.t("activity.section.title")} />
         <ActivityCardList
           data={activity}
-          onPress={(bookId: number, bookTitle: string, pageNumber: number) => {
+          onPress={(
+            bookId: number,
+            bookTitle: string,
+            activityPageId: number
+          ) => {
             navigation.navigate("Diary", {
               bookId,
               bookTitle,
-              pageNumber,
+              activityPageId,
             });
           }}
           placeholderText={i18n.t("activity.section.placeholderText")}

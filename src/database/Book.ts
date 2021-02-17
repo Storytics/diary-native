@@ -30,7 +30,7 @@ export const getAllActivity = async (): Promise<ActivityProps[]> => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
-          "SELECT book.title, page.createdAt, page.bookId, page.id FROM book INNER JOIN page ON page.bookId = book.id ORDER BY page.createdAt DESC;",
+          "SELECT book.title, page.createdAt, page.bookId, page.id FROM book INNER JOIN page ON page.bookId = book.id ORDER BY page.createdAt DESC LIMIT 25;",
           [],
           // @ts-ignore
           (_, { rows: { _array } }) => {

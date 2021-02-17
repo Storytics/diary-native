@@ -5,13 +5,15 @@ export interface EditorNavigationParams {
   noteBookHeight: number;
   bookId: number;
   isEdit?: boolean;
+  bookTitle: string;
+  pageNumber: number;
   page?: PageProps;
 }
 
 export interface DiaryNavigationParams {
   bookId: number;
   bookTitle: string;
-  pageNumber?: number;
+  activityPageId?: number;
 }
 
 export type RootStackParamList = {

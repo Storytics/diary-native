@@ -17,7 +17,10 @@ import Header from "components/Header";
 import Theme from "theme/index";
 // Database
 import { createPage, updatePageById } from "database/Page";
+import { getAllActivity } from "database/Book";
 import { unescapeHtml } from "utils/functions";
+// Context
+import useStore from "hooks/useStore";
 // styled components
 import {
   Container,
@@ -108,6 +111,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   // Keyboard Hook
   const { isKeyboardOpen } = useKeyboard();
   const theme = useTheme();
+  const { dispatch } = useStore();
 
   const iconMap = toolBarActions.reduce(
     (o, item) => ({
@@ -138,17 +142,41 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     {}
   );
 
+  const refreshActivities = async () => {
+    try {
+      const activity = await getAllActivity();
+      dispatch({
+        type: "LOAD_ACTIVITY",
+        payload: { activity },
+      });
+    } catch (e) {
+      console.log("Error refreshing activities ", e);
+    }
+  };
+
   const onSave = async () => {
     try {
+      // create a new page
       if (content && !params.isEdit) {
-        await createPage(content, params.bookId);
+        const res = await createPage(content, params.bookId);
+        if (res === "success") {
+          await refreshActivities();
+        }
       }
 
+      // Save a existing page
       if (content && params.isEdit && params.page) {
-        await updatePageById(params.page.id, content);
+        const res = await updatePageById(params.page.id, content);
+        if (res === "success") {
+          await refreshActivities();
+        }
       }
 
-      navigation.goBack();
+      navigation.navigate("Diary", {
+        bookId: params.bookId,
+        bookTitle: params.bookTitle,
+        activityPageId: params.pageNumber,
+      });
     } catch (e) {
       if (params.isEdit) {
         console.log("Error editing the page = ", e);
@@ -158,19 +186,22 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     }
   };
 
+  const getDate =
+    params.isEdit && params.page ? params.page.createdAt : dayjs();
+
   return (
     <CustomSafeArea>
       <Container>
         <ScrollView contentContainerStyle={styles(theme).scrollViewContent}>
           <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
-            <Header hasBackButton onPress={onSave} text="Story's" />
+            <Header hasBackButton onPress={onSave} text={params.bookTitle} />
             <NoteBook
               /* TODO check if value is correct will be needed when keyboard is open */
               // noteBookHeight={route.params.noteBookHeight}
               hasPaddingBottom={false}
-              page="1"
-              date={dayjs().format("DD MMM YYYY")}
-              day={dayjs().format("dddd")}
+              page={params.pageNumber.toString() || "0"}
+              date={dayjs(getDate).format("DD MMM YYYY")}
+              day={dayjs(getDate).format("dddd")}
             >
               <EditorContainer>
                 <RichEditor
