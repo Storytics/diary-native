@@ -21,6 +21,7 @@ export type RootStackParamList = {
   Diary: DiaryNavigationParams;
   Editor: EditorNavigationParams;
   Cloud: undefined;
+  Password: undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -59,4 +60,13 @@ export interface EditorNavigationProps {
   route: {
     params: EditorNavigationParams;
   };
+}
+
+export type PasswordScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Editor"
+>;
+
+export interface PasswordNavigationProps {
+  navigation: PasswordScreenNavigationProp;
 }

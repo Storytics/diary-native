@@ -23,6 +23,15 @@ export default {
     menu: {
       title: "Settings",
     },
+    diaryActions: {
+      buttons: {
+        primary: "Edit",
+        hold: {
+          text: "Delete",
+          feedbackText: "Hold to delete :(",
+        },
+      },
+    },
   },
   // Input Component
   input: {
@@ -35,5 +44,10 @@ export default {
       dark: "Dark",
       light: "Light",
     },
+  },
+  // Hold Button
+  holdButton: {
+    initialText: "Delete",
+    feedbackText: "Hold to delete :(",
   },
 };

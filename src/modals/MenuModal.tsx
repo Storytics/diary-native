@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import i18n from "locales/index";
+import { navigate } from "navigation/index";
 // Hooks
 import useModals from "hooks/useModals";
 // Components
@@ -44,7 +45,12 @@ const MenuModal: React.FC = () => {
       <BorderButton title="Upload Data" onPress={() => console.log("data")} />
       <BorderButton
         title="Password Protection"
-        onPress={() => console.log("dark")}
+        onChangeSwitch={() => {
+          navigate("Password");
+          setTimeout(() => {
+            onClose();
+          }, 500);
+        }}
         hasArrowIcon={false}
         hasCustomSwitch
       />

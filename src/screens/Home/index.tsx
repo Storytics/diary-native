@@ -32,7 +32,12 @@ const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
               bookTitle,
             });
           }}
-          onPressMore={() => console.log("open more settings")}
+          onPressMore={() => {
+            modalsContext.dispatch({
+              type: "DIARY_ACTIONS_MODAL",
+              payload: { isOpen: true },
+            });
+          }}
           placeholderText={i18n.t("diaries.section.placeholderText")}
         />
         <Header text={i18n.t("activity.section.title")} />

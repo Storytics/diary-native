@@ -5,6 +5,7 @@ import { ModalsState, ModalsActions, Context } from "types/modals";
 const initialState = {
   isCreateDiaryOpen: false,
   isMenuModalOpen: false,
+  isDiaryActionsModalOpen: false,
 };
 
 export const ModalsContext = createContext<Context>({
@@ -12,7 +13,10 @@ export const ModalsContext = createContext<Context>({
   dispatch: () => null,
 });
 
-export const Reducer = (state: ModalsState, action: ModalsActions) => {
+export const Reducer = (
+  state: ModalsState,
+  action: ModalsActions
+): ModalsState => {
   switch (action.type) {
     case "CREATE_DIARY_MODAL":
       return {
@@ -23,6 +27,11 @@ export const Reducer = (state: ModalsState, action: ModalsActions) => {
       return {
         ...state,
         isMenuModalOpen: action.payload.isOpen,
+      };
+    case "DIARY_ACTIONS_MODAL":
+      return {
+        ...state,
+        isDiaryActionsModalOpen: action.payload.isOpen,
       };
     default:
       return state;
