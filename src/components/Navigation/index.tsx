@@ -1,11 +1,15 @@
 import React from "react";
+// Components
 import RoundButton from "components/RoundButton";
-import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import NetworkStatus from "components/NetworkStatus";
+// Styles
+import { useTheme } from "styled-components/native";
 import { Container, Wrapper, MainButtonContainer } from "./styles";
 
 export interface DiaryCardProps {
   isPageNavigation?: boolean;
+  pageNavigationIcon?: string;
   onPressLeft: () => void;
   onPressMain: () => void;
   onPressRight: () => void;
@@ -13,6 +17,7 @@ export interface DiaryCardProps {
 
 const Navigation: React.FC<DiaryCardProps> = ({
   isPageNavigation,
+  pageNavigationIcon = "create",
   onPressLeft,
   onPressMain,
   onPressRight,
@@ -23,11 +28,15 @@ const Navigation: React.FC<DiaryCardProps> = ({
     <Container isPageNavigation={isPageNavigation}>
       <Wrapper>
         <RoundButton size="medium" onPress={onPressLeft}>
-          <MaterialIcons
-            name={isPageNavigation ? "chevron-left" : "backup"}
-            size={24}
-            color={theme.iconDefaultColor}
-          />
+          {isPageNavigation ? (
+            <MaterialIcons
+              name="chevron-left"
+              size={24}
+              color={theme.iconDefaultColor}
+            />
+          ) : (
+            <NetworkStatus />
+          )}
         </RoundButton>
         <MainButtonContainer>
           <RoundButton
@@ -37,7 +46,11 @@ const Navigation: React.FC<DiaryCardProps> = ({
             onPress={onPressMain}
           >
             <MaterialIcons
-              name={isPageNavigation ? "create" : "add"}
+              name={
+                isPageNavigation
+                  ? (pageNavigationIcon as keyof typeof MaterialIcons.glyphMap)
+                  : "add"
+              }
               size={24}
               color={theme.navigation.mainButton.iconColor}
             />

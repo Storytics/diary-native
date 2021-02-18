@@ -21,7 +21,8 @@
       "database/*": ["database/*"],
       "theme/*": ["theme/*"],
       "libs/*": ["libs/*"],
-      "modals/*": ["modals/*"]
+      "modals/*": ["modals/*"],
+      "types/*": ["types/*"]
     }
   },
   "include": ["./src/**/*", "**/*.ts", "**/*.tsx"],

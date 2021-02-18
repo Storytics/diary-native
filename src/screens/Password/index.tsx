@@ -3,7 +3,7 @@ import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Theme from "theme/index";
 // Types
-import { DiaryScreenNavigationProp } from "navigation/types";
+import { PasswordScreenNavigationProp } from "types/navigation";
 // Components
 import Container from "components/Container";
 import CustomSafeArea from "components/CustomSafeArea";
@@ -50,7 +50,7 @@ Button.defaultProps = {
 };
 
 interface Props {
-  navigation: DiaryScreenNavigationProp;
+  navigation: PasswordScreenNavigationProp;
 }
 
 const PasswordScreen: React.FC<Props> = ({ navigation }) => {

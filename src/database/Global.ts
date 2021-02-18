@@ -1,18 +1,10 @@
 import * as SQLite from "expo-sqlite";
+// Types
+import { BooksProps } from "types/book";
+// DB Connection
 import Connection from "./DatabaseConnection";
-import { BookProps } from "./Book";
-import { PageProps } from "./Page";
 
-export interface AllDataProps {
-  book: {
-    id: number;
-    title: string;
-    color: string;
-    pages: Array<PageProps>;
-  };
-}
-
-export const exportAllData = async (): Promise<Array<AllDataProps>> => {
+export const exportAllData = async (): Promise<Array<BooksProps>> => {
   return new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {

@@ -15,7 +15,7 @@ import {
 } from "./styles";
 
 interface ActivityCardProps {
-  page: number;
+  page: string;
   date: string;
   day: string;
   hasPaddingBottom?: boolean;

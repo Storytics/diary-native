@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,11 +9,18 @@ import { FakeButton } from "components/RoundButton";
 // Utils
 import sanitize from "xss";
 import useKeyboard from "hooks/useKeyboard";
+import dayjs from "dayjs";
 // Types
-import { EditorScreenNavigationProp } from "navigation/types";
+import { EditorNavigationProps } from "types/navigation";
 import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import Header from "components/Header";
 import Theme from "theme/index";
+// Database
+import { createPage, updatePageById } from "database/Page";
+import { getAllActivity } from "database/Book";
+import { unescapeHtml } from "utils/functions";
+// Context
+import useStore from "hooks/useStore";
 // styled components
 import {
   Container,
@@ -21,15 +28,6 @@ import {
   ToolBarWrapper,
   EditorContainer,
 } from "./styles";
-
-interface Props {
-  navigation: EditorScreenNavigationProp;
-  route: {
-    params: {
-      noteBookHeight: number;
-    };
-  };
-}
 
 const toolBarActions: Array<{
   id: string;
@@ -104,11 +102,16 @@ const styles = (theme: typeof Theme) =>
     },
   });
 
-const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
+const EditorScreen: React.FC<EditorNavigationProps> = ({
+  navigation,
+  route: { params },
+}) => {
+  const [content, setContent] = useState(params.page?.content || "");
   const RichTextRef = createRef<RichEditor>();
   // Keyboard Hook
   const { isKeyboardOpen } = useKeyboard();
   const theme = useTheme();
+  const { dispatch } = useStore();
 
   const iconMap = toolBarActions.reduce(
     (o, item) => ({
@@ -139,25 +142,66 @@ const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
     {}
   );
 
+  const refreshActivities = async () => {
+    try {
+      const activity = await getAllActivity();
+      dispatch({
+        type: "LOAD_ACTIVITY",
+        payload: { activity },
+      });
+    } catch (e) {
+      console.log("Error refreshing activities ", e);
+    }
+  };
+
+  const onSave = async () => {
+    try {
+      // create a new page
+      if (content && !params.isEdit) {
+        const res = await createPage(content, params.bookId);
+        if (res === "success") {
+          await refreshActivities();
+        }
+      }
+
+      // Save a existing page
+      if (content && params.isEdit && params.page) {
+        const res = await updatePageById(params.page.id, content);
+        if (res === "success") {
+          await refreshActivities();
+        }
+      }
+
+      navigation.navigate("Diary", {
+        bookId: params.bookId,
+        bookTitle: params.bookTitle,
+        activityPageId: params.pageNumber,
+      });
+    } catch (e) {
+      if (params.isEdit) {
+        console.log("Error editing the page = ", e);
+      } else {
+        console.log("Error saving the page = ", e);
+      }
+    }
+  };
+
+  const getDate =
+    params.isEdit && params.page ? params.page.createdAt : dayjs();
+
   return (
     <CustomSafeArea>
       <Container>
         <ScrollView contentContainerStyle={styles(theme).scrollViewContent}>
           <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
-            <Header
-              hasBackButton
-              onPress={() => {
-                navigation.navigate("Home");
-              }}
-              text="Story's"
-            />
+            <Header hasBackButton onPress={onSave} text={params.bookTitle} />
             <NoteBook
               /* TODO check if value is correct will be needed when keyboard is open */
               // noteBookHeight={route.params.noteBookHeight}
               hasPaddingBottom={false}
-              page={1}
-              date="12 Jan 2021"
-              day="Friday"
+              page={params.pageNumber.toString() || "0"}
+              date={dayjs(getDate).format("DD MMM YYYY")}
+              day={dayjs(getDate).format("dddd")}
             >
               <EditorContainer>
                 <RichEditor
@@ -172,9 +216,9 @@ const EditorScreen: React.FC<Props> = ({ navigation, route }) => {
                   initialFocus={false}
                   disabled={false}
                   useContainer={false}
+                  initialContentHTML={unescapeHtml(content)}
                   onChange={(text: string) =>
-                    console.log(
-                      "text = ",
+                    setContent(
                       sanitize(text, { whiteList: { div: ["style"] } })
                     )
                   }

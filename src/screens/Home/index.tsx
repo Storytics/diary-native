@@ -10,15 +10,11 @@ import CustomSafeArea from "components/CustomSafeArea";
 import useModals from "hooks/useModals";
 import useStore from "hooks/useStore";
 // Types
-import { HomeScreenNavigationProp } from "navigation/types";
+import { HomeNavigationProps } from "types/navigation";
 // Locales
 import i18n from "locales/index";
 
-interface Props {
-  navigation: HomeScreenNavigationProp;
-}
-
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
+const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
   const modalsContext = useModals();
   const {
     state: { books, activity },
@@ -30,8 +26,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <Header text={i18n.t("diaries.section.title")} />
         <DiaryCardList
           data={books}
-          onPress={() => {
-            navigation.navigate("Diary");
+          onPress={(bookId: number, bookTitle: string) => {
+            navigation.navigate("Diary", {
+              bookId,
+              bookTitle,
+            });
           }}
           onPressMore={() => {
             modalsContext.dispatch({
@@ -44,15 +43,21 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <Header text={i18n.t("activity.section.title")} />
         <ActivityCardList
           data={activity}
-          onPress={() => {
-            navigation.navigate("Diary");
+          onPress={(
+            bookId: number,
+            bookTitle: string,
+            activityPageId: number
+          ) => {
+            navigation.navigate("Diary", {
+              bookId,
+              bookTitle,
+              activityPageId,
+            });
           }}
           placeholderText={i18n.t("activity.section.placeholderText")}
         />
         <Navigation
-          onPressLeft={() => {
-            navigation.navigate("Diary");
-          }}
+          onPressLeft={() => console.log("sync to the cloud")}
           onPressMain={() => {
             modalsContext.dispatch({
               type: "CREATE_DIARY_MODAL",

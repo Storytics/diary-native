@@ -12,7 +12,7 @@ import EditorScreen from "screens/Editor";
 import CloudScreen from "screens/Cloud";
 import PasswordScreen from "screens/Password";
 // Types
-import { RootStackParamList } from "./types";
+import { RootStackParamList } from "types/navigation";
 
 const Stack = createStackNavigator<RootStackParamList>();
 

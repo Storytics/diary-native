@@ -6,7 +6,7 @@ import { getNetworkStateAsync } from "expo-network";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "components/Container";
 // Types
-import { DiaryScreenNavigationProp } from "navigation/types";
+import { CloudScreenNavigationProp } from "types/navigation";
 // API
 import supabase from "libs/supabase";
 import { exportAllData } from "database/Global";
@@ -15,7 +15,7 @@ import { exportAllData } from "database/Global";
 import "react-native-url-polyfill/auto";
 
 interface Props {
-  navigation: DiaryScreenNavigationProp;
+  navigation: CloudScreenNavigationProp;
 }
 
 const DiaryScreen: React.FC<Props> = ({ navigation }) => {

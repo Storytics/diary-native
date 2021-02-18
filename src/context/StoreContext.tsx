@@ -1,64 +1,25 @@
-import React, { createContext, useReducer, useEffect } from "react";
-import { getAllBooks, getAllActivity } from "database/Book";
-
-interface Book {
-  color: string;
-  createdAt: string;
-  id: number;
-  title: string;
-}
-
-interface Activity {
-  title: string;
-  id: number;
-  createdAt: string;
-  bookId: number;
-}
-
-export interface State {
-  books: Array<Book>;
-  activity: Array<Activity>;
-}
+import React, { createContext, useEffect, useReducer } from "react";
+import { getAllActivity, getAllBooks } from "database/Book";
+// Utils
+import { getNetworkStateAsync } from "expo-network";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import dayjs from "dayjs";
+import { userAuthenticatedItem, userCloudLastSyncItem } from "utils/constants";
+// Types
+import { Context, NetworkStatus, StoreActions, StoreState } from "types/store";
 
 const initialState = {
   books: [],
   activity: [],
+  networkStatus: NetworkStatus.loading,
 };
-
-export interface AddBookPayload {
-  type: "ADD_BOOK";
-  payload: {
-    book: Book;
-  };
-}
-
-export interface LoadBooksPayload {
-  type: "LOAD_BOOKS";
-  payload: {
-    books: Array<Book>;
-  };
-}
-
-export interface LoadActivityPayload {
-  type: "LOAD_ACTIVITY";
-  payload: {
-    activity: Array<Activity>;
-  };
-}
-
-export type Actions = AddBookPayload | LoadBooksPayload | LoadActivityPayload;
-
-export interface Context {
-  state: State;
-  dispatch: React.Dispatch<any>;
-}
 
 export const StoreContext = createContext<Context>({
   state: initialState,
   dispatch: () => null,
 });
 
-export const Reducer = (state: State, action: Actions) => {
+export const Reducer = (state: StoreState, action: StoreActions) => {
   switch (action.type) {
     case "ADD_BOOK":
       return {
@@ -74,6 +35,11 @@ export const Reducer = (state: State, action: Actions) => {
       return {
         ...state,
         activity: action.payload.activity,
+      };
+    case "SET_NETWORK_STATUS":
+      return {
+        ...state,
+        networkStatus: action.payload.status,
       };
     default:
       return state;
@@ -110,6 +76,41 @@ export const StoreContextProvider: React.FC = ({ children }) => {
 
     loadBooks();
     loadActivity();
+  }, []);
+
+  useEffect(() => {
+    const getNetworkStatus = async () => {
+      try {
+        const { isConnected } = await getNetworkStateAsync();
+        const isAuthenticated = await AsyncStorage.getItem(
+          userAuthenticatedItem
+        );
+        const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
+
+        const isSync =
+          lastCloudSync && dayjs(lastCloudSync).isAfter(dayjs(new Date()));
+
+        let status = NetworkStatus.loading;
+
+        if (isConnected && isAuthenticated) {
+          status = NetworkStatus.authenticated;
+        } else if (isConnected && !isAuthenticated) {
+          status = NetworkStatus.online;
+        } else if (isConnected && isAuthenticated && isSync) {
+          status = NetworkStatus.sync;
+        }
+
+        dispatch({
+          type: "SET_NETWORK_STATUS",
+          payload: {
+            status: isConnected ? status : NetworkStatus.offline,
+          },
+        });
+      } catch (e) {
+        console.log("Error loading network status = ", e);
+      }
+    };
+    getNetworkStatus();
   }, []);
 
   return (

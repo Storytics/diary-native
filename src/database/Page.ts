@@ -1,12 +1,8 @@
 import * as SQLite from "expo-sqlite";
+// Types
+import { PageProps } from "types/page";
+// DB Connection
 import Connection from "./DatabaseConnection";
-
-export interface PageProps {
-  id: number;
-  content: string;
-  createdAt: string;
-  bookId: number;
-}
 
 export const getAllPagesByBookId = async (
   bookId: number
