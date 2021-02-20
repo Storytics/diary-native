@@ -6,28 +6,18 @@ export const Wrapper = styled.View`
   padding: 0 56px;
 `;
 
-export const Header = styled.View`
-  padding: 0 18px;
-`;
-
-export const MessageContainer = styled.View`
-  display: flex;
-  align-items: center;
-`;
-
 export const LogoContainer = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  flex-grow: 1;
 `;
 
 export const PinContainer = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
-  padding: 15px 0;
+  padding: 30px 0 70px 0;
 `;
 
 export const CirclesContainer = styled.View`

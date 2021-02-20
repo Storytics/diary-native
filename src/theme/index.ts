@@ -223,11 +223,8 @@ const Theme = {
     animationColor: colors.gray400,
   },
   passwordScreen: {
-    header: {
-      iconColor: colors.gray800,
-    },
     circles: {
-      backgroundColor: colors.gray500,
+      backgroundColor: colors.gray400,
       feedbackColor: colors.primary,
     },
     logo: {
@@ -236,6 +233,10 @@ const Theme = {
     numbers: {
       color: colors.gray800,
     },
+  },
+  logo: {
+    color: colors.white,
+    backgroundColor: colors.primary,
   },
 };
 

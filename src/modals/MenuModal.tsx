@@ -45,14 +45,12 @@ const MenuModal: React.FC = () => {
       <BorderButton title="Upload Data" onPress={() => console.log("data")} />
       <BorderButton
         title="Password Protection"
-        onChangeSwitch={() => {
+        onPress={() => {
           navigate("Password");
           setTimeout(() => {
             onClose();
-          }, 500);
+          }, 100);
         }}
-        hasArrowIcon={false}
-        hasCustomSwitch
       />
       <BorderButton
         title="Terms and Conditions"

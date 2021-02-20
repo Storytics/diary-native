@@ -5,14 +5,14 @@ import Theme from "theme/index";
 // Types
 import { PasswordScreenNavigationProp } from "types/navigation";
 // Components
+import Logo from "components/Logo";
+import Header from "components/Header";
 import Container from "components/Container";
 import CustomSafeArea from "components/CustomSafeArea";
 import RoundButton from "components/RoundButton";
-import { LargeText, SmallTitle } from "components/Typography";
+import { LargeText } from "components/Typography";
 import {
   Wrapper,
-  Header,
-  MessageContainer,
   LogoContainer,
   PinContainer,
   CirclesFeedback,
@@ -71,30 +71,17 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <CustomSafeArea>
       <Container>
-        <Header>
-          <RoundButton
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
-          >
-            <MaterialIcons
-              name="arrow-back"
-              size={24}
-              color={theme.passwordScreen.header.iconColor}
-            />
-          </RoundButton>
-        </Header>
+        <Header
+          hasBackButton
+          text="Create Password"
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        />
         <Wrapper>
-          <MessageContainer>
-            <LogoContainer>
-              <MaterialIcons
-                name="auto-stories"
-                size={60}
-                color={theme.passwordScreen.logo.color}
-              />
-            </LogoContainer>
-            <SmallTitle>Enter the code to login</SmallTitle>
-          </MessageContainer>
+          <LogoContainer>
+            <Logo size={80} hasContainer />
+          </LogoContainer>
           <PinContainer>
             <CirclesContainer>
               {code.length > 0 && (
