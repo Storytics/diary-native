@@ -1,6 +1,8 @@
 const colors = {
   primary: "#276EF1",
-  danger: "#E11900",
+  red600: "#870F00",
+  danger: "#E11900", // red400
+  red300: "#E85C4A",
   success: "#05944F",
   blue400: "#276EF1",
   blue200: "#A0BFF8",
@@ -218,9 +220,10 @@ const Theme = {
     },
   },
   holdButton: {
-    color: colors.gray800,
+    color: colors.danger,
+    feedbackColor: colors.red600,
     backgroundColor: colors.gray100,
-    animationColor: colors.gray400,
+    animationColor: colors.red300,
   },
   passwordScreen: {
     circles: {

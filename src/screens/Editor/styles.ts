@@ -1,40 +1,31 @@
 import styled, { css } from "styled-components/native";
 
-export const Container = styled.View`
-  position: relative;
+export const Container = styled.View<{ isKeyboardOpen?: boolean }>`
   display: flex;
   flex-grow: 1;
+  padding-top: 30px;
+  ${({ isKeyboardOpen }) =>
+    isKeyboardOpen &&
+    css`
+      justify-content: flex-end;
+    `}
 `;
 
-export const ContentWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
-  position: relative;
-  padding-top: 30px;
+export const ContentWrapper = styled.View`
   display: flex;
   flex-grow: 1;
-  ${({ isKeyboardOpen }) =>
-    isKeyboardOpen
-      ? css`
-          /* 10 Bottom, 60 Height, 30 Space */
-          padding-bottom: 100px;
-        `
-      : css`
-          /* 30 Bottom, 60 Height, 30 Space */
-          padding-bottom: 120px;
-        `};
+  padding-bottom: 30px;
 `;
 
 export const ToolBarWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
-  position: absolute;
-  left: 0;
-  right: 0;
   ${({ isKeyboardOpen }) =>
     isKeyboardOpen
       ? css`
-          bottom: 10px;
+          padding-bottom: 10px;
         `
       : css`
-          bottom: 30px;
-        `};
+          padding-bottom: 30px;
+        `}
 `;
 
 // Position editor in notebook

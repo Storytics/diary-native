@@ -1,5 +1,11 @@
-import React, { createRef, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import React, { createRef, useState, useRef, useEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 // Components
@@ -100,6 +106,10 @@ const styles = (theme: typeof Theme) =>
       display: "flex",
       flexGrow: 1,
     },
+    keyboardAvoidingView: {
+      display: "flex",
+      flexGrow: 1,
+    },
   });
 
 const EditorScreen: React.FC<EditorNavigationProps> = ({
@@ -112,6 +122,18 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   const { isKeyboardOpen } = useKeyboard();
   const theme = useTheme();
   const { dispatch } = useStore();
+
+  // Scroll Ref - scroll initial to top
+  const noteBookScrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    if (isKeyboardOpen) {
+      noteBookScrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+    }
+  }, [isKeyboardOpen]);
 
   const iconMap = toolBarActions.reduce(
     (o, item) => ({
@@ -191,77 +213,84 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
 
   return (
     <CustomSafeArea>
-      <Container>
-        <ScrollView contentContainerStyle={styles(theme).scrollViewContent}>
-          <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
-            <Header hasBackButton onPress={onSave} text={params.bookTitle} />
-            <NoteBook
-              /* TODO check if value is correct will be needed when keyboard is open */
-              // noteBookHeight={route.params.noteBookHeight}
-              hasPaddingBottom={false}
-              page={params.pageNumber.toString() || "0"}
-              date={dayjs(getDate).format("DD MMM YYYY")}
-              day={dayjs(getDate).format("dddd")}
-            >
-              <EditorContainer>
-                <RichEditor
-                  ref={RichTextRef}
-                  editorStyle={{
-                    backgroundColor: theme.richEditor.backgroundColor,
-                    color: theme.richEditor.textColor,
-                    placeholderColor: theme.richEditor.placeholderColor,
-                    contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
-                  }}
-                  placeholder="Start Writing Here"
-                  initialFocus={false}
-                  disabled={false}
-                  useContainer={false}
-                  initialContentHTML={unescapeHtml(content)}
-                  onChange={(text: string) =>
-                    setContent(
-                      sanitize(text, { whiteList: { div: ["style"] } })
-                    )
-                  }
-                  editorInitializedCallback={() =>
-                    console.log("o Editor esta pronto")
-                  }
-                  onHeightChange={(height: number) =>
-                    console.log("altura mudou = ", height)
-                  }
-                />
-              </EditorContainer>
-            </NoteBook>
-          </ContentWrapper>
-        </ScrollView>
-        {/* ToolBar */}
-        <ToolBarWrapper isKeyboardOpen={isKeyboardOpen}>
-          <View style={styles(theme).richToolBarContainer}>
-            <RichToolbar
-              style={
-                isKeyboardOpen
-                  ? styles(theme).richToolBarFloating
-                  : styles(theme).richToolBar
-              }
-              // @ts-ignore
-              flatContainerStyle={styles(theme).flatContainer}
-              editor={RichTextRef}
-              disabled={false}
-              iconTint={theme.toolBar.button.default.iconColor}
-              selectedIconTint={theme.toolBar.button.active.iconColor}
-              iconSize={24}
-              actions={[
-                "justifyLeft",
-                "justifyCenter",
-                "justifyRight",
-                "bold",
-                "italic",
-                "underline",
-              ]}
-              iconMap={iconMap}
-            />
-          </View>
-        </ToolBarWrapper>
-      </Container>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles(theme).keyboardAvoidingView}
+        keyboardVerticalOffset={30}
+      >
+        <Container isKeyboardOpen={isKeyboardOpen}>
+          <Header hasBackButton onPress={onSave} text={params.bookTitle} />
+          <ScrollView
+            contentContainerStyle={styles(theme).scrollViewContent}
+            ref={noteBookScrollRef}
+          >
+            <ContentWrapper>
+              <NoteBook
+                hasPaddingBottom={false}
+                page={params.pageNumber.toString() || "0"}
+                date={dayjs(getDate).format("DD MMM YYYY")}
+                day={dayjs(getDate).format("dddd")}
+              >
+                <EditorContainer>
+                  <RichEditor
+                    ref={RichTextRef}
+                    editorStyle={{
+                      backgroundColor: theme.richEditor.backgroundColor,
+                      color: theme.richEditor.textColor,
+                      placeholderColor: theme.richEditor.placeholderColor,
+                      contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
+                    }}
+                    placeholder="Start Writing Here"
+                    initialFocus={false}
+                    disabled={false}
+                    useContainer={false}
+                    initialContentHTML={unescapeHtml(content)}
+                    onChange={(text: string) =>
+                      setContent(
+                        sanitize(text, { whiteList: { div: ["style"] } })
+                      )
+                    }
+                    editorInitializedCallback={() =>
+                      console.log("o Editor esta pronto")
+                    }
+                    onHeightChange={(height: number) =>
+                      console.log("altura mudou = ", height)
+                    }
+                  />
+                </EditorContainer>
+              </NoteBook>
+            </ContentWrapper>
+          </ScrollView>
+          {/* ToolBar */}
+          <ToolBarWrapper isKeyboardOpen={isKeyboardOpen}>
+            <View style={styles(theme).richToolBarContainer}>
+              <RichToolbar
+                style={
+                  isKeyboardOpen
+                    ? styles(theme).richToolBarFloating
+                    : styles(theme).richToolBar
+                }
+                // @ts-ignore
+                flatContainerStyle={styles(theme).flatContainer}
+                editor={RichTextRef}
+                disabled={false}
+                iconTint={theme.toolBar.button.default.iconColor}
+                selectedIconTint={theme.toolBar.button.active.iconColor}
+                iconSize={24}
+                actions={[
+                  "justifyLeft",
+                  "justifyCenter",
+                  "justifyRight",
+                  "bold",
+                  "italic",
+                  "underline",
+                ]}
+                iconMap={iconMap}
+              />
+            </View>
+          </ToolBarWrapper>
+        </Container>
+      </KeyboardAvoidingView>
     </CustomSafeArea>
   );
 };

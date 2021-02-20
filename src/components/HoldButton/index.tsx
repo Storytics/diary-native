@@ -68,7 +68,11 @@ const HoldButton: React.FC<HoldButtonProps> = ({
           setButtonWidth(width);
         }}
       >
-        <MediumTitle color={theme.holdButton.color}>
+        <MediumTitle
+          color={
+            !animate ? theme.holdButton.color : theme.holdButton.feedbackColor
+          }
+        >
           {!animate ? initialText : feedbackText}
         </MediumTitle>
         {animate && (
