@@ -228,10 +228,12 @@ const Theme = {
       feedbackColor: colors.primary,
     },
     logo: {
-      color: colors.gray800,
+      color: colors.primary,
     },
     numbers: {
       color: colors.gray800,
+      backgroundColor: colors.gray100,
+      underlayColor: colors.gray300,
     },
   },
   logo: {

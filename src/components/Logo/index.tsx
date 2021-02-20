@@ -37,7 +37,7 @@ const Logo: React.FC<BrandProps> = ({
     <Container
       hasContainer={hasContainer}
       size={size}
-      backgroundColor={backgroundColor}
+      backgroundColor={hasContainer ? backgroundColor : "transparent"}
     >
       <Svg
         width={hasContainer ? size - size / 2.2 : size}

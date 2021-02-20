@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components/native";
 
-type size = "small" | "medium" | "large";
+type size = "small" | "medium" | "large" | "xLarge";
 
 interface RoundButtonProps {
   size?: size;
@@ -38,6 +38,13 @@ const RoundButton = styled.TouchableHighlight.attrs(
       width: 48px;
       border-radius: 24px;
     `};
+  ${({ size }) =>
+    size === "xLarge" &&
+    css`
+      height: 56px;
+      width: 56px;
+      border-radius: 28px;
+    `};
 `;
 
 export const FakeButton = styled.View<RoundButtonProps>`
@@ -66,6 +73,13 @@ export const FakeButton = styled.View<RoundButtonProps>`
       height: 48px;
       width: 48px;
       border-radius: 24px;
+    `};
+  ${({ size }) =>
+    size === "xLarge" &&
+    css`
+      height: 56px;
+      width: 56px;
+      border-radius: 28px;
     `};
 `;
 

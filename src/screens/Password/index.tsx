@@ -33,7 +33,12 @@ interface ButtonProps {
 const Button = ({ theme, onPress, isIcon, text, iconName }: ButtonProps) => {
   const { color } = theme.passwordScreen.numbers;
   return (
-    <RoundButton size="large" onPress={onPress}>
+    <RoundButton
+      size="xLarge"
+      onPress={onPress}
+      backgroundColor={theme.passwordScreen.numbers.backgroundColor}
+      underlayColor={theme.passwordScreen.numbers.underlayColor}
+    >
       {isIcon ? (
         <MaterialIcons name={iconName} size={32} color={color} />
       ) : (
@@ -80,7 +85,7 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
         />
         <Wrapper>
           <LogoContainer>
-            <Logo size={80} hasContainer />
+            <Logo size={48} color={theme.passwordScreen.logo.color} />
           </LogoContainer>
           <PinContainer>
             <CirclesContainer>

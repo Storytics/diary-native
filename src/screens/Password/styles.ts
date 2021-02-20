@@ -50,8 +50,7 @@ export const PinCircle = styled.View`
 
 export const ButtonsContainer = styled.View`
   display: flex;
-  max-width: 260px;
-  align-self: center;
+  align-items: center;
 `;
 
 export const Row = styled.View<{ removeMarginTop?: boolean }>`
@@ -59,5 +58,6 @@ export const Row = styled.View<{ removeMarginTop?: boolean }>`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  margin-top: ${({ removeMarginTop }) => (removeMarginTop ? "0" : "30px")};
+  max-width: 260px;
+  margin-top: ${({ removeMarginTop }) => (removeMarginTop ? "0" : "25px")};
 `;
