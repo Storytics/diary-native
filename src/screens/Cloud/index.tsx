@@ -10,10 +10,9 @@ import useStore from "hooks/useStore";
 import { dispatchAuthenticationStatus } from "context/StoreContext";
 // Types
 import { CloudScreenNavigationProp } from "types/navigation";
-import { SubscriptionStatus, User } from "types/store";
+import { User } from "types/store";
 // API
 import supabase from "libs/supabase";
-import { exportAllData } from "database/Global";
 
 /** URL polyfill. Required for Supabase queries to work in React Native. */
 import "react-native-url-polyfill/auto";
@@ -22,61 +21,23 @@ interface Props {
   navigation: CloudScreenNavigationProp;
 }
 
-/* const getCurrentUser = () => {
-  const user = supabase.auth.user();
-  console.log("current user = ", user);
-};
-
-const onCreateBackup = async () => {
-  try {
-    const allData = await exportAllData();
-
-    const { data, error } = await supabase.from("backup").insert([
-      {
-        data: JSON.stringify(allData),
-        user_id: "8dc8b3bc-faee-41d5-89ea-9697ecf4c05b",
-      },
-    ]);
-
-    console.log("onCreateBackup data = ", data);
-    console.log("error = ", error);
-  } catch (error) {
-    console.log("onCreateBackup Error = ", error);
-  }
-};
-
-const onGetBackup = async () => {
-  try {
-    const { data, error } = await supabase
-      .from("backup")
-      .select("*")
-      // .eq("user_id", "82e3e8cb-ff55-4453-bd1a-9734d2146a03")
-      .order("created_at", { ascending: true })
-      .limit(1);
-
-    console.log("onGetBackup data = ", data);
-    console.log("error = ", error);
-  } catch (error) {
-    console.log("onGetBackup Error = ", error);
-  }
-}; */
-
 const DiaryScreen: React.FC<Props> = ({ navigation }) => {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [isCreateAccount, setIsCreateAccount] = useState(true);
   const { dispatch } = useStore();
 
-  const handleAutenticationStatus = async (user: User) => {
+  const handleAuthenticationStatus = async (user: User) => {
     try {
       const hasSubscription = await dispatchAuthenticationStatus(
         user as User,
         dispatch
       );
-      console.log("hasSubscription = ", hasSubscription);
 
       if (!hasSubscription) {
-        Alert.alert("Needs to enable a plan");
+        navigation.navigate("Billing", {
+          user: user as User,
+        });
       }
     } catch (e) {
       console.log("error handling auth status after login or sign up ", e);
@@ -91,8 +52,7 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
       });
 
       if (user) {
-        console.log("onSignUp user = ", user);
-        await handleAutenticationStatus(user as User);
+        await handleAuthenticationStatus(user as User);
       }
     } catch (error) {
       console.log("SignUp Error = ", error);
@@ -107,8 +67,7 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
       });
 
       if (user) {
-        console.log("onSignIn user = ", user);
-        await handleAutenticationStatus(user as User);
+        await handleAuthenticationStatus(user as User);
       }
     } catch (error) {
       console.log("onSignIn Error = ", error);

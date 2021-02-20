@@ -83,7 +83,6 @@ export const dispatchAuthenticationStatus = async (
       dispatch({
         type: "SET_AUTHENTICATION_STATUS",
         payload: {
-          // @ts-ignore
           user,
           subscriptionStatus: hasSubscription
             ? SubscriptionStatus.active
@@ -168,6 +167,14 @@ export const StoreContextProvider: React.FC = ({ children }) => {
         const user = supabase.auth.user();
         if (isConnected && user) {
           await dispatchAuthenticationStatus(user as User, dispatch);
+        } else {
+          dispatch({
+            type: "SET_AUTHENTICATION_STATUS",
+            payload: {
+              user: null,
+              subscriptionStatus: SubscriptionStatus.inactive,
+            },
+          });
         }
       } catch (e) {
         console.log("error loading auth status");

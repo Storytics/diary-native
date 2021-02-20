@@ -1,5 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { PageProps } from "types/page";
+import { User } from "types/store";
 
 export interface EditorNavigationParams {
   noteBookHeight: number;
@@ -16,12 +17,17 @@ export interface DiaryNavigationParams {
   activityPageId?: number;
 }
 
+export interface BillingNavigationParams {
+  user: User;
+}
+
 export type RootStackParamList = {
   Home: undefined;
   Diary: DiaryNavigationParams;
   Editor: EditorNavigationParams;
   Cloud: undefined;
   Password: undefined;
+  Billing: BillingNavigationParams;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -69,4 +75,16 @@ export type PasswordScreenNavigationProp = StackNavigationProp<
 
 export interface PasswordNavigationProps {
   navigation: PasswordScreenNavigationProp;
+}
+
+export type BillingScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Billing"
+>;
+
+export interface BillingNavigationProps {
+  navigation: BillingScreenNavigationProp;
+  route: {
+    params: BillingNavigationParams;
+  };
 }
