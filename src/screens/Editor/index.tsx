@@ -105,6 +105,7 @@ const styles = (theme: typeof Theme) =>
     scrollViewContent: {
       display: "flex",
       flexGrow: 1,
+      paddingTop: 30,
     },
     keyboardAvoidingView: {
       display: "flex",
@@ -219,11 +220,11 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         keyboardVerticalOffset={30}
       >
         <Container isKeyboardOpen={isKeyboardOpen}>
-          <Header hasBackButton onPress={onSave} text={params.bookTitle} />
           <ScrollView
             contentContainerStyle={styles(theme).scrollViewContent}
             ref={noteBookScrollRef}
           >
+            <Header hasBackButton onPress={onSave} text={params.bookTitle} />
             <ContentWrapper>
               <NoteBook
                 hasPaddingBottom={false}

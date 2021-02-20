@@ -1,9 +1,16 @@
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 import { LargeTitle } from "components/Typography";
 
-export const Container = styled.View<{ hasBackButton?: boolean }>`
+export const Container = styled.View<{
+  hasBackButton?: boolean;
+  hasMarginBottom?: boolean;
+}>`
   padding: 0 ${({ hasBackButton }) => (hasBackButton ? "18px" : "30px")};
-  margin-bottom: 20px;
+  ${({ hasMarginBottom }) =>
+    hasMarginBottom &&
+    css`
+      margin-bottom: 20px;
+    `};
   display: flex;
   flex-direction: row;
   align-items: center;

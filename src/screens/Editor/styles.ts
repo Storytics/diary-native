@@ -3,7 +3,6 @@ import styled, { css } from "styled-components/native";
 export const Container = styled.View<{ isKeyboardOpen?: boolean }>`
   display: flex;
   flex-grow: 1;
-  padding-top: 30px;
   ${({ isKeyboardOpen }) =>
     isKeyboardOpen &&
     css`
