@@ -16,6 +16,7 @@ interface InputProps {
   hasEmojiFeedback?: boolean;
   inputText: string;
   onChangeText: (value: string) => void;
+  secureTextEntry?: boolean;
 }
 
 const styles = (theme: typeof Theme) =>
@@ -39,6 +40,7 @@ const Input: React.FC<InputProps> = ({
   hasEmojiFeedback = true,
   inputText,
   onChangeText,
+  secureTextEntry = false,
 }) => {
   const text = {
     inputPlaceholder: placeholderText || i18n.t("input.placeholder"),
@@ -110,9 +112,9 @@ const Input: React.FC<InputProps> = ({
         maxLength={30}
         value={inputText}
         textAlign="left"
+        secureTextEntry={secureTextEntry}
       />
     </InputContainer>
   );
 };
-
 export default Input;

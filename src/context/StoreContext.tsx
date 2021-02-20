@@ -4,14 +4,28 @@ import { getAllActivity, getAllBooks } from "database/Book";
 import { getNetworkStateAsync } from "expo-network";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
-import { userAuthenticatedItem, userCloudLastSyncItem } from "utils/constants";
+import { userCloudLastSyncItem } from "utils/constants";
 // Types
-import { Context, NetworkStatus, StoreActions, StoreState } from "types/store";
+import {
+  Context,
+  NetworkStatus,
+  StoreActions,
+  StoreState,
+  SubscriptionStatus,
+  User,
+} from "types/store";
+// API
+import supabase from "libs/supabase";
+
+/** URL polyfill. Required for Supabase queries to work in React Native. */
+import "react-native-url-polyfill/auto";
 
 const initialState = {
   books: [],
   activity: [],
   networkStatus: NetworkStatus.loading,
+  user: null,
+  subscriptionStatus: SubscriptionStatus.loading,
 };
 
 export const StoreContext = createContext<Context>({
@@ -41,8 +55,47 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
         ...state,
         networkStatus: action.payload.status,
       };
+
+    case "SET_AUTHENTICATION_STATUS":
+      return {
+        ...state,
+        user: action.payload.user,
+        subscriptionStatus: action.payload.subscriptionStatus,
+      };
+
     default:
       return state;
+  }
+};
+
+export const dispatchAuthenticationStatus = async (
+  user: User,
+  dispatch: React.Dispatch<StoreActions>
+): Promise<unknown> => {
+  try {
+    const { data: profile } = await supabase
+      .from("profile")
+      .select("*")
+      .eq("user_id", user.id);
+
+    if (profile && profile.length > 0) {
+      const hasSubscription = profile[0].active_subscription || false;
+      dispatch({
+        type: "SET_AUTHENTICATION_STATUS",
+        payload: {
+          // @ts-ignore
+          user,
+          subscriptionStatus: hasSubscription
+            ? SubscriptionStatus.active
+            : SubscriptionStatus.inactive,
+        },
+      });
+
+      return hasSubscription;
+    }
+    return false;
+  } catch {
+    return false;
   }
 };
 
@@ -82,9 +135,7 @@ export const StoreContextProvider: React.FC = ({ children }) => {
     const getNetworkStatus = async () => {
       try {
         const { isConnected } = await getNetworkStateAsync();
-        const isAuthenticated = await AsyncStorage.getItem(
-          userAuthenticatedItem
-        );
+        const user = supabase.auth.user();
         const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
 
         const isSync =
@@ -92,11 +143,11 @@ export const StoreContextProvider: React.FC = ({ children }) => {
 
         let status = NetworkStatus.loading;
 
-        if (isConnected && isAuthenticated) {
+        if (isConnected && user) {
           status = NetworkStatus.authenticated;
-        } else if (isConnected && !isAuthenticated) {
+        } else if (isConnected && !user) {
           status = NetworkStatus.online;
-        } else if (isConnected && isAuthenticated && isSync) {
+        } else if (isConnected && user && isSync) {
           status = NetworkStatus.sync;
         }
 
@@ -110,7 +161,21 @@ export const StoreContextProvider: React.FC = ({ children }) => {
         console.log("Error loading network status = ", e);
       }
     };
+
+    const getAuthStatus = async () => {
+      try {
+        const { isConnected } = await getNetworkStateAsync();
+        const user = supabase.auth.user();
+        if (isConnected && user) {
+          await dispatchAuthenticationStatus(user as User, dispatch);
+        }
+      } catch (e) {
+        console.log("error loading auth status");
+      }
+    };
+
     getNetworkStatus();
+    getAuthStatus();
   }, []);
 
   return (

@@ -25,7 +25,7 @@ export const navigate = (name: string, params?: RootStackParamList) => {
 const Navigation: React.FC = () => {
   return (
     <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator initialRouteName="Home" headerMode="none" mode="card">
+      <Stack.Navigator initialRouteName="Cloud" headerMode="none" mode="card">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Diary" component={DiaryScreen} />
         <Stack.Screen name="Editor" component={EditorScreen} />
