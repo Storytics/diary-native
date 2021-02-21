@@ -15,6 +15,7 @@ export interface StoreState {
   books: Array<BookProps>;
   activity: Array<ActivityProps>;
   networkStatus: NetworkStatus;
+  isDarkTheme: boolean;
 }
 
 export interface AddBookPayload {
@@ -45,11 +46,19 @@ export interface SetNetworkStatusPayload {
   };
 }
 
+export interface SetDarkThemePayload {
+  type: "SET_DARK_THEME";
+  payload: {
+    isDarkTheme: boolean;
+  };
+}
+
 export type StoreActions =
   | AddBookPayload
   | LoadBooksPayload
   | LoadActivityPayload
-  | SetNetworkStatusPayload;
+  | SetNetworkStatusPayload
+  | SetDarkThemePayload;
 
 export interface Context {
   state: StoreState;

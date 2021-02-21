@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { SmallTitle, Text } from "components/Typography";
 import i18n from "locales/index";
 import CustomSwitch from "components/CustomSwitch";
@@ -19,6 +19,7 @@ interface BorderButtonProps {
   hasCustomSwitch?: boolean;
   hasThemeSwitch?: boolean;
   onChangeSwitch?: (value: boolean) => void;
+  isSwitchActive?: boolean;
 }
 
 const BorderButton: React.FC<BorderButtonProps> = ({
@@ -28,8 +29,8 @@ const BorderButton: React.FC<BorderButtonProps> = ({
   hasCustomSwitch = false,
   hasThemeSwitch = false,
   onChangeSwitch,
+  isSwitchActive = false,
 }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
   const theme = useTheme();
   const containerProps = hasCustomSwitch || hasThemeSwitch ? {} : { onPress };
   return (
@@ -46,36 +47,29 @@ const BorderButton: React.FC<BorderButtonProps> = ({
           )}
           {hasThemeSwitch && (
             <SwitchAndTextWrapper>
-              <Text
-                color={
-                  !isEnabled
-                    ? theme.borderButton.customSwitch.text.light.active
-                    : theme.borderButton.customSwitch.text.light.muted
-                }
-              >
+              <Text color={theme.borderButton.customSwitch.text.left}>
                 {i18n.t("borderButton.theme.light")}
               </Text>
               <CustomSwitch
+                isActive={isSwitchActive}
                 onChangeValue={(value: boolean) => {
                   if (onChangeSwitch) {
                     onChangeSwitch(value);
                   }
-                  setIsEnabled(value);
                 }}
                 isThemeSwitch
               />
-              <Text
-                color={
-                  isEnabled
-                    ? theme.borderButton.customSwitch.text.light.active
-                    : theme.borderButton.customSwitch.text.light.muted
-                }
-              >
+              <Text color={theme.borderButton.customSwitch.text.right}>
                 {i18n.t("borderButton.theme.dark")}
               </Text>
             </SwitchAndTextWrapper>
           )}
-          {hasCustomSwitch && <CustomSwitch onChangeValue={onChangeSwitch} />}
+          {hasCustomSwitch && (
+            <CustomSwitch
+              isActive={isSwitchActive}
+              onChangeValue={onChangeSwitch}
+            />
+          )}
         </IconContainer>
       </Wrapper>
     </Container>

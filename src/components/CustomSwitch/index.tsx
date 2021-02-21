@@ -12,13 +12,15 @@ interface CustomSwitchProps {
   onPress?: () => void;
   isThemeSwitch?: boolean;
   onChangeValue?: (value: boolean) => void;
+  isActive: boolean;
 }
 
 const CustomSwitch: React.FC<CustomSwitchProps> = ({
   isThemeSwitch = false,
   onChangeValue,
+  isActive = false,
 }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(isActive);
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
   const toggleSwitch = useCallback(() => {

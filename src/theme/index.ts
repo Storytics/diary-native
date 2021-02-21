@@ -183,14 +183,8 @@ const Theme = {
     iconColor: colors.gray800,
     customSwitch: {
       text: {
-        light: {
-          active: colors.gray800,
-          muted: colors.gray400,
-        },
-        dark: {
-          active: colors.white,
-          muted: colors.gray400,
-        },
+        left: colors.gray800,
+        right: colors.gray400,
       },
     },
   },

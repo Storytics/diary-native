@@ -106,11 +106,10 @@ const Theme = {
     // gray-900 in rgba, can't use transparent in ios
     linearGradient: ["rgba(20, 20, 20, 0)", colors.gray900],
   },
-  /* TODO */
   placeHolder: {
-    backgroundColor: colors.gray100,
-    borderColor: colors.white,
-    linearGradient: [colors.gray100, colors.gray50],
+    backgroundColor: colors.gray700,
+    borderColor: colors.gray700,
+    linearGradient: [colors.gray700, colors.gray800],
   },
   noteBook: {
     backgroundColor: colors.gray800,
@@ -169,7 +168,6 @@ const Theme = {
       borderColor: colors.gray100,
     },
   },
-  /* TODO */
   customSwitch: {
     thumb: {
       on: colors.white,
@@ -187,15 +185,8 @@ const Theme = {
     iconColor: colors.gray300,
     customSwitch: {
       text: {
-        light: {
-          active: colors.gray800,
-          muted: colors.gray400,
-        },
-        /* TODO in the component borderButton change to this values if dark theme */
-        dark: {
-          active: colors.gray300,
-          muted: colors.gray500,
-        },
+        left: colors.gray500,
+        right: colors.gray300,
       },
     },
   },
