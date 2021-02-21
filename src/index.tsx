@@ -2,7 +2,8 @@ import React from "react";
 import { StatusBar } from "react-native";
 // Styles
 import { ThemeProvider } from "styled-components/native";
-import theme from "theme/index";
+// import theme from "theme/index";
+import theme from "theme/dark";
 // Navigation
 import Navigation from "navigation/index";
 // Contexts
@@ -16,6 +17,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <StoreContextProvider>
         <ModalsContextProvider>
+          {/* change this colors based on theme */}
           <StatusBar
             backgroundColor={theme.container.backgroundColor}
             barStyle="dark-content"
