@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, View } from "react-native";
 // Styles
 import { ThemeProvider } from "styled-components/native";
 import themeLight from "theme/index";
@@ -28,7 +28,14 @@ const Register: React.FC = () => {
           backgroundColor={theme.container.backgroundColor}
           barStyle={isDarkTheme ? "light-content" : "dark-content"}
         />
-        <Navigation />
+        <View
+          style={{
+            flexGrow: 1,
+            backgroundColor: theme.container.backgroundColor,
+          }}
+        >
+          <Navigation />
+        </View>
         <Modals />
       </ModalsContextProvider>
     </ThemeProvider>
