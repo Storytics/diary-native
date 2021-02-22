@@ -82,7 +82,7 @@ const Theme = {
     linearGradient: [colors.gray600, colors.gray700],
     lineColor: colors.gray500,
     // mainly for ios
-    shadowColor: colors.gray200,
+    shadowColor: colors.gray900,
   },
   iconDefaultColor: colors.gray400,
   activityCard: {
@@ -124,7 +124,7 @@ const Theme = {
     overLayBackgroundColor: "rgba(31,31,31,0.7)",
     backgroundColor: colors.gray900,
     // mainly for ios
-    shadowColor: colors.gray200,
+    shadowColor: colors.gray900,
     header: {
       textColor: colors.gray300,
       iconColor: colors.gray300,
@@ -201,7 +201,7 @@ const Theme = {
   toolBar: {
     backgroundColor: colors.gray800,
     // mainly for ios
-    shadowColor: colors.gray200,
+    shadowColor: colors.gray900,
     button: {
       active: {
         backgroundColor: colors.primary,
