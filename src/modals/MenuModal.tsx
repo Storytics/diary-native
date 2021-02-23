@@ -1,14 +1,19 @@
 import React, { useCallback } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { userThemeItem } from "utils/constants";
 import i18n from "locales/index";
 import { navigate } from "navigation/index";
 // Hooks
 import useModals from "hooks/useModals";
+import useStore from "hooks/useStore";
 // Components
 import BorderButton from "components/BorderButton";
 import Brand from "components/Brand";
 import Modal from "components/Modal";
 
 const MenuModal: React.FC = () => {
+  const store = useStore();
+
   const {
     dispatch,
     state: { isMenuModalOpen },
@@ -20,6 +25,18 @@ const MenuModal: React.FC = () => {
       payload: { isOpen: false },
     });
   }, [dispatch]);
+
+  const onChangeTheme = async (value: boolean) => {
+    try {
+      await AsyncStorage.setItem(userThemeItem, String(value));
+      store.dispatch({
+        type: "SET_DARK_THEME",
+        payload: { isDarkTheme: value },
+      });
+    } catch (e) {
+      console.log("error changing theme = ", e);
+    }
+  };
 
   if (!isMenuModalOpen) {
     return null;
@@ -38,7 +55,8 @@ const MenuModal: React.FC = () => {
     >
       <BorderButton
         title="Theme"
-        onPress={() => console.log("dark")}
+        onChangeSwitch={onChangeTheme}
+        isSwitchActive={store.state.isDarkTheme}
         hasArrowIcon={false}
         hasThemeSwitch
       />

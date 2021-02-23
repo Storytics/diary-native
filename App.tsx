@@ -1,6 +1,5 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
-import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { enableScreens } from "react-native-screens";
 import { DatabaseInit } from "database/DatabaseConnection";
@@ -33,11 +32,12 @@ const Register: React.FC = () => {
     loadDatabaseAsync();
   }, []);
 
-  if (!fontsLoaded && isDatabaseLoading) {
-    return <AppLoading />;
-  }
-
-  return <AppContainer />;
+  return (
+    <AppContainer
+      fontsLoaded={fontsLoaded}
+      isDatabaseLoading={isDatabaseLoading}
+    />
+  );
 };
 
 export default Register;

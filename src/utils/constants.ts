@@ -6,3 +6,5 @@ export const SUPABASE_KEY =
 
 export const userAuthenticatedItem = "@st_dia_user_authenticated";
 export const userCloudLastSyncItem = "@st_dia_cloud_last_sync";
+
+export const userThemeItem = "@st_dia_user_theme";

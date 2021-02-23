@@ -15,6 +15,8 @@ export interface StoreState {
   books: Array<BookProps>;
   activity: Array<ActivityProps>;
   networkStatus: NetworkStatus;
+  isDarkTheme: boolean;
+  isHomeScreenLoading: boolean;
 }
 
 export interface AddBookPayload {
@@ -45,11 +47,27 @@ export interface SetNetworkStatusPayload {
   };
 }
 
+export interface SetDarkThemePayload {
+  type: "SET_DARK_THEME";
+  payload: {
+    isDarkTheme: boolean;
+  };
+}
+
+export interface SetIsHomeScreenLoadingPayload {
+  type: "SET_IS_HOME_SCREEN_LOADING";
+  payload: {
+    isHomeScreenLoading: boolean;
+  };
+}
+
 export type StoreActions =
   | AddBookPayload
   | LoadBooksPayload
   | LoadActivityPayload
-  | SetNetworkStatusPayload;
+  | SetNetworkStatusPayload
+  | SetDarkThemePayload
+  | SetIsHomeScreenLoadingPayload;
 
 export interface Context {
   state: StoreState;
