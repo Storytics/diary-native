@@ -2,15 +2,15 @@
   "expo": {
     "owner": "storytics",
     "privacy": "hidden",
-    "name": "diary-native",
-    "slug": "diary-native",
+    "name": "Diary",
+    "slug": "Diary",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#276EF1"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

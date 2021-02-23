@@ -17,6 +17,7 @@ const initialState = {
   activity: [],
   networkStatus: NetworkStatus.loading,
   isDarkTheme: false,
+  isHomeScreenLoading: true,
 };
 
 export const StoreContext = createContext<Context>({
@@ -51,6 +52,11 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
         ...state,
         isDarkTheme: action.payload.isDarkTheme,
       };
+    case "SET_IS_HOME_SCREEN_LOADING":
+      return {
+        ...state,
+        isHomeScreenLoading: action.payload.isHomeScreenLoading,
+      };
     default:
       return state;
   }
@@ -84,8 +90,20 @@ export const StoreContextProvider: React.FC = ({ children }) => {
       }
     };
 
-    loadBooks();
-    loadActivity();
+    const loadContent = async () => {
+      try {
+        await loadBooks();
+        await loadActivity();
+        dispatch({
+          type: "SET_IS_HOME_SCREEN_LOADING",
+          payload: { isHomeScreenLoading: false },
+        });
+      } catch (e) {
+        console.log("error loading content = ", e);
+      }
+    };
+
+    loadContent();
   }, []);
 
   useEffect(() => {

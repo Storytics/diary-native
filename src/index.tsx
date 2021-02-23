@@ -1,5 +1,6 @@
 import React from "react";
 import { StatusBar, View } from "react-native";
+import AppLoading from "expo-app-loading";
 // Styles
 import { ThemeProvider } from "styled-components/native";
 import themeLight from "theme/index";
@@ -14,12 +15,21 @@ import Modals from "modals/index";
 // Hooks
 import useStore from "hooks/useStore";
 
-const Register: React.FC = () => {
+interface Props {
+  fontsLoaded: boolean;
+  isDatabaseLoading: boolean;
+}
+
+const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
   const {
-    state: { isDarkTheme },
+    state: { isDarkTheme, isHomeScreenLoading },
   } = useStore();
 
   const theme = isDarkTheme ? themeDark : themeLight;
+
+  if ((!fontsLoaded && isDatabaseLoading) || isHomeScreenLoading) {
+    return <AppLoading />;
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -42,10 +52,10 @@ const Register: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
+const App: React.FC<Props> = (props) => {
   return (
     <StoreContextProvider>
-      <Register />
+      <Register {...props} />
     </StoreContextProvider>
   );
 };
