@@ -28,7 +28,7 @@ export default {
         primary: "Edit",
         hold: {
           text: "Delete",
-          feedbackText: "Hold to delete :(",
+          feedbackText: "Delete",
         },
       },
     },
@@ -48,6 +48,6 @@ export default {
   // Hold Button
   holdButton: {
     initialText: "Delete",
-    feedbackText: "Hold to delete :(",
+    feedbackText: "Delete",
   },
 };

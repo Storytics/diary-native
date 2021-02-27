@@ -40,4 +40,7 @@ export const InnerButton = styled.View<{ isSelected: boolean }>`
     `};
   height: 40px;
   width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

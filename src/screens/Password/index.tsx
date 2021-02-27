@@ -5,14 +5,14 @@ import Theme from "theme/index";
 // Types
 import { PasswordScreenNavigationProp } from "types/navigation";
 // Components
+import Logo from "components/Logo";
+import Header from "components/Header";
 import Container from "components/Container";
 import CustomSafeArea from "components/CustomSafeArea";
 import RoundButton from "components/RoundButton";
-import { LargeText, SmallTitle } from "components/Typography";
+import { LargeText } from "components/Typography";
 import {
   Wrapper,
-  Header,
-  MessageContainer,
   LogoContainer,
   PinContainer,
   CirclesFeedback,
@@ -33,7 +33,12 @@ interface ButtonProps {
 const Button = ({ theme, onPress, isIcon, text, iconName }: ButtonProps) => {
   const { color } = theme.passwordScreen.numbers;
   return (
-    <RoundButton size="large" onPress={onPress}>
+    <RoundButton
+      size="xLarge"
+      onPress={onPress}
+      backgroundColor={theme.passwordScreen.numbers.backgroundColor}
+      underlayColor={theme.passwordScreen.numbers.underlayColor}
+    >
       {isIcon ? (
         <MaterialIcons name={iconName} size={32} color={color} />
       ) : (
@@ -71,30 +76,17 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <CustomSafeArea>
       <Container>
-        <Header>
-          <RoundButton
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
-          >
-            <MaterialIcons
-              name="arrow-back"
-              size={24}
-              color={theme.passwordScreen.header.iconColor}
-            />
-          </RoundButton>
-        </Header>
+        <Header
+          hasBackButton
+          text="Create Password"
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        />
         <Wrapper>
-          <MessageContainer>
-            <LogoContainer>
-              <MaterialIcons
-                name="auto-stories"
-                size={60}
-                color={theme.passwordScreen.logo.color}
-              />
-            </LogoContainer>
-            <SmallTitle>Enter the code to login</SmallTitle>
-          </MessageContainer>
+          <LogoContainer>
+            <Logo size={48} color={theme.passwordScreen.logo.color} />
+          </LogoContainer>
           <PinContainer>
             <CirclesContainer>
               {code.length > 0 && (

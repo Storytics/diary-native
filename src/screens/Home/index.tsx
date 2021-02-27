@@ -6,6 +6,7 @@ import DiaryCardList from "components/DiaryCardList";
 import ActivityCardList from "components/ActivityCardList";
 import Navigation from "components/Navigation";
 import CustomSafeArea from "components/CustomSafeArea";
+import Notification from "components/Notification";
 // Hooks
 import useModals from "hooks/useModals";
 import useStore from "hooks/useStore";
@@ -72,6 +73,7 @@ const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
           }}
         />
       </Container>
+      <Notification type="info" text="Diary created with success" />
     </CustomSafeArea>
   );
 };

@@ -38,6 +38,8 @@ export interface StoreState {
   networkStatus: NetworkStatus;
   user: User | null;
   subscriptionStatus: SubscriptionStatus;
+  isDarkTheme: boolean;
+  isHomeScreenLoading: boolean;
 }
 
 export interface AddBookPayload {
@@ -75,13 +77,28 @@ export interface SetAuthenticationStatusPayload {
     subscriptionStatus: SubscriptionStatus;
   };
 }
+export interface SetDarkThemePayload {
+  type: "SET_DARK_THEME";
+  payload: {
+    isDarkTheme: boolean;
+  };
+}
+
+export interface SetIsHomeScreenLoadingPayload {
+  type: "SET_IS_HOME_SCREEN_LOADING";
+  payload: {
+    isHomeScreenLoading: boolean;
+  };
+}
 
 export type StoreActions =
   | AddBookPayload
   | LoadBooksPayload
   | LoadActivityPayload
   | SetNetworkStatusPayload
-  | SetAuthenticationStatusPayload;
+  | SetAuthenticationStatusPayload
+  | SetDarkThemePayload
+  | SetIsHomeScreenLoadingPayload;
 
 export interface Context {
   state: StoreState;

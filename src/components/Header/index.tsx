@@ -8,16 +8,18 @@ interface HeaderProps {
   text: string;
   hasBackButton?: boolean;
   onPress?: () => void;
+  hasMarginBottom?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
   text,
   hasBackButton = false,
   onPress,
+  hasMarginBottom = true,
 }) => {
   const theme = useTheme();
   return (
-    <Container hasBackButton={hasBackButton}>
+    <Container hasBackButton={hasBackButton} hasMarginBottom={hasMarginBottom}>
       {hasBackButton && (
         <IconContainer>
           <RoundButton

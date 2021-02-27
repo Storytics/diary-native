@@ -4,7 +4,7 @@ import { getAllActivity, getAllBooks } from "database/Book";
 import { getNetworkStateAsync } from "expo-network";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
-import { userCloudLastSyncItem } from "utils/constants";
+import { userCloudLastSyncItem, userThemeItem } from "utils/constants";
 // Types
 import {
   Context,
@@ -26,6 +26,8 @@ const initialState = {
   networkStatus: NetworkStatus.loading,
   user: null,
   subscriptionStatus: SubscriptionStatus.loading,
+  isDarkTheme: false,
+  isHomeScreenLoading: true,
 };
 
 export const StoreContext = createContext<Context>({
@@ -63,6 +65,16 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
         subscriptionStatus: action.payload.subscriptionStatus,
       };
 
+    case "SET_DARK_THEME":
+      return {
+        ...state,
+        isDarkTheme: action.payload.isDarkTheme,
+      };
+    case "SET_IS_HOME_SCREEN_LOADING":
+      return {
+        ...state,
+        isHomeScreenLoading: action.payload.isHomeScreenLoading,
+      };
     default:
       return state;
   }
@@ -126,8 +138,20 @@ export const StoreContextProvider: React.FC = ({ children }) => {
       }
     };
 
-    loadBooks();
-    loadActivity();
+    const loadContent = async () => {
+      try {
+        await loadBooks();
+        await loadActivity();
+        dispatch({
+          type: "SET_IS_HOME_SCREEN_LOADING",
+          payload: { isHomeScreenLoading: false },
+        });
+      } catch (e) {
+        console.log("error loading content = ", e);
+      }
+    };
+
+    loadContent();
   }, []);
 
   useEffect(() => {
@@ -183,6 +207,26 @@ export const StoreContextProvider: React.FC = ({ children }) => {
 
     getNetworkStatus();
     getAuthStatus();
+  }, []);
+
+  useEffect(() => {
+    const loadThemeSetting = async () => {
+      try {
+        const userTheme = await AsyncStorage.getItem(userThemeItem);
+        const isDarkTheme = userTheme ? Boolean(userTheme) : false;
+        console.log("isdark = ", isDarkTheme);
+
+        dispatch({
+          type: "SET_DARK_THEME",
+          payload: {
+            isDarkTheme,
+          },
+        });
+      } catch (e) {
+        console.log("error loading theme setting = ", e);
+      }
+    };
+    loadThemeSetting();
   }, []);
 
   return (

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Theme from "theme/index";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 import {
   Container,
@@ -87,7 +88,15 @@ const Select: React.FC<SelectProps> = ({ title, onChange }) => {
               color={handleColorType(button.color, theme).backgroundColor}
               isLastChild={length === index + 1}
             >
-              <InnerButton isSelected={isSelectedValue === index} />
+              <InnerButton isSelected={isSelectedValue === index}>
+                {isSelectedValue === index && (
+                  <MaterialIcons
+                    name="check"
+                    size={16}
+                    color={theme.select.button.borderColor}
+                  />
+                )}
+              </InnerButton>
             </Button>
           );
         })}

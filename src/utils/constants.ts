@@ -7,3 +7,4 @@ export const SUPABASE_KEY =
 export const billingUrl = "https://billing.storytics.pt/diary";
 export const userCloudLastSyncItem = "@st_dia_cloud_last_sync";
 export const userActiveSubscriptionItem = "@st_dia_active_subscription";
+export const userThemeItem = "@st_dia_user_theme";
