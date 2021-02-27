@@ -1,28 +1,63 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo, useEffect } from "react";
 import i18n from "locales/index";
 // Hooks
 import useModals from "hooks/useModals";
 import useStore from "hooks/useStore";
 import useNotification from "hooks/useNotification";
+// Styles
+import { useTheme } from "styled-components/native";
 // Components
 import Input from "components/Input";
-import Select from "components/Select";
+import Select, { buttons } from "components/Select";
 import Modal from "components/Modal";
 // Database
-import { createBook, getAllBooks } from "database/Book";
+import { createBook, getAllBooks, updateBookById } from "database/Book";
 // Types
 import { NotificationType } from "types/notifications";
 
 const CreateDiaryModal: React.FC = () => {
-  const [inputText, setInputText] = useState("");
-  const [color, setColor] = useState("blue");
+  const theme = useTheme();
+  const [color, setColor] = useState(theme.colors.blue400);
+  const [colorIndex, setColorIndex] = useState(0);
   const store = useStore();
   const notification = useNotification();
-
   const {
     dispatch,
-    state: { isCreateDiaryOpen },
+    state: { isCreateDiaryOpen, isEditDiary, diary },
   } = useModals();
+  const [inputText, setInputText] = useState("");
+
+  const selectors = useMemo(() => buttons(theme), [theme]);
+
+  const translations = useMemo(() => {
+    return isEditDiary
+      ? {
+          title: "modal.edit.title",
+          buttons: {
+            primary: "modal.edit.buttons.primary",
+            secondary: "modal.edit.buttons.secondary",
+          },
+        }
+      : {
+          title: "modal.create.title",
+          buttons: {
+            primary: "modal.create.buttons.primary",
+            secondary: "modal.create.buttons.secondary",
+          },
+        };
+  }, [isEditDiary]);
+
+  useEffect(() => {
+    const title = isEditDiary ? diary.bookTitle : "";
+    const position = selectors.findIndex(
+      (item) => item.backgroundColor === diary.bookColor
+    );
+    const hasPosition = isEditDiary && position !== -1;
+
+    setInputText(title);
+    setColorIndex(hasPosition ? position : 0);
+    setColor(hasPosition ? diary.bookColor : theme.colors.blue400);
+  }, [isEditDiary, diary, selectors, theme]);
 
   const onClose = useCallback(() => {
     dispatch({
@@ -66,19 +101,55 @@ const CreateDiaryModal: React.FC = () => {
     }
   };
 
+  const onEdit = async () => {
+    try {
+      if (inputText) {
+        const { bookId } = diary;
+        const result = await updateBookById(bookId, inputText, color);
+        const books = await getAllBooks();
+
+        if (result === "success") {
+          store.dispatch({
+            type: "LOAD_BOOKS",
+            payload: { books },
+          });
+          setInputText("");
+          onClose();
+          notification.dispatch({
+            type: "CREATE_NOTIFICATION",
+            payload: {
+              isOpen: true,
+              message: i18n.t("notifications.editDiary.success"),
+              type: NotificationType.success,
+            },
+          });
+        }
+      }
+    } catch (e) {
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.editDiary.error"),
+          type: NotificationType.danger,
+        },
+      });
+    }
+  };
+
   if (!isCreateDiaryOpen) {
     return null;
   }
 
   return (
     <Modal
-      title={i18n.t("modal.create.title")}
+      title={i18n.t(translations.title)}
       isOpen={isCreateDiaryOpen}
       onClose={onClose}
-      onPressPrimary={onCreate}
+      onPressPrimary={isEditDiary ? onEdit : onCreate}
       onPressSecondary={onClose}
-      primaryButtonText={i18n.t("modal.create.buttons.primary")}
-      secondaryButtonText={i18n.t("modal.create.buttons.secondary")}
+      primaryButtonText={i18n.t(translations.buttons.primary)}
+      secondaryButtonText={i18n.t(translations.buttons.secondary)}
     >
       <Input
         title="Title"
@@ -88,6 +159,7 @@ const CreateDiaryModal: React.FC = () => {
       />
       <Select
         title="Identifier"
+        initialIndex={colorIndex}
         onChange={(value: string) => setColor(value)}
       />
     </Modal>

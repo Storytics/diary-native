@@ -213,8 +213,7 @@ export const StoreContextProvider: React.FC = ({ children }) => {
     const loadThemeSetting = async () => {
       try {
         const userTheme = await AsyncStorage.getItem(userThemeItem);
-        const isDarkTheme = userTheme ? Boolean(userTheme) : false;
-        console.log("isdark = ", isDarkTheme);
+        const isDarkTheme = userTheme ? userTheme === "true" : false;
 
         dispatch({
           type: "SET_DARK_THEME",

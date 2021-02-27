@@ -4,8 +4,14 @@ import { ModalsState, ModalsActions, Context } from "types/modals";
 
 const initialState = {
   isCreateDiaryOpen: false,
+  isEditDiary: false,
   isMenuModalOpen: false,
   isDiaryActionsModalOpen: false,
+  diary: {
+    bookId: 0,
+    bookTitle: "",
+    bookColor: "",
+  },
 };
 
 export const ModalsContext = createContext<Context>({
@@ -22,6 +28,7 @@ export const Reducer = (
       return {
         ...state,
         isCreateDiaryOpen: action.payload.isOpen,
+        isEditDiary: action.payload.isEditDiary,
       };
     case "MENU_MODAL":
       return {
@@ -32,6 +39,11 @@ export const Reducer = (
       return {
         ...state,
         isDiaryActionsModalOpen: action.payload.isOpen,
+        diary: {
+          bookId: action.payload.bookId,
+          bookTitle: action.payload.bookTitle,
+          bookColor: action.payload.bookColor,
+        },
       };
     default:
       return state;

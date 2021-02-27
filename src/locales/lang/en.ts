@@ -20,6 +20,13 @@ export default {
         secondary: "Cancel",
       },
     },
+    edit: {
+      title: "Edit Diary",
+      buttons: {
+        primary: "Update",
+        secondary: "Cancel",
+      },
+    },
     menu: {
       title: "Settings",
     },
@@ -55,6 +62,14 @@ export default {
     createDiary: {
       success: "Diary created with success",
       error: "Error creating diary",
+    },
+    editDiary: {
+      success: "Diary edited with success",
+      error: "Error editing diary",
+    },
+    deleteDiary: {
+      success: "Diary deleted with success",
+      error: "Error deleting diary",
     },
   },
 };

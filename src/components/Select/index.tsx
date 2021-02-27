@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Theme from "theme/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
@@ -13,22 +13,28 @@ import {
 interface SelectProps {
   title: string;
   onChange: (value: string) => void;
+  initialIndex: number;
 }
 
-const buttons = [
+export const buttons = (theme: typeof Theme) => [
   {
+    backgroundColor: theme.colors.blue400,
     color: "blue",
   },
   {
+    backgroundColor: theme.colors.yellow400,
     color: "yellow",
   },
   {
+    backgroundColor: theme.colors.orange400,
     color: "orange",
   },
   {
+    backgroundColor: theme.colors.purple400,
     color: "purple",
   },
   {
+    backgroundColor: theme.colors.green400,
     color: "green",
   },
 ];
@@ -68,15 +74,27 @@ const handleColorType = (color: string, theme: typeof Theme) => {
   }
 };
 
-const Select: React.FC<SelectProps> = ({ title, onChange }) => {
-  const [isSelectedValue, setSelectedValue] = useState(0);
-
+const Select: React.FC<SelectProps> = ({
+  title,
+  onChange,
+  initialIndex = 0,
+}) => {
+  const [isSelectedValue, setSelectedValue] = useState(initialIndex);
   const theme = useTheme();
+  const selectors = useMemo(() => buttons(theme), [theme]);
+
+  useEffect(() => {
+    if (initialIndex !== isSelectedValue) {
+      setSelectedValue(initialIndex);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialIndex]);
+
   return (
     <Container>
       <StyledSmallTitle>{title}</StyledSmallTitle>
       <ButtonsWrapper>
-        {buttons.map((button, index, { length }) => {
+        {selectors.map((button, index, { length }) => {
           return (
             <Button
               key={index.toString()}
