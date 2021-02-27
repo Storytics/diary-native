@@ -11,10 +11,33 @@ export enum NetworkStatus {
   sync = "sync",
 }
 
+export enum SubscriptionStatus {
+  loading = "loading",
+  active = "active",
+  inactive = "inactive",
+}
+
+export interface User {
+  aud: string;
+  confirmed_at: string;
+  created_at: string;
+  email: string;
+  id: string;
+  last_sign_in_at: string;
+  role: string;
+  updated_at: string;
+  user_metadata: unknown;
+  app_metadata: {
+    provider: string;
+  };
+}
+
 export interface StoreState {
   books: Array<BookProps>;
   activity: Array<ActivityProps>;
   networkStatus: NetworkStatus;
+  user: User | null;
+  subscriptionStatus: SubscriptionStatus;
   isDarkTheme: boolean;
   isHomeScreenLoading: boolean;
 }
@@ -47,6 +70,13 @@ export interface SetNetworkStatusPayload {
   };
 }
 
+export interface SetAuthenticationStatusPayload {
+  type: "SET_AUTHENTICATION_STATUS";
+  payload: {
+    user: User | null;
+    subscriptionStatus: SubscriptionStatus;
+  };
+}
 export interface SetDarkThemePayload {
   type: "SET_DARK_THEME";
   payload: {
@@ -66,6 +96,7 @@ export type StoreActions =
   | LoadBooksPayload
   | LoadActivityPayload
   | SetNetworkStatusPayload
+  | SetAuthenticationStatusPayload
   | SetDarkThemePayload
   | SetIsHomeScreenLoadingPayload;
 

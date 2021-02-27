@@ -27,17 +27,17 @@ const Navigation: React.FC<DiaryCardProps> = ({
   return (
     <Container isPageNavigation={isPageNavigation}>
       <Wrapper>
-        <RoundButton size="medium" onPress={onPressLeft}>
-          {isPageNavigation ? (
+        {isPageNavigation ? (
+          <RoundButton size="medium" onPress={onPressLeft}>
             <MaterialIcons
               name="chevron-left"
               size={24}
               color={theme.iconDefaultColor}
             />
-          ) : (
-            <NetworkStatus />
-          )}
-        </RoundButton>
+          </RoundButton>
+        ) : (
+          <NetworkStatus />
+        )}
         <MainButtonContainer>
           <RoundButton
             size="large"

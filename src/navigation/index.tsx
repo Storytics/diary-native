@@ -11,6 +11,7 @@ import DiaryScreen from "screens/Diary";
 import EditorScreen from "screens/Editor";
 import CloudScreen from "screens/Cloud";
 import PasswordScreen from "screens/Password";
+import BillingScreen from "screens/Billing";
 // Types
 import { RootStackParamList } from "types/navigation";
 
@@ -31,6 +32,7 @@ const Navigation: React.FC = () => {
         <Stack.Screen name="Editor" component={EditorScreen} />
         <Stack.Screen name="Cloud" component={CloudScreen} />
         <Stack.Screen name="Password" component={PasswordScreen} />
+        <Stack.Screen name="Billing" component={BillingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
