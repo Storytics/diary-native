@@ -6,7 +6,7 @@ import useNotification from "hooks/useNotification";
 // Components
 import Modal from "components/Modal";
 // Database
-import { deleteBookById, getAllBooks } from "database/Book";
+import { deleteBookById, getAllActivity, getAllBooks } from "database/Book";
 // Locales
 import i18n from "locales/index";
 // Types
@@ -31,11 +31,16 @@ const DiaryActionsModal: React.FC = () => {
     try {
       const result = await deleteBookById(diary.bookId);
       const books = await getAllBooks();
+      const activity = await getAllActivity();
 
       if (result === "success") {
         store.dispatch({
           type: "LOAD_BOOKS",
           payload: { books },
+        });
+        store.dispatch({
+          type: "LOAD_ACTIVITY",
+          payload: { activity },
         });
         onClose();
         notification.dispatch({
