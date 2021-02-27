@@ -17,7 +17,7 @@ const styles = (theme: typeof Theme, insets: { top: number; bottom: number }) =>
     },
   });
 
-const ActivityCard: React.FC = ({ children }) => {
+const CustomSafeArea: React.FC = ({ children }) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   return (
@@ -27,4 +27,4 @@ const ActivityCard: React.FC = ({ children }) => {
   );
 };
 
-export default ActivityCard;
+export default CustomSafeArea;
