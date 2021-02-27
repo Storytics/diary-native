@@ -16,11 +16,12 @@ import Navigation from "components/Navigation";
 import { RichEditor } from "react-native-pell-rich-editor";
 // Database
 import { getAllPagesByBookId } from "database/Page";
-import {
-  NoteBookContainer,
-  NavigationContainer,
-  EditorContainer,
-} from "./styles";
+// Locales
+import i18n from "locales/index";
+// Screens shared styles
+import { EditorContainer } from "../styles";
+// Styled components
+import { NoteBookContainer, NavigationContainer } from "./styles";
 
 const defaultPage = {
   id: 0,
@@ -37,6 +38,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const [bookPages, setBookPages] = useState<Array<PageProps>>([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [noteBookHeight, setNoteBookHeight] = useState(0);
+  const [isEditorLoading, setEditorLoading] = useState(true);
   const theme = useTheme();
   const isFocused = useIsFocused();
 
@@ -77,6 +79,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
     const isValidPage = bookPages[prevPage];
 
     if (isValidPage) {
+      setEditorLoading(true);
       setPageNumber(prevPage);
     }
   };
@@ -86,6 +89,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
     const isValidPage = bookPages[nextPage];
 
     if (isValidPage) {
+      setEditorLoading(true);
       setPageNumber(nextPage);
     }
   };
@@ -105,6 +109,12 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
       pageNumber: isCreatePage ? bookPages.length : pageIndex + 1,
       page,
     });
+  };
+
+  const editorInitialized = () => {
+    setTimeout(() => {
+      setEditorLoading(false);
+    }, 2000);
   };
 
   return (
@@ -133,6 +143,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
             day={dayjs(currentPage.createdAt).format("dddd")}
             page={`${pageNumber + 1} / ${bookPages.length}`}
             hasPaddingBottom={false}
+            isLoading={isEditorLoading}
           >
             <EditorContainer>
               <RichEditor
@@ -141,12 +152,13 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
                   backgroundColor: theme.richEditor.backgroundColor,
                   color: theme.richEditor.textColor,
                   placeholderColor: theme.richEditor.placeholderColor,
-                  contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
+                  contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;}`,
                 }}
-                placeholder="Start Writing Here"
+                placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
                 disabled
                 initialContentHTML={unescapeHtml(currentPage.content)}
                 useContainer={false}
+                editorInitializedCallback={editorInitialized}
               />
             </EditorContainer>
           </NoteBook>

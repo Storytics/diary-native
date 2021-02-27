@@ -26,12 +26,3 @@ export const ToolBarWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
           padding-bottom: 30px;
         `}
 `;
-
-// Position editor in notebook
-export const EditorContainer = styled.View`
-  position: absolute;
-  left: 0;
-  top: 8px;
-  right: 0;
-  bottom: 0;
-`;

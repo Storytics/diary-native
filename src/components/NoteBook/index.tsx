@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, ScrollView, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "styled-components/native";
 import { Text } from "components/Typography";
@@ -12,6 +12,7 @@ import {
   LinesWrapper,
   Line,
   Footer,
+  LoadingContainer,
 } from "./styles";
 
 interface ActivityCardProps {
@@ -20,6 +21,7 @@ interface ActivityCardProps {
   day: string;
   hasPaddingBottom?: boolean;
   noteBookHeight?: number;
+  isLoading: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -32,6 +34,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const AnimatedLine = Animated.createAnimatedComponent(Line);
+
 const NoteBook: React.FC<ActivityCardProps> = ({
   page = "1",
   date,
@@ -39,10 +43,34 @@ const NoteBook: React.FC<ActivityCardProps> = ({
   hasPaddingBottom = true,
   children,
   noteBookHeight,
+  isLoading = true,
 }) => {
+  const linesAnimation = useRef(new Animated.Value(0)).current;
   const [numberOfLinesToRender, setNumberOfLinesToRender] = useState(0);
   const theme = useTheme();
   const lineHeight = 40;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(linesAnimation, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(linesAnimation, {
+          toValue: 0.1,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+      ]),
+      {}
+    ).start();
+  }, [linesAnimation]);
+
+  const animationStyles = {
+    opacity: linesAnimation,
+  };
 
   return (
     <Container hasPaddingBottom={hasPaddingBottom} height={noteBookHeight}>
@@ -80,6 +108,17 @@ const NoteBook: React.FC<ActivityCardProps> = ({
             </LinesWrapper>
             {children}
           </ScrollView>
+          {isLoading && (
+            <LoadingContainer>
+              {[...Array(numberOfLinesToRender)].map((e, i) => (
+                <AnimatedLine
+                  style={animationStyles}
+                  key={i.toString()}
+                  height={lineHeight}
+                />
+              ))}
+            </LoadingContainer>
+          )}
         </Content>
         <Footer>
           <Text>{page}</Text>
