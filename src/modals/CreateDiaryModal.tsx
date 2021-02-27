@@ -3,17 +3,21 @@ import i18n from "locales/index";
 // Hooks
 import useModals from "hooks/useModals";
 import useStore from "hooks/useStore";
+import useNotification from "hooks/useNotification";
 // Components
 import Input from "components/Input";
 import Select from "components/Select";
 import Modal from "components/Modal";
 // Database
 import { createBook, getAllBooks } from "database/Book";
+// Types
+import { NotificationType } from "types/notifications";
 
 const CreateDiaryModal: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [color, setColor] = useState("blue");
   const store = useStore();
+  const notification = useNotification();
 
   const {
     dispatch,
@@ -40,10 +44,25 @@ const CreateDiaryModal: React.FC = () => {
           });
           setInputText("");
           onClose();
+          notification.dispatch({
+            type: "CREATE_NOTIFICATION",
+            payload: {
+              isOpen: true,
+              message: i18n.t("notifications.createDiary.success"),
+              type: NotificationType.success,
+            },
+          });
         }
       }
     } catch (e) {
-      console.log("Error creating a new diary = ", e);
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.createDiary.error"),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 

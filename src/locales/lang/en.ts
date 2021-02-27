@@ -50,4 +50,11 @@ export default {
     initialText: "Delete",
     feedbackText: "Delete",
   },
+  // Notifications
+  notifications: {
+    createDiary: {
+      success: "Diary created with success",
+      error: "Error creating diary",
+    },
+  },
 };

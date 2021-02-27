@@ -1,49 +1,40 @@
-import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, Animated } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { Animated, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { NotificationType } from "types/notifications";
+// Hooks
+import useNotification from "hooks/useNotification";
 import Theme from "theme/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import RoundButton from "components/RoundButton";
 import { SmallTitle } from "components/Typography";
 import { useTheme } from "styled-components/native";
-import { Container, Wrapper, TextContainer, LeftIconWrapper } from "./styles";
-
-type notificationType = "info" | "success" | "warning" | "danger";
-
-interface NotificationProps {
-  text: string;
-  type: notificationType;
-}
+import { Container, LeftIconWrapper, TextContainer, Wrapper } from "./styles";
 
 const handleNotificationType = (
-  type: notificationType,
+  type: NotificationType,
   theme: typeof Theme
 ) => {
   switch (type) {
-    case "info":
-      return {
-        backgroundColor: theme.colors.blue400,
-        icon: "info",
-        underlayColor: theme.colors.blue200,
-      };
-    case "success":
+    case NotificationType.success:
       return {
         backgroundColor: theme.colors.green400,
         icon: "check-circle",
         underlayColor: theme.colors.green200,
       };
-    case "warning":
+    case NotificationType.warning:
       return {
         backgroundColor: theme.colors.orange400,
         icon: "warning",
         underlayColor: theme.colors.orange200,
       };
-    case "danger":
+    case NotificationType.danger:
       return {
         backgroundColor: theme.colors.danger,
         icon: "report",
         underlayColor: theme.colors.red200,
       };
+    case NotificationType.info:
     default:
       return {
         backgroundColor: theme.colors.blue400,
@@ -77,10 +68,13 @@ const styles = (theme: typeof Theme) =>
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
 
-const Notification: React.FC<NotificationProps> = ({ text, type }) => {
+const Notification: React.FC = () => {
   const notificationAnimation = useRef(new Animated.Value(0)).current;
-  const [isNotificationVisible, setNotificationVisible] = useState(true);
   const theme = useTheme();
+  const {
+    state: { message, isOpen, type },
+    dispatch,
+  } = useNotification();
   const { color } = theme.notification;
   const notificationHeight = 79; // 10 + 54 + 15
 
@@ -98,7 +92,24 @@ const Notification: React.FC<NotificationProps> = ({ text, type }) => {
         useNativeDriver: true,
       }),
     ]).start();
-  }, [notificationAnimation]);
+  }, [notificationAnimation, isOpen]);
+
+  useEffect(() => {
+    let timer = 0;
+    if (isOpen) {
+      timer = setTimeout(() => {
+        dispatch({
+          type: "CLOSE_NOTIFICATION",
+          payload: {
+            isOpen: false,
+          },
+        });
+      }, 5200);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isOpen, dispatch]);
 
   const animationStyles = {
     opacity: notificationAnimation,
@@ -112,48 +123,53 @@ const Notification: React.FC<NotificationProps> = ({ text, type }) => {
     ],
   };
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <>
-      {isNotificationVisible && (
-        <AnimatedContainer style={animationStyles}>
-          <Wrapper
-            style={styles(theme).shadow}
-            backgroundColor={
-              handleNotificationType(type, theme).backgroundColor
-            }
-          >
-            <LeftIconWrapper>
-              <MaterialIcons
-                // @ts-ignore
-                name={handleNotificationType(type, theme).icon}
-                size={24}
-                color={color}
-              />
-            </LeftIconWrapper>
-            <TextContainer>
-              <SmallTitle numberOfLines={1} color={color}>
-                {text}
-              </SmallTitle>
-            </TextContainer>
-            <RoundButton
-              size="small"
-              underlayColor={handleNotificationType(type, theme).underlayColor}
-              onPress={() => setNotificationVisible(false)}
-            >
-              <MaterialIcons name="close" size={24} color={color} />
-            </RoundButton>
-          </Wrapper>
-          <LinearGradient
-            pointerEvents="none"
-            colors={[
-              theme.notification.linearGradient[1],
-              theme.notification.linearGradient[0],
-            ]}
-            style={styles(theme).linearGradient}
+    <AnimatedContainer style={animationStyles}>
+      <Wrapper
+        style={styles(theme).shadow}
+        backgroundColor={handleNotificationType(type, theme).backgroundColor}
+      >
+        <LeftIconWrapper>
+          <MaterialIcons
+            // @ts-ignore
+            name={handleNotificationType(type, theme).icon}
+            size={24}
+            color={color}
           />
-        </AnimatedContainer>
-      )}
-    </>
+        </LeftIconWrapper>
+        <TextContainer>
+          <SmallTitle numberOfLines={1} color={color}>
+            {message}
+          </SmallTitle>
+        </TextContainer>
+        <RoundButton
+          size="small"
+          underlayColor={handleNotificationType(type, theme).underlayColor}
+          onPress={() =>
+            dispatch({
+              type: "CLOSE_NOTIFICATION",
+              payload: {
+                isOpen: false,
+              },
+            })
+          }
+        >
+          <MaterialIcons name="close" size={24} color={color} />
+        </RoundButton>
+      </Wrapper>
+      <LinearGradient
+        pointerEvents="none"
+        colors={[
+          theme.notification.linearGradient[1],
+          theme.notification.linearGradient[0],
+        ]}
+        style={styles(theme).linearGradient}
+      />
+    </AnimatedContainer>
   );
 };
 
