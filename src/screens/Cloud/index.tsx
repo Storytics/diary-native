@@ -21,17 +21,19 @@ import { User } from "types/store";
 import supabase from "libs/supabase";
 // Styled Components
 import {
+  Box,
   ContentContainer,
   FormContainer,
-  Box,
-  ListItem,
   FormFooter,
   ForgotPasswordContainer,
   FeaturesContainer,
+  ListItem,
   ListItemIconContainer,
   ListItemsContainer,
   ListItemWrapper,
   FeaturesTextWrapper,
+  LoginContentWrapper,
+  WelcomeBackText,
 } from "./styles";
 
 /** URL polyfill. Required for Supabase queries to work in React Native. */
@@ -56,6 +58,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: -1,
   },
+  textCenter: {
+    textAlign: "center",
+  },
 });
 
 const InlineListItem: React.FC<ListItemProps> = ({ iconName, text }) => {
@@ -70,7 +75,7 @@ const InlineListItem: React.FC<ListItemProps> = ({ iconName, text }) => {
             color={theme.cloudScreen.listItem.icon.color}
           />
         </ListItemIconContainer>
-        <Text style={{ textAlign: "center" }}>{text}</Text>
+        <Text style={styles.textCenter}>{text}</Text>
         <LinearGradient
           colors={[
             theme.cloudScreen.listItem.linearGradient[0],
@@ -169,72 +174,88 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("Home");
             }}
-            text={i18n.t("cloudScreen.signUp.content.title")}
+            text={
+              isCreateAccount
+                ? i18n.t("cloudScreen.signUp.content.title")
+                : i18n.t("cloudScreen.logIn.content.title")
+            }
           />
-          <FeaturesContainer>
-            <FeaturesTextWrapper>
-              <Box mb={5}>
-                <SmallTitle>
-                  {i18n.t("cloudScreen.signUp.content.subtitle")}
+          {isCreateAccount ? (
+            <FeaturesContainer>
+              <FeaturesTextWrapper>
+                <Box mb={5}>
+                  <SmallTitle>
+                    {i18n.t("cloudScreen.signUp.content.subtitle")}
+                  </SmallTitle>
+                </Box>
+                <SmallTitle color={theme.cloudScreen.valueColor}>
+                  {i18n.t("cloudScreen.signUp.content.value")}
                 </SmallTitle>
-              </Box>
-              <SmallTitle color={theme.cloudScreen.valueColor}>
-                {i18n.t("cloudScreen.signUp.content.value")}
-              </SmallTitle>
-            </FeaturesTextWrapper>
-            <ListItemsContainer>
-              <InlineListItem
-                iconName="backup"
-                text={i18n.t("cloudScreen.signUp.content.listItem1")}
-              />
-              <InlineListItem
-                iconName="verified-user"
-                text={i18n.t("cloudScreen.signUp.content.listItem2")}
-              />
-              <InlineListItem
-                iconName="phone-android"
-                text={i18n.t("cloudScreen.signUp.content.listItem3")}
-                hasMarginBottom={false}
-              />
-            </ListItemsContainer>
-          </FeaturesContainer>
+              </FeaturesTextWrapper>
+              <ListItemsContainer>
+                <InlineListItem
+                  iconName="backup"
+                  text={i18n.t("cloudScreen.signUp.content.listItem1")}
+                />
+                <InlineListItem
+                  iconName="verified-user"
+                  text={i18n.t("cloudScreen.signUp.content.listItem2")}
+                />
+                <InlineListItem
+                  iconName="phone-android"
+                  text={i18n.t("cloudScreen.signUp.content.listItem3")}
+                  hasMarginBottom={false}
+                />
+              </ListItemsContainer>
+            </FeaturesContainer>
+          ) : (
+            <LoginContentWrapper>
+              <WelcomeBackText>
+                {i18n.t("cloudScreen.logIn.content.text")}
+              </WelcomeBackText>
+            </LoginContentWrapper>
+          )}
         </ContentContainer>
         <FormContainer>
           <Box mb={20}>
             <Input
-              title={i18n.t("cloudScreen.signUp.email.title")}
-              placeholderText={i18n.t("cloudScreen.signUp.email.placeholder")}
+              title={i18n.t("cloudScreen.email.title")}
+              placeholderText={i18n.t("cloudScreen.email.placeholder")}
               inputText={emailValue}
               onChangeText={setEmailValue}
             />
           </Box>
           <Box mb={20}>
             <Input
-              title={i18n.t("cloudScreen.signUp.password.title")}
-              placeholderText={i18n.t(
-                "cloudScreen.signUp.password.placeholder"
-              )}
+              title={i18n.t("cloudScreen.password.title")}
+              placeholderText={i18n.t("cloudScreen.password.placeholder")}
               inputText={passwordValue}
               onChangeText={setPasswordValue}
               secureTextEntry
             />
           </Box>
           <Button
-            text={isCreateAccount ? "Sign Up" : "Login"}
+            text={
+              isCreateAccount
+                ? i18n.t("cloudScreen.signUp.primaryButton")
+                : i18n.t("cloudScreen.logIn.primaryButton")
+            }
             variant="primary"
             onPress={onHandleAuthentication}
           />
-          <ForgotPasswordContainer>
-            <TouchableOpacity>
-              <Text>Forgot password?</Text>
-            </TouchableOpacity>
-          </ForgotPasswordContainer>
+          {!isCreateAccount && (
+            <ForgotPasswordContainer>
+              <TouchableOpacity>
+                <Text>{i18n.t("cloudScreen.logIn.forgotPassword")}</Text>
+              </TouchableOpacity>
+            </ForgotPasswordContainer>
+          )}
           <FormFooter>
             <Box mr={3}>
               <Text>
-                {!isCreateAccount
-                  ? "Dont have an account?"
-                  : "Dont have an account?"}
+                {isCreateAccount
+                  ? i18n.t("cloudScreen.signUp.footer.text")
+                  : i18n.t("cloudScreen.logIn.footer.text")}
               </Text>
             </Box>
             <TouchableOpacity
@@ -243,7 +264,9 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
               }
             >
               <SmallTitle color={theme.colors.primary}>
-                {!isCreateAccount ? "Sign up" : "Login"}
+                {isCreateAccount
+                  ? i18n.t("cloudScreen.signUp.footer.link")
+                  : i18n.t("cloudScreen.logIn.footer.link")}
               </SmallTitle>
             </TouchableOpacity>
           </FormFooter>

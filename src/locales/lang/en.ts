@@ -71,7 +71,17 @@ export default {
   },
   // Cloud Screen
   cloudScreen: {
+    email: {
+      title: "Email",
+      placeholder: "example@gmail.com",
+    },
+    password: {
+      title: "Password",
+      placeholder: "*****",
+    },
+    // signUp specific
     signUp: {
+      primaryButton: "Sign Up",
       content: {
         title: "Better with premium",
         subtitle: "Unlock premium features",
@@ -81,13 +91,22 @@ export default {
         listItem2: "Premium\nfeatures",
         listItem3: "Multiple\ndevices",
       },
-      email: {
-        title: "Email",
-        placeholder: "example@gmail.com",
+      footer: {
+        text: "Already have an account?",
+        link: "Login",
       },
-      password: {
-        title: "Password",
-        placeholder: "*****",
+    },
+    // login specific
+    logIn: {
+      primaryButton: "Login",
+      forgotPassword: "Forgot password?",
+      content: {
+        title: "Login",
+        text: "Hello Again!\nWelcome\nback",
+      },
+      footer: {
+        text: "Dont have an account?",
+        link: "Sign up",
       },
     },
   },
