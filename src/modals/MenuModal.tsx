@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { userThemeItem } from "utils/constants";
+import { userPasswordPinItem, userThemeItem } from "utils/constants";
 import i18n from "locales/index";
 import { navigate } from "navigation/index";
 // Hooks
@@ -17,6 +17,7 @@ import { NotificationType } from "types/notifications";
 const MenuModal: React.FC = () => {
   const store = useStore();
   const notification = useNotification();
+  const [isPinProtected, setIsPinProtected] = useState(false);
 
   const {
     dispatch,
@@ -29,6 +30,12 @@ const MenuModal: React.FC = () => {
       payload: { isOpen: false },
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    if (store.state.hasPasswordPin) {
+      setIsPinProtected(true);
+    }
+  }, [store.state.hasPasswordPin]);
 
   const onChangeTheme = async (value: boolean) => {
     try {
@@ -46,6 +53,26 @@ const MenuModal: React.FC = () => {
           type: NotificationType.danger,
         },
       });
+    }
+  };
+
+  const onChangePasswordPin = async (active: boolean) => {
+    try {
+      if (!active) {
+        await AsyncStorage.removeItem(userPasswordPinItem);
+        setIsPinProtected(false);
+        store.dispatch({
+          type: "SET_PASSWORD_PIN",
+          payload: { hasPasswordPin: false, passwordPin: null },
+        });
+      } else {
+        navigate("Password");
+        setTimeout(() => {
+          onClose();
+        }, 100);
+      }
+    } catch (e) {
+      console.log("error removing pin = ", e);
     }
   };
 
@@ -74,12 +101,10 @@ const MenuModal: React.FC = () => {
       <BorderButton title="Upload Data" onPress={() => console.log("data")} />
       <BorderButton
         title="Password Protection"
-        onPress={() => {
-          navigate("Password");
-          setTimeout(() => {
-            onClose();
-          }, 100);
-        }}
+        hasCustomSwitch
+        isSwitchActive={isPinProtected}
+        onChangeSwitch={onChangePasswordPin}
+        hasArrowIcon={false}
       />
       <BorderButton
         title="Terms and Conditions"

@@ -85,5 +85,9 @@ export default {
       success: "Page saved with success",
       error: "Error saving the page",
     },
+    savePasswordPin: {
+      success: "Pin created with success",
+      error: "Error creating pin",
+    },
   },
 };

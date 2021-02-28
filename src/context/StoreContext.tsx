@@ -4,7 +4,11 @@ import { getAllActivity, getAllBooks } from "database/Book";
 import { getNetworkStateAsync } from "expo-network";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
-import { userCloudLastSyncItem, userThemeItem } from "utils/constants";
+import {
+  userCloudLastSyncItem,
+  userThemeItem,
+  userPasswordPinItem,
+} from "utils/constants";
 // Types
 import {
   Context,
@@ -16,7 +20,6 @@ import {
 } from "types/store";
 // API
 import supabase from "libs/supabase";
-
 /** URL polyfill. Required for Supabase queries to work in React Native. */
 import "react-native-url-polyfill/auto";
 
@@ -28,6 +31,8 @@ const initialState = {
   subscriptionStatus: SubscriptionStatus.loading,
   isDarkTheme: false,
   isHomeScreenLoading: true,
+  hasPasswordPin: false,
+  passwordPin: null,
 };
 
 export const StoreContext = createContext<Context>({
@@ -57,18 +62,22 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
         ...state,
         networkStatus: action.payload.status,
       };
-
     case "SET_AUTHENTICATION_STATUS":
       return {
         ...state,
         user: action.payload.user,
         subscriptionStatus: action.payload.subscriptionStatus,
       };
-
     case "SET_DARK_THEME":
       return {
         ...state,
         isDarkTheme: action.payload.isDarkTheme,
+      };
+    case "SET_PASSWORD_PIN":
+      return {
+        ...state,
+        hasPasswordPin: action.payload.hasPasswordPin,
+        passwordPin: action.payload.passwordPin,
       };
     case "SET_IS_HOME_SCREEN_LOADING":
       return {
@@ -142,6 +151,16 @@ export const StoreContextProvider: React.FC = ({ children }) => {
       try {
         await loadBooks();
         await loadActivity();
+        const userPasswordPin = await AsyncStorage.getItem(userPasswordPinItem);
+
+        dispatch({
+          type: "SET_PASSWORD_PIN",
+          payload: {
+            hasPasswordPin: !!userPasswordPin,
+            passwordPin: userPasswordPin,
+          },
+        });
+
         dispatch({
           type: "SET_IS_HOME_SCREEN_LOADING",
           payload: { isHomeScreenLoading: false },

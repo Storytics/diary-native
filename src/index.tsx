@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StatusBar, View } from "react-native";
 import AppLoading from "expo-app-loading";
 import Notification from "components/Notification";
@@ -7,7 +7,7 @@ import { ThemeProvider } from "styled-components/native";
 import themeLight from "theme/index";
 import themeDark from "theme/dark";
 // Navigation
-import Navigation from "navigation/index";
+import Navigation, { navigate } from "navigation/index";
 // Contexts
 import { ModalsContextProvider } from "context/ModalsContext";
 import { StoreContextProvider } from "context/StoreContext";
@@ -24,10 +24,16 @@ interface Props {
 
 const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
   const {
-    state: { isDarkTheme, isHomeScreenLoading },
+    state: { isDarkTheme, isHomeScreenLoading, hasPasswordPin },
   } = useStore();
 
   const theme = isDarkTheme ? themeDark : themeLight;
+
+  useEffect(() => {
+    if (!isHomeScreenLoading && hasPasswordPin) {
+      navigate("Password");
+    }
+  }, [isHomeScreenLoading, hasPasswordPin]);
 
   if ((!fontsLoaded && isDatabaseLoading) || isHomeScreenLoading) {
     return <AppLoading />;
