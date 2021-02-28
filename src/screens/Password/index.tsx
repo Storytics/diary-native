@@ -151,9 +151,19 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
     try {
       if (hasFingerprint) {
         const result = await LocalAuthentication.authenticateAsync();
+        dispatch({
+          type: "SET_LOCAL_AUTH",
+          payload: { isLocalAuthentication: true },
+        });
 
         if (result.success) {
           navigation.navigate("Home");
+          setTimeout(() => {
+            dispatch({
+              type: "SET_LOCAL_AUTH",
+              payload: { isLocalAuthentication: false },
+            });
+          }, 2000);
         }
       }
     } catch (e) {

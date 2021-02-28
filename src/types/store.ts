@@ -42,6 +42,7 @@ export interface StoreState {
   isHomeScreenLoading: boolean;
   hasPasswordPin: boolean;
   passwordPin: string | null;
+  isLocalAuthentication: boolean;
 }
 
 export interface AddBookPayload {
@@ -102,6 +103,13 @@ export interface SetPasswordPinPayload {
   };
 }
 
+export interface SetLocalAuthPayload {
+  type: "SET_LOCAL_AUTH";
+  payload: {
+    isLocalAuthentication: boolean;
+  };
+}
+
 export type StoreActions =
   | AddBookPayload
   | LoadBooksPayload
@@ -110,7 +118,8 @@ export type StoreActions =
   | SetAuthenticationStatusPayload
   | SetDarkThemePayload
   | SetIsHomeScreenLoadingPayload
-  | SetPasswordPinPayload;
+  | SetPasswordPinPayload
+  | SetLocalAuthPayload;
 
 export interface Context {
   state: StoreState;

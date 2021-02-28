@@ -33,6 +33,7 @@ const initialState = {
   isHomeScreenLoading: true,
   hasPasswordPin: false,
   passwordPin: null,
+  isLocalAuthentication: false,
 };
 
 export const StoreContext = createContext<Context>({
@@ -83,6 +84,11 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
       return {
         ...state,
         isHomeScreenLoading: action.payload.isHomeScreenLoading,
+      };
+    case "SET_LOCAL_AUTH":
+      return {
+        ...state,
+        isLocalAuthentication: action.payload.isLocalAuthentication,
       };
     default:
       return state;
