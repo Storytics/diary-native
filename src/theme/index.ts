@@ -204,6 +204,20 @@ const Theme = {
     // gray-100 in rgba
     linearGradient: ["rgba(238, 238, 238, 0)", colors.gray100],
   },
+  cloudScreen: {
+    valueColor: colors.primary,
+    listItem: {
+      borderColor: colors.white,
+      linearGradient: [colors.gray100, colors.gray50],
+      icon: {
+        backgroundColor: colors.blue100,
+        color: colors.blue400,
+      },
+    },
+    form: {
+      backgroundColor: colors.white,
+    },
+  },
 };
 
 export type ThemeType = typeof Theme;

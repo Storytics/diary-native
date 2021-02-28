@@ -5,10 +5,11 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Container, StyledLargeTitle, IconContainer } from "./styles";
 
 interface HeaderProps {
-  text: string;
+  text?: string;
   hasBackButton?: boolean;
   onPress?: () => void;
   hasMarginBottom?: boolean;
+  hasTitle?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -16,6 +17,7 @@ const Header: React.FC<HeaderProps> = ({
   hasBackButton = false,
   onPress,
   hasMarginBottom = true,
+  hasTitle = true,
 }) => {
   const theme = useTheme();
   return (
@@ -34,7 +36,9 @@ const Header: React.FC<HeaderProps> = ({
           </RoundButton>
         </IconContainer>
       )}
-      <StyledLargeTitle numberOfLines={1}>{text}</StyledLargeTitle>
+      {hasTitle && (
+        <StyledLargeTitle numberOfLines={2}>{text}</StyledLargeTitle>
+      )}
     </Container>
   );
 };

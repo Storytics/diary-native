@@ -69,4 +69,26 @@ export default {
       placeholder: "Click here to start writing.",
     },
   },
+  // Cloud Screen
+  cloudScreen: {
+    signUp: {
+      content: {
+        title: "Better with premium",
+        subtitle: "Unlock premium features",
+        value: "1.99$/Month",
+        // break word
+        listItem1: "Backup\ndata",
+        listItem2: "Premium\nfeatures",
+        listItem3: "Multiple\ndevices",
+      },
+      email: {
+        title: "Email",
+        placeholder: "example@gmail.com",
+      },
+      password: {
+        title: "Password",
+        placeholder: "*****",
+      },
+    },
+  },
 };

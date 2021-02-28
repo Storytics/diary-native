@@ -1,0 +1,85 @@
+import styled from "styled-components/native";
+
+export const ContentContainer = styled.View`
+  display: flex;
+  flex-grow: 1;
+  padding: 30px 0 0 0;
+`;
+
+export const FeaturesContainer = styled.View`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  padding: 0 25px;
+`;
+
+export const FeaturesTextWrapper = styled.View`
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  margin-bottom: 15px;
+`;
+
+export const ListItemsContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const ListItemWrapper = styled.View`
+  display: flex;
+  flex-basis: 33.33%;
+  padding: 0 5px;
+`;
+
+export const ListItem = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  border: 1px solid ${({ theme }) => theme.cloudScreen.listItem.borderColor};
+  border-radius: ${({ theme }) => theme.sizes.borderRadius.default};
+  padding: 10px 5px;
+  overflow: hidden;
+`;
+
+export const ListItemIconContainer = styled.View`
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  margin-bottom: 5px;
+  background-color: ${({ theme }) =>
+    theme.cloudScreen.listItem.icon.backgroundColor};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const FormContainer = styled.View`
+  background-color: ${({ theme }) => theme.cloudScreen.form.backgroundColor};
+  border-top-left-radius: ${({ theme }) => theme.sizes.borderRadius.large};
+  border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius.large};
+  padding: 30px;
+`;
+
+export const FormFooter = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 30px;
+`;
+
+export const ForgotPasswordContainer = styled.View`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+export const Box = styled.View<{
+  mb?: number;
+  mr?: number;
+  mt?: number;
+}>`
+  margin-top: ${({ mt }) => (mt ? `${mt}px` : 0)};
+  margin-bottom: ${({ mb }) => (mb ? `${mb}px` : 0)};
+  margin-right: ${({ mr }) => (mr ? `${mr}px` : 0)};
+`;

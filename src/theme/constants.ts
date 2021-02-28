@@ -6,8 +6,9 @@ export const colors = {
   red200: "#F1998E",
   success: "#05944F",
   blue400: "#276EF1",
-  blue200: "#A0BFF8",
   blue300: "#5B91F5",
+  blue200: "#A0BFF8",
+  blue100: "#D4E2FC",
   yellow400: "#FFC043",
   yellow200: "#FFE3AC",
   orange400: "#FF6937",
@@ -26,6 +27,7 @@ export const colors = {
   gray700: "#333333",
   gray800: "#1F1F1F",
   gray900: "#141414",
+  black: "#000000",
   white: "#FFFFFF",
   primaryUnderlayColor: "#A0BFF8",
   // most cases feedback colors increment or decrement by 200
