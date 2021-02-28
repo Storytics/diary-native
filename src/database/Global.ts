@@ -4,8 +4,8 @@ import { BooksProps } from "types/book";
 // DB Connection
 import Connection from "./DatabaseConnection";
 
-export const exportAllData = async (): Promise<Array<BooksProps>> => {
-  return new Promise((resolve, reject) => {
+export const exportAllData = async (): Promise<Array<BooksProps>> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
@@ -22,4 +22,3 @@ export const exportAllData = async (): Promise<Array<BooksProps>> => {
       }
     );
   });
-};

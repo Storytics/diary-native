@@ -1,3 +1,2 @@
-export const unescapeHtml = (html: string) => {
-  return html.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-};
+export const unescapeHtml = (html: string) =>
+  html.replace(/&lt;/g, "<").replace(/&gt;/g, ">");

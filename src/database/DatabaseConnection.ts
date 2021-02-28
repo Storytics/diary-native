@@ -3,8 +3,8 @@ import { SQLiteDatabaseName } from "utils/constants";
 
 const Connection = SQLite.openDatabase(SQLiteDatabaseName, "1.0");
 
-export const DatabaseInit = async (): Promise<unknown> => {
-  return new Promise((resolve, reject) => {
+export const DatabaseInit = async (): Promise<unknown> =>
+  new Promise((resolve, reject) => {
     const SQLQueries = [
       `DROP TABLE IF EXISTS book;`,
       `DROP TABLE IF EXISTS page;`,
@@ -32,6 +32,5 @@ export const DatabaseInit = async (): Promise<unknown> => {
       }
     );
   });
-};
 
 export default Connection;

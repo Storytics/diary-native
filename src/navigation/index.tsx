@@ -24,20 +24,18 @@ export const navigate = (name: string, params?: RootStackParamList) => {
   navigationRef.current?.navigate(name, params);
 };
 
-const Navigation: React.FC = () => {
-  return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator initialRouteName="Home" headerMode="none" mode="card">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Diary" component={DiaryScreen} />
-        <Stack.Screen name="Editor" component={EditorScreen} />
-        <Stack.Screen name="Cloud" component={CloudScreen} />
-        <Stack.Screen name="Password" component={PasswordScreen} />
-        <Stack.Screen name="Billing" component={BillingScreen} />
-        <Stack.Screen name="Terms" component={TermsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+const Navigation: React.FC = () => (
+  <NavigationContainer ref={navigationRef}>
+    <Stack.Navigator initialRouteName="Home" headerMode="none" mode="card">
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Diary" component={DiaryScreen} />
+      <Stack.Screen name="Editor" component={EditorScreen} />
+      <Stack.Screen name="Cloud" component={CloudScreen} />
+      <Stack.Screen name="Password" component={PasswordScreen} />
+      <Stack.Screen name="Billing" component={BillingScreen} />
+      <Stack.Screen name="Terms" component={TermsScreen} />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
 
 export default Navigation;

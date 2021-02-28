@@ -94,30 +94,28 @@ const Select: React.FC<SelectProps> = ({
     <Container>
       <StyledSmallTitle>{title}</StyledSmallTitle>
       <ButtonsWrapper>
-        {selectors.map((button, index, { length }) => {
-          return (
-            <Button
-              key={index.toString()}
-              onPress={() => {
-                onChange(handleColorType(button.color, theme).backgroundColor);
-                setSelectedValue(index);
-              }}
-              underlayColor={handleColorType(button.color, theme).underlayColor}
-              color={handleColorType(button.color, theme).backgroundColor}
-              isLastChild={length === index + 1}
-            >
-              <InnerButton isSelected={isSelectedValue === index}>
-                {isSelectedValue === index && (
-                  <MaterialIcons
-                    name="check"
-                    size={16}
-                    color={theme.select.button.borderColor}
-                  />
-                )}
-              </InnerButton>
-            </Button>
-          );
-        })}
+        {selectors.map((button, index, { length }) => (
+          <Button
+            key={index.toString()}
+            onPress={() => {
+              onChange(handleColorType(button.color, theme).backgroundColor);
+              setSelectedValue(index);
+            }}
+            underlayColor={handleColorType(button.color, theme).underlayColor}
+            color={handleColorType(button.color, theme).backgroundColor}
+            isLastChild={length === index + 1}
+          >
+            <InnerButton isSelected={isSelectedValue === index}>
+              {isSelectedValue === index && (
+                <MaterialIcons
+                  name="check"
+                  size={16}
+                  color={theme.select.button.borderColor}
+                />
+              )}
+            </InnerButton>
+          </Button>
+        ))}
       </ButtonsWrapper>
     </Container>
   );

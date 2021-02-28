@@ -152,20 +152,18 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         tintColor: string;
         selected: boolean;
         iconSize: number;
-      }) => {
-        return (
-          <FakeButton
-            size="medium"
-            backgroundColor={
-              selected
-                ? theme.toolBar.button.active.backgroundColor
-                : theme.toolBar.button.default.backgroundColor
-            }
-          >
-            <MaterialIcons name={item.name} size={iconSize} color={tintColor} />
-          </FakeButton>
-        );
-      },
+      }) => (
+        <FakeButton
+          size="medium"
+          backgroundColor={
+            selected
+              ? theme.toolBar.button.active.backgroundColor
+              : theme.toolBar.button.default.backgroundColor
+          }
+        >
+          <MaterialIcons name={item.name} size={iconSize} color={tintColor} />
+        </FakeButton>
+      ),
     }),
     {}
   );

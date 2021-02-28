@@ -88,12 +88,10 @@ const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
   );
 };
 
-const App: React.FC<Props> = (props) => {
-  return (
-    <StoreContextProvider>
-      <Register {...props} />
-    </StoreContextProvider>
-  );
-};
+const App: React.FC<Props> = (props) => (
+  <StoreContextProvider>
+    <Register {...props} />
+  </StoreContextProvider>
+);
 
 export default App;

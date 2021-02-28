@@ -29,23 +29,25 @@ const CreateDiaryModal: React.FC = () => {
 
   const selectors = useMemo(() => buttons(theme), [theme]);
 
-  const translations = useMemo(() => {
-    return isEditDiary
-      ? {
-          title: "modal.edit.title",
-          buttons: {
-            primary: "modal.edit.buttons.primary",
-            secondary: "modal.edit.buttons.secondary",
+  const translations = useMemo(
+    () =>
+      isEditDiary
+        ? {
+            title: "modal.edit.title",
+            buttons: {
+              primary: "modal.edit.buttons.primary",
+              secondary: "modal.edit.buttons.secondary",
+            },
+          }
+        : {
+            title: "modal.create.title",
+            buttons: {
+              primary: "modal.create.buttons.primary",
+              secondary: "modal.create.buttons.secondary",
+            },
           },
-        }
-      : {
-          title: "modal.create.title",
-          buttons: {
-            primary: "modal.create.buttons.primary",
-            secondary: "modal.create.buttons.secondary",
-          },
-        };
-  }, [isEditDiary]);
+    [isEditDiary]
+  );
 
   useEffect(() => {
     const title = isEditDiary ? diary.bookTitle : "";
