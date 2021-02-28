@@ -3,8 +3,8 @@
     "owner": "storytics",
     "privacy": "hidden",
     "name": "Diary",
-    "slug": "Diary",
-    "version": "1.0.0",
+    "slug": "diary-by-storytics",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSFaceIDUsageDescription": "To protect user personal information like books and pages"
+        "NSFaceIDUsageDescription": "This app uses FaceID to protect user personal information like books and pages"
       }
     },
     "android": {
