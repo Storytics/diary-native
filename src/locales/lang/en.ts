@@ -12,6 +12,11 @@ export default {
       placeholderText: "Recent activity appears here",
     },
   },
+  terms: {
+    section: {
+      title: "Terms & Conditions",
+    },
+  },
   modal: {
     create: {
       title: "New Diary",

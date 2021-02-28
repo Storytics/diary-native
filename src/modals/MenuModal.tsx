@@ -108,7 +108,10 @@ const MenuModal: React.FC = () => {
       />
       <BorderButton
         title="Terms and Conditions"
-        onPress={() => console.log("terms")}
+        onPress={() => {
+          onClose();
+          navigate("Terms");
+        }}
       />
       <Brand />
     </Modal>
