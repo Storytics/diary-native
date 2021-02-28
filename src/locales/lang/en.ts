@@ -71,5 +71,19 @@ export default {
       success: "Diary deleted with success",
       error: "Error deleting diary",
     },
+    changeTheme: {
+      error: "Error changing theme",
+    },
+    loadPages: {
+      error: "Error loading pages for this diary",
+    },
+    editPage: {
+      success: "Page edited with success",
+      error: "Error editing the page",
+    },
+    savePage: {
+      success: "Page saved with success",
+      error: "Error saving the page",
+    },
   },
 };

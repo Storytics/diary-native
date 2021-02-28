@@ -27,7 +27,11 @@ import { getAllActivity } from "database/Book";
 import { unescapeHtml } from "utils/functions";
 // Context
 import useStore from "hooks/useStore";
+// Hooks
+import useNotification from "hooks/useNotification";
 // styled components
+import i18n from "locales/index";
+import { NotificationType } from "types/notifications";
 import {
   Container,
   ContentWrapper,
@@ -123,6 +127,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   const { isKeyboardOpen } = useKeyboard();
   const theme = useTheme();
   const { dispatch } = useStore();
+  const notification = useNotification();
 
   // Scroll Ref - scroll initial to top
   const noteBookScrollRef = useRef<ScrollView>(null);
@@ -195,17 +200,40 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         }
       }
 
+      if (content) {
+        const message =
+          params.isEdit && params.page
+            ? "notifications.editPage.success"
+            : "notifications.savePage.success";
+
+        notification.dispatch({
+          type: "CREATE_NOTIFICATION",
+          payload: {
+            isOpen: true,
+            message: i18n.t(message),
+            type: NotificationType.success,
+          },
+        });
+      }
+
       navigation.navigate("Diary", {
         bookId: params.bookId,
         bookTitle: params.bookTitle,
         activityPageId: params.pageNumber,
       });
     } catch (e) {
-      if (params.isEdit) {
-        console.log("Error editing the page = ", e);
-      } else {
-        console.log("Error saving the page = ", e);
-      }
+      const message = params.isEdit
+        ? "notifications.editPage.error"
+        : "notifications.savePage.error";
+
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t(message),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 

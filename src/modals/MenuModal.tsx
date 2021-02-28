@@ -6,13 +6,17 @@ import { navigate } from "navigation/index";
 // Hooks
 import useModals from "hooks/useModals";
 import useStore from "hooks/useStore";
+import useNotification from "hooks/useNotification";
 // Components
 import BorderButton from "components/BorderButton";
 import Brand from "components/Brand";
 import Modal from "components/Modal";
+// Types
+import { NotificationType } from "types/notifications";
 
 const MenuModal: React.FC = () => {
   const store = useStore();
+  const notification = useNotification();
 
   const {
     dispatch,
@@ -34,7 +38,14 @@ const MenuModal: React.FC = () => {
         payload: { isDarkTheme: value },
       });
     } catch (e) {
-      console.log("error changing theme = ", e);
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.changeTheme.error"),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 
