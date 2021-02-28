@@ -29,15 +29,14 @@ import { unescapeHtml } from "utils/functions";
 import useStore from "hooks/useStore";
 // Hooks
 import useNotification from "hooks/useNotification";
-// styled components
-import i18n from "locales/index";
+// Types
 import { NotificationType } from "types/notifications";
-import {
-  Container,
-  ContentWrapper,
-  ToolBarWrapper,
-  EditorContainer,
-} from "./styles";
+// Locales
+import i18n from "locales/index";
+// Screens shared styles
+import { EditorContainer } from "../styles";
+// Styled components
+import { Container, ContentWrapper, ToolBarWrapper } from "./styles";
 
 const toolBarActions: Array<{
   id: string;
@@ -257,6 +256,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                 page={params.pageNumber.toString() || "0"}
                 date={dayjs(getDate).format("DD MMM YYYY")}
                 day={dayjs(getDate).format("dddd")}
+                isLoading={false}
               >
                 <EditorContainer>
                   <RichEditor
@@ -265,9 +265,9 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                       backgroundColor: theme.richEditor.backgroundColor,
                       color: theme.richEditor.textColor,
                       placeholderColor: theme.richEditor.placeholderColor,
-                      contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
+                      contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;}`,
                     }}
-                    placeholder="Start Writing Here"
+                    placeholder={i18n.t("editorScreen.richEditor.placeholder")}
                     initialFocus={false}
                     disabled={false}
                     useContainer={false}

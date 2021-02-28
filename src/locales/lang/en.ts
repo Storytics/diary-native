@@ -95,4 +95,16 @@ export default {
       error: "Error creating pin",
     },
   },
+  // Diary Screen
+  diaryScreen: {
+    richEditor: {
+      placeholder: "Click on the blue add button to create a new page.",
+    },
+  },
+  // Editor Screen
+  editorScreen: {
+    richEditor: {
+      placeholder: "Click here to start writing.",
+    },
+  },
 };

@@ -1,12 +1,16 @@
 import styled, { css } from "styled-components/native";
 
+const flexGrow1 = css`
+  display: flex;
+  flex-grow: 1;
+`;
+
 export const Container = styled.View<{
   hasPaddingBottom?: boolean;
   height?: number;
 }>`
+  ${flexGrow1};
   padding-right: 20px;
-  display: flex;
-  flex-grow: 1;
   ${({ hasPaddingBottom }) =>
     hasPaddingBottom &&
     css`
@@ -16,11 +20,10 @@ export const Container = styled.View<{
 `;
 
 export const Wrapper = styled.View`
+  ${flexGrow1};
   background-color: ${({ theme }) => theme.noteBook.backgroundColor};
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius.large};
   border-bottom-right-radius: ${({ theme }) => theme.sizes.borderRadius.large};
-  display: flex;
-  flex-grow: 1;
   position: relative;
   padding-left: 15px;
   overflow: hidden;
@@ -46,13 +49,13 @@ export const HeaderWrapper = styled.View`
 `;
 
 export const Content = styled.View`
-  display: flex;
+  position: relative;
   flex: 1;
   padding: 0 30px;
 `;
 
 export const LinesWrapper = styled.View`
-  flex: 1;
+  ${flexGrow1};
   overflow: hidden;
   z-index: 1;
 `;
@@ -67,4 +70,15 @@ export const Footer = styled.View`
   align-items: center;
   justify-content: center;
   padding: 20px 30px;
+`;
+
+export const LoadingContainer = styled.View`
+  z-index: 20;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0 30px;
+  background-color: ${({ theme }) => theme.noteBook.backgroundColor};
 `;
