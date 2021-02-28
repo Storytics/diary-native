@@ -13,16 +13,13 @@ export const DatabaseInit = async (): Promise<unknown> =>
       (tx: SQLite.SQLTransaction) => {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < SQLQueries.length; i++) {
-          console.log("execute sql : ", SQLQueries[i]);
           tx.executeSql(SQLQueries[i]);
         }
       },
       (error: SQLite.SQLError) => {
-        console.log("db error creating tables = ", error);
         reject(error);
       },
       () => {
-        console.log("success");
         resolve("success");
       }
     );
