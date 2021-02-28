@@ -1,9 +1,12 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
+import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Theme from "theme/index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // Types
 import { PasswordScreenNavigationProp } from "types/navigation";
+import { NotificationType } from "types/notifications";
 // Components
 import Logo from "components/Logo";
 import Header from "components/Header";
@@ -11,6 +14,14 @@ import Container from "components/Container";
 import CustomSafeArea from "components/CustomSafeArea";
 import RoundButton from "components/RoundButton";
 import { LargeText } from "components/Typography";
+// Utils
+import { userPasswordPinItem } from "utils/constants";
+import i18n from "locales/index";
+import * as LocalAuthentication from "expo-local-authentication";
+// Hooks
+import useStore from "hooks/useStore";
+import useNotification from "hooks/useNotification";
+// Styles
 import {
   Wrapper,
   LogoContainer,
@@ -61,6 +72,12 @@ interface Props {
 const PasswordScreen: React.FC<Props> = ({ navigation }) => {
   const theme = useTheme();
   const [code, setCode] = useState<Array<string>>([]);
+  const [hasFingerprint, setHasFingerprint] = useState(false);
+  const {
+    state: { hasPasswordPin, passwordPin },
+    dispatch,
+  } = useStore();
+  const notification = useNotification();
 
   const animationWidth = useMemo(
     () => [12, 55, 98, 140][code.length - 1 || 0],
@@ -73,16 +90,99 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    if (hasPasswordPin) {
+      if (passwordPin === code.toString()) {
+        navigation.navigate("Home");
+      }
+    }
+  }, [hasPasswordPin, passwordPin, code, navigation]);
+
+  useEffect(() => {
+    const getHardwareSettings = async () => {
+      try {
+        const hasHardware = await LocalAuthentication.hasHardwareAsync();
+        const isHardwareEnabled = await LocalAuthentication.isEnrolledAsync();
+        setHasFingerprint(hasHardware && isHardwareEnabled);
+      } catch (e) {
+        console.log("error getting fingerprint settings = ", e);
+      }
+    };
+
+    getHardwareSettings();
+  }, []);
+
+  const onSave = async () => {
+    try {
+      if (code.length === 4) {
+        await AsyncStorage.setItem(userPasswordPinItem, code.toString());
+        dispatch({
+          type: "SET_PASSWORD_PIN",
+          payload: { hasPasswordPin: true, passwordPin: code.toString() },
+        });
+        notification.dispatch({
+          type: "CREATE_NOTIFICATION",
+          payload: {
+            isOpen: true,
+            message: i18n.t("notifications.savePasswordPin.success"),
+            type: NotificationType.success,
+          },
+        });
+        navigation.navigate("Home");
+      }
+    } catch (e) {
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.savePasswordPin.error"),
+          type: NotificationType.danger,
+        },
+      });
+    }
+  };
+
+  const onDelete = () => {
+    const updatedCode = code.slice(0, -1);
+    setCode(updatedCode);
+  };
+
+  const onFingerPrint = async () => {
+    try {
+      if (hasFingerprint) {
+        const result = await LocalAuthentication.authenticateAsync();
+        dispatch({
+          type: "SET_LOCAL_AUTH",
+          payload: { isLocalAuthentication: true },
+        });
+
+        if (result.success) {
+          navigation.navigate("Home");
+          setTimeout(() => {
+            dispatch({
+              type: "SET_LOCAL_AUTH",
+              payload: { isLocalAuthentication: false },
+            });
+          }, 2000);
+        }
+      }
+    } catch (e) {
+      console.log("error using fingerprint = ", e);
+    }
+  };
+
   return (
     <CustomSafeArea>
       <Container>
-        <Header
-          hasBackButton
-          text="Create Password"
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
-        />
+        {!hasPasswordPin && (
+          <Header
+            hasBackButton
+            text="Create Password"
+            onPress={() => {
+              navigation.navigate("Home");
+            }}
+          />
+        )}
         <Wrapper>
           <LogoContainer>
             <Logo size={48} color={theme.passwordScreen.logo.color} />
@@ -153,25 +253,47 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
               />
             </Row>
             <Row>
-              <Button
-                isIcon
-                iconName="fingerprint"
-                onPress={() => console.log("finger")}
-                theme={theme}
-              />
+              {hasPasswordPin ? (
+                <>
+                  {hasFingerprint ? (
+                    <Button
+                      isIcon
+                      iconName="fingerprint"
+                      onPress={onFingerPrint}
+                      theme={theme}
+                    />
+                  ) : (
+                    <View style={{ height: 56, width: 56 }} />
+                  )}
+                </>
+              ) : (
+                <Button
+                  isIcon
+                  iconName="backspace"
+                  theme={theme}
+                  onPress={onDelete}
+                />
+              )}
               <Button
                 text="0"
                 theme={theme}
                 onPress={() => setCode([...code, "0"])}
               />
-              <Button
-                isIcon
-                theme={theme}
-                onPress={() => {
-                  const updatedCode = code.slice(0, -1);
-                  setCode(updatedCode);
-                }}
-              />
+              {hasPasswordPin ? (
+                <Button
+                  isIcon
+                  iconName="backspace"
+                  theme={theme}
+                  onPress={onDelete}
+                />
+              ) : (
+                <Button
+                  isIcon
+                  iconName="arrow-forward"
+                  theme={theme}
+                  onPress={onSave}
+                />
+              )}
             </Row>
           </ButtonsContainer>
         </Wrapper>

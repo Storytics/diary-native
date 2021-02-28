@@ -40,6 +40,9 @@ export interface StoreState {
   subscriptionStatus: SubscriptionStatus;
   isDarkTheme: boolean;
   isHomeScreenLoading: boolean;
+  hasPasswordPin: boolean;
+  passwordPin: string | null;
+  isLocalAuthentication: boolean;
 }
 
 export interface AddBookPayload {
@@ -77,6 +80,7 @@ export interface SetAuthenticationStatusPayload {
     subscriptionStatus: SubscriptionStatus;
   };
 }
+
 export interface SetDarkThemePayload {
   type: "SET_DARK_THEME";
   payload: {
@@ -91,6 +95,21 @@ export interface SetIsHomeScreenLoadingPayload {
   };
 }
 
+export interface SetPasswordPinPayload {
+  type: "SET_PASSWORD_PIN";
+  payload: {
+    hasPasswordPin: boolean;
+    passwordPin: string | null;
+  };
+}
+
+export interface SetLocalAuthPayload {
+  type: "SET_LOCAL_AUTH";
+  payload: {
+    isLocalAuthentication: boolean;
+  };
+}
+
 export type StoreActions =
   | AddBookPayload
   | LoadBooksPayload
@@ -98,7 +117,9 @@ export type StoreActions =
   | SetNetworkStatusPayload
   | SetAuthenticationStatusPayload
   | SetDarkThemePayload
-  | SetIsHomeScreenLoadingPayload;
+  | SetIsHomeScreenLoadingPayload
+  | SetPasswordPinPayload
+  | SetLocalAuthPayload;
 
 export interface Context {
   state: StoreState;

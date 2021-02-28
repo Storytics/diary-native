@@ -12,11 +12,23 @@ export default {
       placeholderText: "Recent activity appears here",
     },
   },
+  terms: {
+    section: {
+      title: "Terms & Conditions",
+    },
+  },
   modal: {
     create: {
       title: "New Diary",
       buttons: {
         primary: "Save",
+        secondary: "Cancel",
+      },
+    },
+    edit: {
+      title: "Edit Diary",
+      buttons: {
+        primary: "Update",
         secondary: "Cancel",
       },
     },
@@ -55,6 +67,32 @@ export default {
     createDiary: {
       success: "Diary created with success",
       error: "Error creating diary",
+    },
+    editDiary: {
+      success: "Diary edited with success",
+      error: "Error editing diary",
+    },
+    deleteDiary: {
+      success: "Diary deleted with success",
+      error: "Error deleting diary",
+    },
+    changeTheme: {
+      error: "Error changing theme",
+    },
+    loadPages: {
+      error: "Error loading pages for this diary",
+    },
+    editPage: {
+      success: "Page edited with success",
+      error: "Error editing the page",
+    },
+    savePage: {
+      success: "Page saved with success",
+      error: "Error saving the page",
+    },
+    savePasswordPin: {
+      success: "Pin created with success",
+      error: "Error creating pin",
     },
   },
   // Diary Screen

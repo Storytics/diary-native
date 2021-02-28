@@ -6,8 +6,8 @@ import Connection from "./DatabaseConnection";
 
 export const getAllPagesByBookId = async (
   bookId: number
-): Promise<PageProps[]> => {
-  return new Promise((resolve, reject) => {
+): Promise<PageProps[]> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
@@ -24,13 +24,12 @@ export const getAllPagesByBookId = async (
       }
     );
   });
-};
 
 export const createPage = async (
   content: string,
   bookId: number
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
+): Promise<string> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql("INSERT INTO page (content, bookId) VALUES (?, ?);", [
@@ -46,13 +45,12 @@ export const createPage = async (
       }
     );
   });
-};
 
 export const updatePageById = async (
   id: number,
   content: string
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
+): Promise<string> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(`UPDATE page SET content = ? WHERE id = ?;`, [
@@ -68,10 +66,9 @@ export const updatePageById = async (
       }
     );
   });
-};
 
-export const deletePageById = async (id: number): Promise<string> => {
-  return new Promise((resolve, reject) => {
+export const deletePageById = async (id: number): Promise<string> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(`DELETE FROM page WHERE id = ?;`, [id]);
@@ -84,4 +81,3 @@ export const deletePageById = async (id: number): Promise<string> => {
       }
     );
   });
-};

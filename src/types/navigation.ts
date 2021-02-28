@@ -28,6 +28,7 @@ export type RootStackParamList = {
   Cloud: undefined;
   Password: undefined;
   Billing: BillingNavigationParams;
+  Terms: undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -87,4 +88,13 @@ export interface BillingNavigationProps {
   route: {
     params: BillingNavigationParams;
   };
+}
+
+export type TermsScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Terms"
+>;
+
+export interface TermsNavigationProps {
+  navigation: TermsScreenNavigationProp;
 }

@@ -14,7 +14,7 @@ interface DiaryCardListProps {
   }>;
   placeholderText: string;
   onPress: (bookId: number, title: string) => void;
-  onPressMore: () => void;
+  onPressMore: (bookId: number, title: string, color: string) => void;
 }
 
 const styles = StyleSheet.create({
@@ -53,7 +53,7 @@ const DiaryCardList: React.FC<DiaryCardListProps> = ({
               title={item.title}
               bookColor={item.color}
               onPress={() => onPress(item.id, item.title)}
-              onPressMore={onPressMore}
+              onPressMore={() => onPressMore(item.id, item.title, item.color)}
             />
           </DiaryCardContainer>
         )}

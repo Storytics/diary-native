@@ -16,10 +16,9 @@ const Container = styled.View<ContainerProps>`
   justify-content: center;
   height: ${({ size }) => `${size}px`};
   width: ${({ size }) => `${size}px`};
-  border-radius: ${({ size }) => {
+  border-radius: ${({ size }) =>
     // @ts-ignore
-    return `${size - size / 1.8}px`;
-  }};
+    `${size - size / 1.8}px`};
 `;
 
 interface BrandProps extends ContainerProps {

@@ -17,7 +17,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "To protect user personal information like books and pages"
+      }
     },
     "android": {
       "adaptiveIcon": {

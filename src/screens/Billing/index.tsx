@@ -12,29 +12,27 @@ import { BillingNavigationProps } from "types/navigation";
 const Billing: React.FC<BillingNavigationProps> = ({
   navigation,
   route: { params },
-}) => {
-  return (
-    <SafeAreaView>
-      <Container>
-        <Header
-          hasBackButton
-          onPress={() => {
-            navigation.goBack();
-          }}
-          text="Back to Authentication"
-        />
-        <WebView
-          source={{
-            uri: billingUrl,
-            headers: {
-              Cookie: `user=${JSON.stringify(params.user)};`,
-            },
-          }}
-          sharedCookiesEnabled
-        />
-      </Container>
-    </SafeAreaView>
-  );
-};
+}) => (
+  <SafeAreaView>
+    <Container>
+      <Header
+        hasBackButton
+        onPress={() => {
+          navigation.goBack();
+        }}
+        text="Back to Authentication"
+      />
+      <WebView
+        source={{
+          uri: billingUrl,
+          headers: {
+            Cookie: `user=${JSON.stringify(params.user)};`,
+          },
+        }}
+        sharedCookiesEnabled
+      />
+    </Container>
+  </SafeAreaView>
+);
 
 export default Billing;

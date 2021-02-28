@@ -1,5 +1,5 @@
-import React from "react";
-import { StatusBar, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StatusBar, View, AppState, AppStateStatus } from "react-native";
 import AppLoading from "expo-app-loading";
 import Notification from "components/Notification";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -8,7 +8,7 @@ import { ThemeProvider } from "styled-components/native";
 import themeLight from "theme/index";
 import themeDark from "theme/dark";
 // Navigation
-import Navigation from "navigation/index";
+import Navigation, { navigate } from "navigation/index";
 // Contexts
 import { ModalsContextProvider } from "context/ModalsContext";
 import { StoreContextProvider } from "context/StoreContext";
@@ -24,11 +24,42 @@ interface Props {
 }
 
 const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const {
-    state: { isDarkTheme, isHomeScreenLoading },
+    state: {
+      isDarkTheme,
+      isHomeScreenLoading,
+      hasPasswordPin,
+      isLocalAuthentication,
+    },
   } = useStore();
 
   const theme = isDarkTheme ? themeDark : themeLight;
+
+  useEffect(() => {
+    if (
+      !isHomeScreenLoading &&
+      hasPasswordPin &&
+      !isLocalAuthentication &&
+      appStateVisible === "active"
+    ) {
+      navigate("Password");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHomeScreenLoading, hasPasswordPin, appStateVisible]);
+
+  const handleAppStateChange = (nextAppState: AppStateStatus) => {
+    appState.current = nextAppState;
+    setAppStateVisible(appState.current);
+  };
+
+  useEffect(() => {
+    AppState.addEventListener("change", handleAppStateChange);
+    return () => {
+      AppState.removeEventListener("change", handleAppStateChange);
+    };
+  }, []);
 
   if ((!fontsLoaded && isDatabaseLoading) || isHomeScreenLoading) {
     return <AppLoading />;
@@ -58,12 +89,10 @@ const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
   );
 };
 
-const App: React.FC<Props> = (props) => {
-  return (
-    <StoreContextProvider>
-      <Register {...props} />
-    </StoreContextProvider>
-  );
-};
+const App: React.FC<Props> = (props) => (
+  <StoreContextProvider>
+    <Register {...props} />
+  </StoreContextProvider>
+);
 
 export default App;

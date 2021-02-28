@@ -8,12 +8,15 @@ import CustomSafeArea from "components/CustomSafeArea";
 // Utils
 import { unescapeHtml } from "utils/functions";
 import dayjs from "dayjs";
+// Hooks
+import useNotification from "hooks/useNotification";
 // Types
 import { DiaryNavigationProps } from "types/navigation";
 import { PageProps } from "types/page";
 import Header from "components/Header";
 import Navigation from "components/Navigation";
 import { RichEditor } from "react-native-pell-rich-editor";
+import { NotificationType } from "types/notifications";
 // Database
 import { getAllPagesByBookId } from "database/Page";
 // Locales
@@ -41,6 +44,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const [isEditorLoading, setEditorLoading] = useState(true);
   const theme = useTheme();
   const isFocused = useIsFocused();
+  const notification = useNotification();
 
   const isCreatePage = useMemo(() => pageNumber + 1 === bookPages.length, [
     pageNumber,
@@ -66,11 +70,19 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
           setBookPages([...pages, defaultPage]);
           setPageNumber(activityIndex === -1 ? pages.length : activityIndex);
         } catch (e) {
-          console.log("error loading pages for this book ", e);
+          notification.dispatch({
+            type: "CREATE_NOTIFICATION",
+            payload: {
+              isOpen: true,
+              message: i18n.t("notifications.loadPages.error"),
+              type: NotificationType.danger,
+            },
+          });
         }
       };
 
       onLoadPages();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.bookId, params.activityPageId])
   );
 

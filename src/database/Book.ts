@@ -5,8 +5,8 @@ import { ActivityProps } from "types/activity";
 // DB Connection
 import Connection from "./DatabaseConnection";
 
-export const getAllBooks = async (): Promise<BookProps[]> => {
-  return new Promise((resolve, reject) => {
+export const getAllBooks = async (): Promise<BookProps[]> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
@@ -23,10 +23,9 @@ export const getAllBooks = async (): Promise<BookProps[]> => {
       }
     );
   });
-};
 
-export const getAllActivity = async (): Promise<ActivityProps[]> => {
-  return new Promise((resolve, reject) => {
+export const getAllActivity = async (): Promise<ActivityProps[]> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
@@ -43,10 +42,9 @@ export const getAllActivity = async (): Promise<ActivityProps[]> => {
       }
     );
   });
-};
 
-export const getBookById = async (id: number): Promise<BookProps[]> => {
-  return new Promise((resolve, reject) => {
+export const getBookById = async (id: number): Promise<BookProps[]> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
@@ -63,13 +61,12 @@ export const getBookById = async (id: number): Promise<BookProps[]> => {
       }
     );
   });
-};
 
 export const createBook = async (
   title: string,
   color: string
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
+): Promise<string> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql("INSERT INTO book (title, color) VALUES (?, ?);", [
@@ -85,14 +82,13 @@ export const createBook = async (
       }
     );
   });
-};
 
 export const updateBookById = async (
   id: number,
   title: string,
   color: string
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
+): Promise<string> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(`UPDATE book SET title = ?, color = ? WHERE id = ?;`, [
@@ -109,10 +105,9 @@ export const updateBookById = async (
       }
     );
   });
-};
 
-export const deleteBookById = async (id: number): Promise<string> => {
-  return new Promise((resolve, reject) => {
+export const deleteBookById = async (id: number): Promise<string> =>
+  new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(`DELETE FROM book WHERE id = ?;`, [id]);
@@ -125,4 +120,3 @@ export const deleteBookById = async (id: number): Promise<string> => {
       }
     );
   });
-};
