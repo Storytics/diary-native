@@ -27,7 +27,7 @@ export const ContentContainer = styled.View`
 export const FeaturesContainer = styled.View`
   ${flexGrow1};
   justify-content: center;
-  padding: 0 25px;
+  padding: 30px 25px;
 `;
 
 export const FeaturesTextWrapper = styled.View`

@@ -77,7 +77,7 @@ export default {
     },
     password: {
       title: "Password",
-      placeholder: "*****",
+      placeholder: "••••••",
     },
     // signUp specific
     signUp: {
