@@ -69,7 +69,7 @@ const Theme = {
   placeHolder: {
     backgroundColor: colors.gray700,
     borderColor: colors.gray700,
-    linearGradient: [colors.gray700, colors.gray800],
+    linearGradient: [colors.gray700, colors.gray900],
   },
   noteBook: {
     backgroundColor: colors.gray800,
@@ -206,6 +206,20 @@ const Theme = {
     shadowColor: colors.gray900,
     // gray-900 in rgba
     linearGradient: ["rgba(20, 20, 20, 0)", colors.gray900],
+  },
+  cloudScreen: {
+    valueColor: colors.primary,
+    listItem: {
+      borderColor: colors.gray700,
+      linearGradient: [colors.gray700, colors.gray900],
+      icon: {
+        backgroundColor: colors.gray800,
+        color: colors.blue400,
+      },
+    },
+    form: {
+      backgroundColor: "#0F0F0F",
+    },
   },
 };
 

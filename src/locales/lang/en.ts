@@ -107,4 +107,45 @@ export default {
       placeholder: "Click here to start writing.",
     },
   },
+  // Cloud Screen
+  cloudScreen: {
+    email: {
+      title: "Email",
+      placeholder: "example@gmail.com",
+    },
+    password: {
+      title: "Password",
+      placeholder: "••••••",
+    },
+    // signUp specific
+    signUp: {
+      primaryButton: "Sign Up",
+      content: {
+        title: "Better with premium",
+        subtitle: "Unlock premium features",
+        value: "1.99$/Month",
+        // break word
+        listItem1: "Backup\ndata",
+        listItem2: "Premium\nfeatures",
+        listItem3: "Multiple\ndevices",
+      },
+      footer: {
+        text: "Already have an account?",
+        link: "Login",
+      },
+    },
+    // login specific
+    logIn: {
+      primaryButton: "Login",
+      forgotPassword: "Forgot password?",
+      content: {
+        title: "Login",
+        text: "Hello Again!\nWelcome\nback",
+      },
+      footer: {
+        text: "Dont have an account?",
+        link: "Sign up",
+      },
+    },
+  },
 };
