@@ -17,6 +17,12 @@ export default {
       title: "Terms & Conditions",
     },
   },
+  cloud: {
+    sync: {
+      success: "Everything is up to date",
+      error: "Error syncing to the cloud",
+    },
+  },
   modal: {
     create: {
       title: "New Diary",

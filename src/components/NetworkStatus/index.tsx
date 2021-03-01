@@ -1,5 +1,4 @@
 import React from "react";
-import { Alert } from "react-native";
 // Components
 import { MaterialIcons } from "@expo/vector-icons";
 import RoundButton from "components/RoundButton";
@@ -8,8 +7,12 @@ import { useTheme } from "styled-components";
 // Hooks
 import useStore from "hooks/useStore";
 import { useNavigation } from "@react-navigation/core";
+import useNotification from "hooks/useNotification";
 // Types
 import { NetworkStatus, SubscriptionStatus, User } from "types/store";
+import { NotificationType } from "types/notifications";
+// Locales
+import i18n from "locales/index";
 // Database
 import { exportAllData } from "database/Global";
 // API
@@ -30,6 +33,11 @@ const status = {
   authenticated: "backup",
   sync: "cloud-done",
 };
+
+interface RenderButtonProps {
+  name: string;
+  onPress?: () => void;
+}
 
 /*
 const onGetBackup = async () => {
@@ -55,6 +63,7 @@ const NetworkStatusComponent: React.FC = () => {
     state: { networkStatus, subscriptionStatus, user },
   } = useStore();
   const navigation = useNavigation();
+  const notification = useNotification();
 
   const onCreateBackup = async () => {
     try {
@@ -69,7 +78,7 @@ const NetworkStatusComponent: React.FC = () => {
 
         if (!isSync) {
           const allData = await exportAllData();
-          const { data } = await supabase.from("backup").insert([
+          await supabase.from("backup").insert([
             {
               data: JSON.stringify(allData),
               user_id: user.id,
@@ -77,90 +86,77 @@ const NetworkStatusComponent: React.FC = () => {
           ]);
 
           await AsyncStorage.setItem(userCloudLastSyncItem, String(new Date()));
-
-          console.log("onCreateBackup data = ", data);
         } else {
-          Alert.alert("Everything is up to date");
+          notification.dispatch({
+            type: "CREATE_NOTIFICATION",
+            payload: {
+              isOpen: true,
+              message: i18n.t("cloud.sync.success"),
+              type: NotificationType.success,
+            },
+          });
         }
       }
     } catch (error) {
-      console.log("onCreateBackup Error = ", error);
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("cloud.sync.error"),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 
-  const renderStatusComponent = () => {
-    if (networkStatus === NetworkStatus.online) {
-      return (
-        <RoundButton size="medium" onPress={() => navigation.navigate("Cloud")}>
-          <MaterialIcons
-            name={status.online as keyof typeof MaterialIcons.glyphMap}
-            size={24}
-            color={theme.iconDefaultColor}
-          />
-        </RoundButton>
-      );
-    }
-
-    if (
-      networkStatus === NetworkStatus.authenticated &&
-      subscriptionStatus === SubscriptionStatus.inactive
-    ) {
-      return (
-        <RoundButton
-          size="medium"
-          onPress={() =>
-            navigation.navigate("Billing", {
-              user: user as User,
-            })
-          }
-        >
-          <MaterialIcons
-            name={status.lock as keyof typeof MaterialIcons.glyphMap}
-            size={24}
-            color={theme.iconDefaultColor}
-          />
-        </RoundButton>
-      );
-    }
-
-    if (
-      networkStatus === NetworkStatus.authenticated &&
-      subscriptionStatus === SubscriptionStatus.active
-    ) {
-      return (
-        <RoundButton size="medium" onPress={onCreateBackup}>
-          <MaterialIcons
-            name={status.authenticated as keyof typeof MaterialIcons.glyphMap}
-            size={24}
-            color={theme.iconDefaultColor}
-          />
-        </RoundButton>
-      );
-    }
-
-    return (
-      <RoundButton size="medium">
-        <MaterialIcons
-          name={status.offline as keyof typeof MaterialIcons.glyphMap}
-          size={24}
-          color={theme.iconDefaultColor}
-        />
-      </RoundButton>
-    );
-  };
-
-  return networkStatus === NetworkStatus.loading &&
-    SubscriptionStatus.loading ? (
-    <RoundButton size="medium">
+  const renderButton = ({ name, ...props }: RenderButtonProps) => (
+    <RoundButton size="medium" {...props}>
       <MaterialIcons
-        name={status.loading as keyof typeof MaterialIcons.glyphMap}
+        name={name as keyof typeof MaterialIcons.glyphMap}
         size={24}
         color={theme.iconDefaultColor}
       />
     </RoundButton>
-  ) : (
-    renderStatusComponent()
   );
+
+  const renderSubscriptionStatus = () => {
+    const hasSubscription = subscriptionStatus === SubscriptionStatus.active;
+    const props = hasSubscription
+      ? {
+          onPress: onCreateBackup,
+        }
+      : {
+          onPress: () =>
+            navigation.navigate("Billing", {
+              user: user as User,
+            }),
+        };
+    return renderButton({
+      name: hasSubscription ? status.authenticated : status.lock,
+      ...props,
+    });
+  };
+
+  const renderComponent = () => {
+    switch (networkStatus) {
+      case NetworkStatus.online:
+        return renderButton({
+          name: status.online,
+          onPress: () => navigation.navigate("Cloud"),
+        });
+      case NetworkStatus.authenticated:
+        return renderSubscriptionStatus();
+      case NetworkStatus.offline:
+        return renderButton({ name: status.offline });
+      case NetworkStatus.sync:
+        return renderButton({ name: status.sync });
+      case NetworkStatus.loading:
+      default:
+        return renderButton({ name: status.loading });
+    }
+  };
+
+  return <>{renderComponent()}</>;
 };
 
 export default NetworkStatusComponent;

@@ -113,6 +113,7 @@ const Input: React.FC<InputProps> = ({
         value={inputText}
         textAlign="left"
         secureTextEntry={secureTextEntry}
+        autoCapitalize="none"
       />
     </InputContainer>
   );
