@@ -2,6 +2,11 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { PageProps } from "types/page";
 import { User } from "types/store";
 
+export enum LegalType {
+  terms = "terms",
+  privacy = "privacy",
+}
+
 export interface EditorNavigationParams {
   noteBookHeight: number;
   bookId: number;
@@ -21,6 +26,10 @@ export interface BillingNavigationParams {
   user: User;
 }
 
+export interface LegalNavigationParams {
+  page: LegalType;
+}
+
 export type RootStackParamList = {
   Home: undefined;
   Diary: DiaryNavigationParams;
@@ -28,7 +37,7 @@ export type RootStackParamList = {
   Cloud: undefined;
   Password: undefined;
   Billing: BillingNavigationParams;
-  Terms: undefined;
+  Legal: LegalNavigationParams;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -90,11 +99,14 @@ export interface BillingNavigationProps {
   };
 }
 
-export type TermsScreenNavigationProp = StackNavigationProp<
+export type LegalScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "Terms"
+  "Legal"
 >;
 
-export interface TermsNavigationProps {
-  navigation: TermsScreenNavigationProp;
+export interface LegalNavigationProps {
+  navigation: LegalScreenNavigationProp;
+  route: {
+    params: LegalNavigationParams;
+  };
 }

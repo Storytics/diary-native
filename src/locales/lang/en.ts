@@ -17,6 +17,11 @@ export default {
       title: "Terms & Conditions",
     },
   },
+  privacy: {
+    section: {
+      title: "Privacy Policy",
+    },
+  },
   cloud: {
     sync: {
       success: "Everything is up to date",
@@ -40,6 +45,10 @@ export default {
     },
     menu: {
       title: "Settings",
+      theme: "Theme",
+      pinProtection: "Pin Protection",
+      logout: "Logout",
+      premium: "Sync with Premium",
     },
     diaryActions: {
       buttons: {
@@ -99,6 +108,12 @@ export default {
     savePasswordPin: {
       success: "Pin created with success",
       error: "Error creating pin",
+    },
+    removePasswordPin: {
+      error: "Error removing pin",
+    },
+    logout: {
+      error: "Something went wrong. Please try Again!",
     },
   },
   // Diary Screen

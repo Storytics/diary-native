@@ -13,6 +13,12 @@ import Brand from "components/Brand";
 import Modal from "components/Modal";
 // Types
 import { NotificationType } from "types/notifications";
+import { LegalType } from "types/navigation";
+import { SubscriptionStatus } from "types/store";
+// API
+import supabase from "libs/supabase";
+/** URL polyfill. Required for Supabase queries to work in React Native. */
+import "react-native-url-polyfill/auto";
 
 const MenuModal: React.FC = () => {
   const store = useStore();
@@ -23,6 +29,8 @@ const MenuModal: React.FC = () => {
     dispatch,
     state: { isMenuModalOpen },
   } = useModals();
+
+  console.log("store = ", !!store.state.user);
 
   const onClose = useCallback(() => {
     dispatch({
@@ -72,7 +80,36 @@ const MenuModal: React.FC = () => {
         }, 100);
       }
     } catch (e) {
-      console.log("error removing pin = ", e);
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.removePasswordPin.error"),
+          type: NotificationType.danger,
+        },
+      });
+    }
+  };
+
+  const onLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      store.dispatch({
+        type: "SET_AUTHENTICATION_STATUS",
+        payload: {
+          user: null,
+          subscriptionStatus: SubscriptionStatus.inactive,
+        },
+      });
+    } catch (e) {
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.logout.error"),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 
@@ -92,27 +129,47 @@ const MenuModal: React.FC = () => {
       hasContentPaddingBottom={false}
     >
       <BorderButton
-        title="Theme"
+        title={i18n.t("modal.menu.theme")}
         onChangeSwitch={onChangeTheme}
         isSwitchActive={store.state.isDarkTheme}
         hasArrowIcon={false}
         hasThemeSwitch
       />
-      <BorderButton title="Upload Data" onPress={() => console.log("data")} />
+      {!store.state.user && (
+        <BorderButton
+          title={i18n.t("modal.menu.premium")}
+          onPress={() => {
+            onClose();
+            navigate("Cloud");
+          }}
+        />
+      )}
       <BorderButton
-        title="Password Protection"
+        title={i18n.t("modal.menu.pinProtection")}
         hasCustomSwitch
         isSwitchActive={isPinProtected}
         onChangeSwitch={onChangePasswordPin}
         hasArrowIcon={false}
       />
       <BorderButton
-        title="Terms and Conditions"
+        title={i18n.t("terms.section.title")}
         onPress={() => {
           onClose();
-          navigate("Terms");
+          // @ts-ignore
+          navigate("Legal", { page: LegalType.terms });
         }}
       />
+      <BorderButton
+        title={i18n.t("privacy.section.title")}
+        onPress={() => {
+          onClose();
+          // @ts-ignore
+          navigate("Legal", { page: LegalType.privacy });
+        }}
+      />
+      {store.state.user && (
+        <BorderButton title={i18n.t("modal.menu.logout")} onPress={onLogout} />
+      )}
       <Brand />
     </Modal>
   );
