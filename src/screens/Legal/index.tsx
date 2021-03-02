@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Text } from "react-native";
 import { WebView } from "react-native-webview";
 // Components
@@ -9,19 +9,22 @@ import CustomSafeArea from "components/CustomSafeArea";
 // Hooks
 import useStore from "hooks/useStore";
 // Utils
-import { termsUrl } from "utils/constants";
+import { privacyUrl, termsUrl } from "utils/constants";
 // Types
-import { TermsNavigationProps } from "types/navigation";
+import { LegalNavigationProps, LegalType } from "types/navigation";
 import { NetworkStatus } from "types/store";
 // Locales
 import i18n from "locales/index";
 // Styles
 import { Overlay } from "./styles";
 
-const TermsScreen: React.FC<TermsNavigationProps> = ({ navigation }) => {
+const TermsScreen: React.FC<LegalNavigationProps> = ({
+  navigation,
+  route: { params },
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const {
-    state: { networkStatus },
+    state: { networkStatus, isDarkTheme },
   } = useStore();
 
   const onLoading = useCallback((state: boolean) => {
@@ -36,7 +39,11 @@ const TermsScreen: React.FC<TermsNavigationProps> = ({ navigation }) => {
       onPress={() => {
         navigation.goBack();
       }}
-      text={i18n.t("terms.section.title")}
+      text={i18n.t(
+        params.page === LegalType.terms
+          ? "terms.section.title"
+          : "privacy.section.title"
+      )}
     />
   );
 
@@ -62,7 +69,11 @@ const TermsScreen: React.FC<TermsNavigationProps> = ({ navigation }) => {
         {renderHeader()}
         <WebView
           source={{
-            uri: termsUrl,
+            uri: params.page === LegalType.terms ? termsUrl : privacyUrl,
+            headers: {
+              "x-is-native": "true",
+              "x-is-native-dark": String(isDarkTheme),
+            },
           }}
           sharedCookiesEnabled
           onLoad={() => onLoading(false)}
