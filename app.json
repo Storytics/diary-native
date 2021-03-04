@@ -4,7 +4,7 @@
     "privacy": "hidden",
     "name": "Diary",
     "slug": "diary-by-storytics",
-    "version": "0.0.1",
+    "version": "0.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,7 +23,7 @@
       }
     },
     "android": {
-      "enableDangerousExperimentalLeanBuilds": true,
+      "enableDangerousExperimentalLeanBuilds": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

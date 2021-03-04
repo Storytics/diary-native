@@ -26,10 +26,6 @@ export interface BillingNavigationParams {
   user: User;
 }
 
-export interface LegalNavigationParams {
-  page: LegalType;
-}
-
 export type RootStackParamList = {
   Home: undefined;
   Diary: DiaryNavigationParams;
@@ -37,7 +33,8 @@ export type RootStackParamList = {
   Cloud: undefined;
   Password: undefined;
   Billing: BillingNavigationParams;
-  Legal: LegalNavigationParams;
+  Terms: undefined;
+  Privacy: undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -99,14 +96,20 @@ export interface BillingNavigationProps {
   };
 }
 
-export type LegalScreenNavigationProp = StackNavigationProp<
+export type TermsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "Legal"
+  "Terms"
 >;
 
-export interface LegalNavigationProps {
-  navigation: LegalScreenNavigationProp;
-  route: {
-    params: LegalNavigationParams;
-  };
+export interface TermsNavigationProps {
+  navigation: TermsScreenNavigationProp;
+}
+
+export type PrivacyScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Privacy"
+>;
+
+export interface PrivacyNavigationProps {
+  navigation: PrivacyScreenNavigationProp;
 }

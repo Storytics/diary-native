@@ -189,7 +189,7 @@ export const StoreContextProvider: React.FC = ({ children }) => {
         const isSync =
           lastCloudSync && dayjs(lastCloudSync).isAfter(dayjs(new Date()));
 
-        let status = NetworkStatus.loading;
+        let status = NetworkStatus.offline;
 
         if (isConnected && user) {
           status = NetworkStatus.authenticated;

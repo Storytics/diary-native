@@ -12,7 +12,8 @@ import EditorScreen from "screens/Editor";
 import CloudScreen from "screens/Cloud";
 import PasswordScreen from "screens/Password";
 import BillingScreen from "screens/Billing";
-import LegalScreen from "screens/Legal";
+import PrivacyScreen from "screens/Legal/Privacy";
+import TermsScreen from "screens/Legal/Terms";
 // Types
 import { RootStackParamList } from "types/navigation";
 
@@ -33,7 +34,8 @@ const Navigation: React.FC = () => (
       <Stack.Screen name="Cloud" component={CloudScreen} />
       <Stack.Screen name="Password" component={PasswordScreen} />
       <Stack.Screen name="Billing" component={BillingScreen} />
-      <Stack.Screen name="Legal" component={LegalScreen} />
+      <Stack.Screen name="Terms" component={TermsScreen} />
+      <Stack.Screen name="Privacy" component={PrivacyScreen} />
     </Stack.Navigator>
   </NavigationContainer>
 );

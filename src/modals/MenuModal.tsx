@@ -14,7 +14,7 @@ import Modal from "components/Modal";
 // Types
 import { NotificationType } from "types/notifications";
 import { LegalType } from "types/navigation";
-import { SubscriptionStatus } from "types/store";
+import { NetworkStatus, SubscriptionStatus } from "types/store";
 // API
 import supabase from "libs/supabase";
 /** URL polyfill. Required for Supabase queries to work in React Native. */
@@ -29,8 +29,6 @@ const MenuModal: React.FC = () => {
     dispatch,
     state: { isMenuModalOpen },
   } = useModals();
-
-  console.log("store = ", !!store.state.user);
 
   const onClose = useCallback(() => {
     dispatch({
@@ -135,7 +133,7 @@ const MenuModal: React.FC = () => {
         hasArrowIcon={false}
         hasThemeSwitch
       />
-      {!store.state.user && (
+      {!store.state.user && store.state.networkStatus === NetworkStatus.online && (
         <BorderButton
           title={i18n.t("modal.menu.premium")}
           onPress={() => {
@@ -156,7 +154,7 @@ const MenuModal: React.FC = () => {
         onPress={() => {
           onClose();
           // @ts-ignore
-          navigate("Legal", { page: LegalType.terms });
+          navigate("Terms");
         }}
       />
       <BorderButton
@@ -164,7 +162,7 @@ const MenuModal: React.FC = () => {
         onPress={() => {
           onClose();
           // @ts-ignore
-          navigate("Legal", { page: LegalType.privacy });
+          navigate("Privacy");
         }}
       />
       {store.state.user && (

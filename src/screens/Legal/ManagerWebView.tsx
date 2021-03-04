@@ -1,28 +1,37 @@
 import React, { useCallback, useState } from "react";
-import { Text } from "react-native";
-import { WebView } from "react-native-webview";
+import { Linking, Text } from "react-native";
+import { WebView, WebViewNavigation } from "react-native-webview";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
 import OverlaySpinner from "components/OverlaySpinner";
 import CustomSafeArea from "components/CustomSafeArea";
+import CustomHeaderWebView from "components/CustomHeaderWebView";
 // Hooks
 import useStore from "hooks/useStore";
 // Utils
 import { privacyUrl, termsUrl } from "utils/constants";
 // Types
-import { LegalNavigationProps, LegalType } from "types/navigation";
+import {
+  PrivacyScreenNavigationProp,
+  TermsScreenNavigationProp,
+  LegalType,
+} from "types/navigation";
 import { NetworkStatus } from "types/store";
 // Locales
 import i18n from "locales/index";
 // Styles
 import { Overlay } from "./styles";
 
-const TermsScreen: React.FC<LegalNavigationProps> = ({
-  navigation,
-  route: { params },
-}) => {
+interface Props {
+  page: LegalType;
+  navigation: PrivacyScreenNavigationProp | TermsScreenNavigationProp;
+}
+
+const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
   const [isLoading, setIsLoading] = useState(true);
+
+  const webViewRef = React.createRef<WebView>();
   const {
     state: { networkStatus, isDarkTheme },
   } = useStore();
@@ -40,12 +49,29 @@ const TermsScreen: React.FC<LegalNavigationProps> = ({
         navigation.goBack();
       }}
       text={i18n.t(
-        params.page === LegalType.terms
+        page === LegalType.terms
           ? "terms.section.title"
           : "privacy.section.title"
       )}
     />
   );
+
+  const handleNavigationChange = (event: WebViewNavigation) => {
+    if (event.url.includes("diary/privacy")) {
+      if (!isLoading) {
+        webViewRef?.current?.stopLoading();
+        navigation.navigate("Privacy");
+      }
+    } else if (event.url.includes("diary/terms")) {
+      if (!isLoading) {
+        webViewRef?.current?.stopLoading();
+        navigation.navigate("Terms");
+      }
+    } else {
+      webViewRef?.current?.stopLoading();
+      Linking.openURL(event.url);
+    }
+  };
 
   if (networkStatus === NetworkStatus.offline) {
     return (
@@ -67,9 +93,10 @@ const TermsScreen: React.FC<LegalNavigationProps> = ({
           </Overlay>
         )}
         {renderHeader()}
-        <WebView
+        <CustomHeaderWebView
+          ref={webViewRef}
           source={{
-            uri: params.page === LegalType.terms ? termsUrl : privacyUrl,
+            uri: page === LegalType.terms ? termsUrl : privacyUrl,
             headers: {
               "x-is-native": "true",
               "x-is-native-dark": String(isDarkTheme),
@@ -78,10 +105,11 @@ const TermsScreen: React.FC<LegalNavigationProps> = ({
           sharedCookiesEnabled
           onLoad={() => onLoading(false)}
           onError={() => onLoading(false)}
+          onNavigationStateChange={handleNavigationChange}
         />
       </Container>
     </CustomSafeArea>
   );
 };
 
-export default TermsScreen;
+export default ManagerWebView;
