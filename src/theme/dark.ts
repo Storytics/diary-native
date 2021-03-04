@@ -69,7 +69,7 @@ const Theme = {
   placeHolder: {
     backgroundColor: colors.gray700,
     borderColor: colors.gray700,
-    linearGradient: [colors.gray700, colors.gray900],
+    linearGradient: [colors.gray800, colors.gray900],
   },
   noteBook: {
     backgroundColor: colors.gray800,
@@ -131,11 +131,11 @@ const Theme = {
   customSwitch: {
     thumb: {
       on: colors.white,
-      off: colors.white,
+      off: colors.gray400,
     },
     track: {
       on: colors.gray700,
-      off: colors.gray300,
+      off: colors.gray600,
     },
   },
   borderButton: {
@@ -211,10 +211,10 @@ const Theme = {
     valueColor: colors.primary,
     listItem: {
       borderColor: colors.gray700,
-      linearGradient: [colors.gray700, colors.gray900],
+      linearGradient: [colors.gray800, colors.gray900],
       icon: {
-        backgroundColor: colors.gray800,
-        color: colors.blue400,
+        backgroundColor: colors.blue400,
+        color: colors.blue100,
       },
     },
     form: {

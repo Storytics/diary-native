@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Animated, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { NotificationType } from "types/notifications";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 // Hooks
 import useNotification from "hooks/useNotification";
 import Theme from "theme/index";
@@ -65,14 +65,12 @@ const styles = (theme: typeof Theme) =>
       bottom: 0,
       zIndex: 0,
     },
-    safeArea: {
-      zIndex: 2,
-    },
   });
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
 
 const Notification: React.FC = () => {
+  const insets = useSafeAreaInsets();
   const notificationAnimation = useRef(new Animated.Value(0)).current;
   const theme = useTheme();
   const {
@@ -80,7 +78,8 @@ const Notification: React.FC = () => {
     dispatch,
   } = useNotification();
   const { color } = theme.notification;
-  const notificationHeight = 79; // 10 + 54 + 15
+  const componentHeight = 84; // 10 + 54 + 20
+  const notificationHeight = componentHeight + insets.top;
 
   useEffect(() => {
     Animated.sequence([
@@ -132,41 +131,39 @@ const Notification: React.FC = () => {
   }
 
   return (
-    <AnimatedContainer style={animationStyles}>
-      <SafeAreaView style={styles(theme).safeArea}>
-        <Wrapper
-          style={styles(theme).shadow}
-          backgroundColor={handleNotificationType(type, theme).backgroundColor}
+    <AnimatedContainer style={animationStyles} paddingTop={insets.top + 10}>
+      <Wrapper
+        style={styles(theme).shadow}
+        backgroundColor={handleNotificationType(type, theme).backgroundColor}
+      >
+        <LeftIconWrapper>
+          <MaterialIcons
+            // @ts-ignore
+            name={handleNotificationType(type, theme).icon}
+            size={24}
+            color={color}
+          />
+        </LeftIconWrapper>
+        <TextContainer>
+          <SmallTitle numberOfLines={1} color={color}>
+            {message}
+          </SmallTitle>
+        </TextContainer>
+        <RoundButton
+          size="small"
+          underlayColor={handleNotificationType(type, theme).underlayColor}
+          onPress={() =>
+            dispatch({
+              type: "CLOSE_NOTIFICATION",
+              payload: {
+                isOpen: false,
+              },
+            })
+          }
         >
-          <LeftIconWrapper>
-            <MaterialIcons
-              // @ts-ignore
-              name={handleNotificationType(type, theme).icon}
-              size={24}
-              color={color}
-            />
-          </LeftIconWrapper>
-          <TextContainer>
-            <SmallTitle numberOfLines={1} color={color}>
-              {message}
-            </SmallTitle>
-          </TextContainer>
-          <RoundButton
-            size="small"
-            underlayColor={handleNotificationType(type, theme).underlayColor}
-            onPress={() =>
-              dispatch({
-                type: "CLOSE_NOTIFICATION",
-                payload: {
-                  isOpen: false,
-                },
-              })
-            }
-          >
-            <MaterialIcons name="close" size={24} color={color} />
-          </RoundButton>
-        </Wrapper>
-      </SafeAreaView>
+          <MaterialIcons name="close" size={24} color={color} />
+        </RoundButton>
+      </Wrapper>
       <LinearGradient
         pointerEvents="none"
         colors={[

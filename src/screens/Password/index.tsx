@@ -51,7 +51,7 @@ const Button = ({ theme, onPress, isIcon, text, iconName }: ButtonProps) => {
       underlayColor={theme.passwordScreen.numbers.underlayColor}
     >
       {isIcon ? (
-        <MaterialIcons name={iconName} size={32} color={color} />
+        <MaterialIcons name={iconName} size={30} color={color} />
       ) : (
         <LargeText color={color}>{text}</LargeText>
       )}
@@ -253,6 +253,17 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
               />
             </Row>
             <Row>
+              <Button
+                isIcon
+                iconName="backspace"
+                theme={theme}
+                onPress={onDelete}
+              />
+              <Button
+                text="0"
+                theme={theme}
+                onPress={() => setCode([...code, "0"])}
+              />
               {hasPasswordPin ? (
                 <>
                   {hasFingerprint ? (
@@ -267,32 +278,7 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
                   )}
                 </>
               ) : (
-                <Button
-                  isIcon
-                  iconName="backspace"
-                  theme={theme}
-                  onPress={onDelete}
-                />
-              )}
-              <Button
-                text="0"
-                theme={theme}
-                onPress={() => setCode([...code, "0"])}
-              />
-              {hasPasswordPin ? (
-                <Button
-                  isIcon
-                  iconName="backspace"
-                  theme={theme}
-                  onPress={onDelete}
-                />
-              ) : (
-                <Button
-                  isIcon
-                  iconName="arrow-forward"
-                  theme={theme}
-                  onPress={onSave}
-                />
+                <Button theme={theme} onPress={onSave} text="OK" />
               )}
             </Row>
           </ButtonsContainer>
