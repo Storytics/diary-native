@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Linking, Text } from "react-native";
-import { WebView, WebViewNavigation } from "react-native-webview";
+import { WebViewMessageEvent } from "react-native-webview";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
@@ -28,10 +28,19 @@ interface Props {
   navigation: PrivacyScreenNavigationProp | TermsScreenNavigationProp;
 }
 
+const injectScript = `
+  (function () {
+    window.onclick = function(e) {
+      e.preventDefault();
+      window.ReactNativeWebView.postMessage(e.target.href);
+      e.stopPropagation()
+    }
+  }());
+`;
+
 const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const webViewRef = React.createRef<WebView>();
   const {
     state: { networkStatus, isDarkTheme },
   } = useStore();
@@ -56,20 +65,15 @@ const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
     />
   );
 
-  const handleNavigationChange = (event: WebViewNavigation) => {
-    if (event.url.includes("diary/privacy")) {
-      if (!isLoading) {
-        webViewRef?.current?.stopLoading();
+  const onMessage = ({ nativeEvent: { data } }: WebViewMessageEvent) => {
+    if (data !== undefined && data !== null) {
+      if (data.includes("diary/privacy")) {
         navigation.navigate("Privacy");
-      }
-    } else if (event.url.includes("diary/terms")) {
-      if (!isLoading) {
-        webViewRef?.current?.stopLoading();
+      } else if (data.includes("diary/terms")) {
         navigation.navigate("Terms");
+      } else {
+        Linking.openURL(data);
       }
-    } else {
-      webViewRef?.current?.stopLoading();
-      Linking.openURL(event.url);
     }
   };
 
@@ -94,7 +98,6 @@ const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
         )}
         {renderHeader()}
         <CustomHeaderWebView
-          ref={webViewRef}
           source={{
             uri: page === LegalType.terms ? termsUrl : privacyUrl,
             headers: {
@@ -105,7 +108,8 @@ const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
           sharedCookiesEnabled
           onLoad={() => onLoading(false)}
           onError={() => onLoading(false)}
-          onNavigationStateChange={handleNavigationChange}
+          injectedJavaScript={injectScript}
+          onMessage={onMessage}
         />
       </Container>
     </CustomSafeArea>
