@@ -90,9 +90,11 @@ const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
 };
 
 const App: React.FC<Props> = (props) => (
-  <StoreContextProvider>
-    <Register {...props} />
-  </StoreContextProvider>
+  <SafeAreaProvider>
+    <StoreContextProvider>
+      <Register {...props} />
+    </StoreContextProvider>
+  </SafeAreaProvider>
 );
 
 export default App;
