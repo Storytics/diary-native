@@ -13,12 +13,12 @@ import {
 
 interface ActivityCardProps {
   title: string;
-  date: string;
+  description: string;
   onPress: () => void;
 }
 
 const ActivityCard: React.FC<ActivityCardProps> = ({
-  date,
+  description,
   title,
   onPress,
 }) => {
@@ -41,7 +41,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
             <TextContainer>
               <MediumTitle numberOfLines={1}>{title}</MediumTitle>
             </TextContainer>
-            <Text numberOfLines={1}>{date}</Text>
+            <Text numberOfLines={1}>{description}</Text>
           </ContentContainer>
           <MaterialIcons
             name="chevron-right"

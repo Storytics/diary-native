@@ -145,6 +145,7 @@ export const StoreContextProvider: React.FC = ({ children }) => {
     const loadActivity = async () => {
       try {
         const activity = await getAllActivity();
+        console.log("activity = ", activity);
         dispatch({
           type: "LOAD_ACTIVITY",
           payload: { activity },

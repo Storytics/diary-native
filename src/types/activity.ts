@@ -3,4 +3,5 @@ export interface ActivityProps {
   id: number;
   createdAt: string;
   bookId: number;
+  content: string;
 }
