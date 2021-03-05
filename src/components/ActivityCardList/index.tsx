@@ -1,10 +1,19 @@
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
+// Styles
 import { useTheme } from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
+// Components
 import Placeholder from "components/Placeholder";
 import ActivityCard from "components/ActivityCard";
-import dayjs from "dayjs";
+// utils
+import { unescapeHtml } from "utils//functions";
+import sanitize, {
+  escapeHtml,
+  escapeHtmlEntities,
+  escapeDangerHtml5Entities,
+} from "xss";
+
 import { Container, ActivityCardContainer } from "./styles";
 
 interface ActivityCardListProps {
@@ -13,10 +22,13 @@ interface ActivityCardListProps {
     id: number;
     createdAt: string;
     bookId: number;
+    content: string;
   }>;
   placeholderText: string;
   onPress: (bookId: number, bookTitle: string, pageNumber: number) => void;
 }
+
+// replace(/<\/?[^>]+(>|$)/g, "")
 
 const styles = StyleSheet.create({
   container: {
@@ -52,7 +64,9 @@ const ActivityCardList: React.FC<ActivityCardListProps> = ({
           <ActivityCardContainer>
             <ActivityCard
               title={item.title}
-              date={dayjs(item.createdAt).format("DD MMM YYYY HH:MM")}
+              description={unescapeHtml(item.content)
+                .replace(/<\/?[^>]+(>|$)/g, "")
+                .replace(/&nbsp;/g, "")}
               onPress={() => onPress(item.bookId, item.title, item.id)}
             />
           </ActivityCardContainer>
