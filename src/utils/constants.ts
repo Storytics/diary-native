@@ -11,3 +11,4 @@ export const userCloudLastSyncItem = "@st_dia_cloud_last_sync";
 export const userActiveSubscriptionItem = "@st_dia_active_subscription";
 export const userThemeItem = "@st_dia_user_theme";
 export const userPasswordPinItem = "@st_dia_user_password_pin";
+export const userEditorDraftItem = "@st_dia_user_editor_draft";
