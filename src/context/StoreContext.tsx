@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useReducer } from "react";
+// Database
 import { getAllActivity, getAllBooks } from "database/Book";
 // Utils
 import { getNetworkStateAsync } from "expo-network";

@@ -16,6 +16,8 @@ import { FakeButton } from "components/RoundButton";
 import sanitize from "xss";
 import useKeyboard from "hooks/useKeyboard";
 import dayjs from "dayjs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { userEditorDraftItem } from "utils/constants";
 // Types
 import { EditorNavigationProps } from "types/navigation";
 import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
@@ -29,6 +31,7 @@ import { unescapeHtml } from "utils/functions";
 import useStore from "hooks/useStore";
 // Hooks
 import useNotification from "hooks/useNotification";
+import useDebounce from "hooks/useDebounce";
 // Types
 import { NotificationType } from "types/notifications";
 // Locales
@@ -131,6 +134,25 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   // Scroll Ref - scroll initial to top
   const noteBookScrollRef = useRef<ScrollView>(null);
 
+  useDebounce(
+    async () => {
+      try {
+        if (content && !params.isEdit) {
+          const data = JSON.stringify({
+            date: dayjs(),
+            bookId: params.bookId,
+            content,
+          });
+          await AsyncStorage.setItem(userEditorDraftItem, data);
+        }
+      } catch (e) {
+        console.log("error on saving draft = ", e);
+      }
+    },
+    2000,
+    [content]
+  );
+
   useEffect(() => {
     if (isKeyboardOpen) {
       noteBookScrollRef.current?.scrollTo({
@@ -139,6 +161,20 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
       });
     }
   }, [isKeyboardOpen]);
+
+  useEffect(() => {
+    const checkForDrafts = async () => {
+      const draft = await AsyncStorage.getItem(userEditorDraftItem);
+      if (draft) {
+        const draftData = JSON.parse(draft);
+        setContent(draftData.content);
+      }
+    };
+    // only check for draft on new pages
+    if (!params.isEdit) {
+      checkForDrafts();
+    }
+  }, [params.bookId, params.isEdit]);
 
   const iconMap = toolBarActions.reduce(
     (o, item) => ({
@@ -212,6 +248,9 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
           },
         });
       }
+
+      // Remove any saved drafts before going back
+      await AsyncStorage.removeItem(userEditorDraftItem);
 
       navigation.navigate("Diary", {
         bookId: params.bookId,
