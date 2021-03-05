@@ -27,7 +27,7 @@ import "react-native-url-polyfill/auto";
 const initialState = {
   books: [],
   activity: [],
-  networkStatus: NetworkStatus.loading,
+  networkStatus: NetworkStatus.offline,
   user: null,
   subscriptionStatus: SubscriptionStatus.loading,
   isDarkTheme: false,
@@ -183,10 +183,7 @@ export const StoreContextProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const getNetworkStatus = async () => {
       try {
-        const {
-          isConnected,
-          isInternetReachable,
-        } = await getNetworkStateAsync();
+        const { isInternetReachable } = await getNetworkStateAsync();
         const user = supabase.auth.user();
         const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
 
@@ -195,21 +192,18 @@ export const StoreContextProvider: React.FC = ({ children }) => {
 
         let status = NetworkStatus.loading;
 
-        if (isConnected && user) {
+        if (isInternetReachable && user) {
           status = NetworkStatus.authenticated;
-        } else if (isConnected && !user) {
+        } else if (isInternetReachable && !user) {
           status = NetworkStatus.online;
-        } else if (isConnected && user && isSync) {
+        } else if (isInternetReachable && user && isSync) {
           status = NetworkStatus.sync;
         }
 
         dispatch({
           type: "SET_NETWORK_STATUS",
           payload: {
-            status:
-              isConnected && isInternetReachable
-                ? status
-                : NetworkStatus.offline,
+            status: isInternetReachable ? status : NetworkStatus.offline,
           },
         });
       } catch (e) {

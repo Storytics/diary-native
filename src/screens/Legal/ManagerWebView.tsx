@@ -81,6 +81,7 @@ const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
     return (
       <CustomSafeArea>
         <Container>
+          {renderHeader()}
           <Text>No internet connection</Text>
         </Container>
       </CustomSafeArea>
