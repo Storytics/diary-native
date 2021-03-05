@@ -145,7 +145,6 @@ export const StoreContextProvider: React.FC = ({ children }) => {
     const loadActivity = async () => {
       try {
         const activity = await getAllActivity();
-        console.log("activity = ", activity);
         dispatch({
           type: "LOAD_ACTIVITY",
           payload: { activity },
@@ -184,14 +183,17 @@ export const StoreContextProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const getNetworkStatus = async () => {
       try {
-        const { isConnected } = await getNetworkStateAsync();
+        const {
+          isConnected,
+          isInternetReachable,
+        } = await getNetworkStateAsync();
         const user = supabase.auth.user();
         const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
 
         const isSync =
           lastCloudSync && dayjs(lastCloudSync).isAfter(dayjs(new Date()));
 
-        let status = NetworkStatus.offline;
+        let status = NetworkStatus.loading;
 
         if (isConnected && user) {
           status = NetworkStatus.authenticated;
@@ -204,7 +206,10 @@ export const StoreContextProvider: React.FC = ({ children }) => {
         dispatch({
           type: "SET_NETWORK_STATUS",
           payload: {
-            status: isConnected ? status : NetworkStatus.offline,
+            status:
+              isConnected && isInternetReachable
+                ? status
+                : NetworkStatus.offline,
           },
         });
       } catch (e) {

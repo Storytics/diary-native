@@ -151,8 +151,9 @@ const NetworkStatusComponent: React.FC = () => {
       case NetworkStatus.sync:
         return renderButton({ name: status.sync });
       case NetworkStatus.loading:
-      default:
         return renderButton({ name: status.loading });
+      default:
+        return renderButton({ name: status.offline });
     }
   };
 
