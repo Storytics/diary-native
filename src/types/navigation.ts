@@ -2,6 +2,12 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { PageProps } from "types/page";
 import { User } from "types/store";
 
+export enum AuthType {
+  signin = "signin",
+  signup = "signup",
+  recover = "recover",
+}
+
 export enum LegalType {
   terms = "terms",
   privacy = "privacy",
@@ -26,11 +32,15 @@ export interface BillingNavigationParams {
   user: User;
 }
 
+export interface CloudNavigationParams {
+  type: AuthType;
+}
+
 export type RootStackParamList = {
   Home: undefined;
   Diary: DiaryNavigationParams;
   Editor: EditorNavigationParams;
-  Cloud: undefined;
+  Cloud: CloudNavigationParams;
   Password: undefined;
   Billing: BillingNavigationParams;
   Terms: undefined;
@@ -62,6 +72,13 @@ export type CloudScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Cloud"
 >;
+
+export interface CloudNavigationProps {
+  navigation: CloudScreenNavigationProp;
+  route: {
+    params: CloudNavigationParams;
+  };
+}
 
 export type EditorScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

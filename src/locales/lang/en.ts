@@ -24,8 +24,10 @@ export default {
   },
   cloud: {
     sync: {
-      success: "Everything is up to date",
+      success: "Successfully saved in the cloud",
+      updateToDate: "Everything is up to date",
       error: "Error syncing to the cloud",
+      expired: "Session expired, login again and sync.",
     },
   },
   billing: {
@@ -119,6 +121,15 @@ export default {
     },
     logout: {
       error: "Something went wrong. Please try Again!",
+    },
+    signup: {
+      error: "Error creating an account!",
+    },
+    signin: {
+      error: "Error signing into account!",
+    },
+    auth: {
+      error: "Error verifying your account details",
     },
   },
   // Diary Screen

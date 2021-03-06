@@ -13,8 +13,8 @@ import Brand from "components/Brand";
 import Modal from "components/Modal";
 // Types
 import { NotificationType } from "types/notifications";
-import { LegalType } from "types/navigation";
 import { NetworkStatus, SubscriptionStatus } from "types/store";
+import { AuthType } from "types/navigation";
 // API
 import supabase from "libs/supabase";
 /** URL polyfill. Required for Supabase queries to work in React Native. */
@@ -99,6 +99,12 @@ const MenuModal: React.FC = () => {
           subscriptionStatus: SubscriptionStatus.inactive,
         },
       });
+      store.dispatch({
+        type: "SET_NETWORK_STATUS",
+        payload: {
+          status: NetworkStatus.online,
+        },
+      });
     } catch (e) {
       notification.dispatch({
         type: "CREATE_NOTIFICATION",
@@ -138,7 +144,8 @@ const MenuModal: React.FC = () => {
           title={i18n.t("modal.menu.premium")}
           onPress={() => {
             onClose();
-            navigate("Cloud");
+            // @ts-ignore
+            navigate("Cloud", { type: AuthType.signup });
           }}
         />
       )}

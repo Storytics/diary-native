@@ -7,8 +7,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
 import {
   userCloudLastSyncItem,
-  userThemeItem,
   userPasswordPinItem,
+  userThemeItem,
 } from "utils/constants";
 // Types
 import {
@@ -118,6 +118,15 @@ export const dispatchAuthenticationStatus = async (
         },
       });
 
+      dispatch({
+        type: "SET_NETWORK_STATUS",
+        payload: {
+          status: hasSubscription
+            ? NetworkStatus.authenticated
+            : NetworkStatus.lock,
+        },
+      });
+
       return hasSubscription;
     }
     return false;
@@ -220,9 +229,9 @@ export const StoreContextProvider: React.FC = ({ children }) => {
 
     const getAuthStatus = async () => {
       try {
-        const { isConnected } = await getNetworkStateAsync();
+        const { isInternetReachable } = await getNetworkStateAsync();
         const user = supabase.auth.user();
-        if (isConnected && user) {
+        if (isInternetReachable && user) {
           await dispatchAuthenticationStatus(user as User, dispatch);
         } else {
           dispatch({

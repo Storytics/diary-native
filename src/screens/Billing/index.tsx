@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
@@ -37,6 +37,10 @@ const Billing: React.FC<BillingNavigationProps> = ({
     }, 2000);
   }, []);
 
+  useEffect(() => {
+    console.log("the user  = ", params.user);
+  }, [params.user]);
+
   const onMessage = ({ nativeEvent: { data } }: WebViewMessageEvent) => {
     console.log("onMessage data = ", data);
   };
@@ -65,7 +69,8 @@ const Billing: React.FC<BillingNavigationProps> = ({
           source={{
             uri: billingUrl,
             headers: {
-              "x-dia-native-user-id": "123",
+              "x-dia-native-user-id": String(params.user.id),
+              "x-dia-native-user-email": String(params.user.email),
             },
           }}
           onLoad={() => onLoading(false)}

@@ -2,6 +2,7 @@ import React from "react";
 // Components
 import { MaterialIcons } from "@expo/vector-icons";
 import RoundButton from "components/RoundButton";
+import { ActivityIndicator } from "react-native";
 // Styles
 import { useTheme } from "styled-components";
 // Hooks
@@ -11,6 +12,7 @@ import useNotification from "hooks/useNotification";
 // Types
 import { NetworkStatus, SubscriptionStatus, User } from "types/store";
 import { NotificationType } from "types/notifications";
+import { AuthType } from "types/navigation";
 // Locales
 import i18n from "locales/index";
 // Database
@@ -86,7 +88,7 @@ const NetworkStatusComponent: React.FC = () => {
           ]);
 
           await AsyncStorage.setItem(userCloudLastSyncItem, String(new Date()));
-        } else {
+
           notification.dispatch({
             type: "CREATE_NOTIFICATION",
             payload: {
@@ -95,9 +97,29 @@ const NetworkStatusComponent: React.FC = () => {
               type: NotificationType.success,
             },
           });
+        } else {
+          notification.dispatch({
+            type: "CREATE_NOTIFICATION",
+            payload: {
+              isOpen: true,
+              message: i18n.t("cloud.sync.updateToDate"),
+              type: NotificationType.success,
+            },
+          });
         }
+      } else {
+        notification.dispatch({
+          type: "CREATE_NOTIFICATION",
+          payload: {
+            isOpen: true,
+            message: i18n.t("cloud.sync.expired"),
+            type: NotificationType.info,
+          },
+        });
+        navigation.navigate("Cloud", { type: AuthType.signin });
       }
     } catch (error) {
+      console.log(error);
       notification.dispatch({
         type: "CREATE_NOTIFICATION",
         payload: {
@@ -111,11 +133,15 @@ const NetworkStatusComponent: React.FC = () => {
 
   const renderButton = ({ name, ...props }: RenderButtonProps) => (
     <RoundButton size="medium" {...props}>
-      <MaterialIcons
-        name={name as keyof typeof MaterialIcons.glyphMap}
-        size={24}
-        color={theme.iconDefaultColor}
-      />
+      {name === status.loading ? (
+        <ActivityIndicator size="small" color={theme.colors.primary} />
+      ) : (
+        <MaterialIcons
+          name={name as keyof typeof MaterialIcons.glyphMap}
+          size={24}
+          color={theme.iconDefaultColor}
+        />
+      )}
     </RoundButton>
   );
 
@@ -142,7 +168,16 @@ const NetworkStatusComponent: React.FC = () => {
       case NetworkStatus.online:
         return renderButton({
           name: status.online,
-          onPress: () => navigation.navigate("Cloud"),
+          onPress: () =>
+            navigation.navigate("Cloud", { type: AuthType.signup }),
+        });
+      case NetworkStatus.lock:
+        return renderButton({
+          name: status.lock,
+          onPress: () =>
+            navigation.navigate("Billing", {
+              user: user as User,
+            }),
         });
       case NetworkStatus.authenticated:
         return renderSubscriptionStatus();

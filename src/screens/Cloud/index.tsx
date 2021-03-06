@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { Alert, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import i18n from "locales/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
@@ -15,33 +15,32 @@ import Header from "components/Header";
 import useStore from "hooks/useStore";
 import { dispatchAuthenticationStatus } from "context/StoreContext";
 // Types
-import { CloudScreenNavigationProp } from "types/navigation";
+import { AuthType, CloudNavigationProps } from "types/navigation";
 import { User } from "types/store";
+import { NotificationType } from "types/notifications";
+// Hooks
+import useNotification from "hooks/useNotification";
 // API
 import supabase from "libs/supabase";
 // Styled Components
 import {
   Box,
   ContentContainer,
+  FeaturesContainer,
+  FeaturesTextWrapper,
+  ForgotPasswordContainer,
   FormContainer,
   FormFooter,
-  ForgotPasswordContainer,
-  FeaturesContainer,
   ListItem,
   ListItemIconContainer,
   ListItemsContainer,
   ListItemWrapper,
-  FeaturesTextWrapper,
   LoginContentWrapper,
   WelcomeBackText,
 } from "./styles";
 
 /** URL polyfill. Required for Supabase queries to work in React Native. */
 import "react-native-url-polyfill/auto";
-
-interface Props {
-  navigation: CloudScreenNavigationProp;
-}
 
 interface ListItemProps {
   iconName: string;
@@ -92,12 +91,18 @@ const InlineListItem: React.FC<ListItemProps> = ({ iconName, text }) => {
   );
 };
 
-const DiaryScreen: React.FC<Props> = ({ navigation }) => {
+const DiaryScreen: React.FC<CloudNavigationProps> = ({
+  navigation,
+  route: { params },
+}) => {
   const theme = useTheme();
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-  const [isCreateAccount, setIsCreateAccount] = useState(true);
+  const [isCreateAccount, setIsCreateAccount] = useState(
+    params.type === AuthType.signup
+  );
   const { dispatch } = useStore();
+  const notification = useNotification();
 
   const handleAuthenticationStatus = async (user: User) => {
     try {
@@ -110,9 +115,18 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
         navigation.navigate("Billing", {
           user: user as User,
         });
+      } else {
+        navigation.navigate("Home");
       }
     } catch (e) {
-      console.log("error handling auth status after login or sign up ", e);
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.auth.error"),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 
@@ -123,13 +137,18 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
         password: passwordValue,
       });
 
-      console.log(" onSignUp user = ", user);
-
       if (user) {
         await handleAuthenticationStatus(user as User);
       }
     } catch (error) {
-      console.log("SignUp Error = ", error);
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.signup.error"),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 
@@ -140,13 +159,18 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
         password: passwordValue,
       });
 
-      console.log(" onSignIn user = ", user);
-
       if (user) {
         await handleAuthenticationStatus(user as User);
       }
     } catch (error) {
-      console.log("onSignIn Error = ", error);
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.signin.error"),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 
@@ -163,12 +187,18 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
         Alert.alert("Fields cannot be empty");
       }
     } catch (error) {
-      console.log(
-        `Error ${
-          isCreateAccount ? "Creating a new account" : "log in to the account"
-        } = `,
-        error
-      );
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t(
+            isCreateAccount
+              ? "notifications.signup.error"
+              : "notifications.signin.error"
+          ),
+          type: NotificationType.danger,
+        },
+      });
     }
   };
 
