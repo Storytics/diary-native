@@ -187,6 +187,8 @@ export const StoreContextProvider: React.FC = ({ children }) => {
         const user = supabase.auth.user();
         const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
 
+        console.log("isInternetReachable = ", isInternetReachable);
+
         const isSync =
           lastCloudSync && dayjs(lastCloudSync).isAfter(dayjs(new Date()));
 
@@ -207,7 +209,12 @@ export const StoreContextProvider: React.FC = ({ children }) => {
           },
         });
       } catch (e) {
-        console.log("Error loading network status = ", e);
+        dispatch({
+          type: "SET_NETWORK_STATUS",
+          payload: {
+            status: NetworkStatus.offline,
+          },
+        });
       }
     };
 
@@ -227,7 +234,13 @@ export const StoreContextProvider: React.FC = ({ children }) => {
           });
         }
       } catch (e) {
-        console.log("error loading auth status");
+        dispatch({
+          type: "SET_AUTHENTICATION_STATUS",
+          payload: {
+            user: null,
+            subscriptionStatus: SubscriptionStatus.inactive,
+          },
+        });
       }
     };
 

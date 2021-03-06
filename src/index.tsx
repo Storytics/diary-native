@@ -19,11 +19,11 @@ import Modals from "modals/index";
 import useStore from "hooks/useStore";
 
 interface Props {
-  fontsLoaded: boolean;
+  isFontsLoading: boolean;
   isDatabaseLoading: boolean;
 }
 
-const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
+const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const {
@@ -61,7 +61,7 @@ const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
     };
   }, []);
 
-  if ((!fontsLoaded && isDatabaseLoading) || isHomeScreenLoading) {
+  if ((isFontsLoading && isDatabaseLoading) || isHomeScreenLoading) {
     return <AppLoading />;
   }
 

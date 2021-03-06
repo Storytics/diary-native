@@ -80,6 +80,7 @@ const CreateDiaryModal: React.FC = () => {
             payload: { books },
           });
           setInputText("");
+          setColor(theme.colors.blue400);
           onClose();
           notification.dispatch({
             type: "CREATE_NOTIFICATION",

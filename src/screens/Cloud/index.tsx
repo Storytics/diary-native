@@ -123,6 +123,8 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
         password: passwordValue,
       });
 
+      console.log(" onSignUp user = ", user);
+
       if (user) {
         await handleAuthenticationStatus(user as User);
       }
@@ -137,6 +139,8 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
         email: emailValue.toLocaleLowerCase(),
         password: passwordValue,
       });
+
+      console.log(" onSignIn user = ", user);
 
       if (user) {
         await handleAuthenticationStatus(user as User);

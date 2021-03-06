@@ -28,6 +28,11 @@ export default {
       error: "Error syncing to the cloud",
     },
   },
+  billing: {
+    section: {
+      title: "Billing",
+    },
+  },
   modal: {
     create: {
       title: "New Diary",
