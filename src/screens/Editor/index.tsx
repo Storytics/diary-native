@@ -25,7 +25,6 @@ import Header from "components/Header";
 import Theme from "theme/index";
 // Database
 import { createPage, updatePageById } from "database/Page";
-import { getAllActivity } from "database/Book";
 import { unescapeHtml } from "utils/functions";
 // Context
 import useStore from "hooks/useStore";
@@ -36,6 +35,8 @@ import useDebounce from "hooks/useDebounce";
 import { NotificationType } from "types/notifications";
 // Locales
 import i18n from "locales/index";
+// Context
+import { loadActivity } from "context/StoreContext";
 // Screens shared styles
 import { EditorContainer } from "../styles";
 // Styled components
@@ -203,25 +204,13 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     {}
   );
 
-  const refreshActivities = async () => {
-    try {
-      const activity = await getAllActivity();
-      dispatch({
-        type: "LOAD_ACTIVITY",
-        payload: { activity },
-      });
-    } catch (e) {
-      console.log("Error refreshing activities ", e);
-    }
-  };
-
   const onSave = async () => {
     try {
       // create a new page
       if (content && !params.isEdit) {
         const res = await createPage(content, params.bookId, String(dayjs()));
         if (res === "success") {
-          await refreshActivities();
+          await loadActivity(dispatch);
         }
       }
 
@@ -229,7 +218,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
       if (content && params.isEdit && params.page) {
         const res = await updatePageById(params.page.id, content);
         if (res === "success") {
-          await refreshActivities();
+          await loadActivity(dispatch);
         }
       }
 

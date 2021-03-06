@@ -11,7 +11,9 @@ import Input from "components/Input";
 import Select, { buttons } from "components/Select";
 import Modal from "components/Modal";
 // Database
-import { createBook, getAllBooks, updateBookById } from "database/Book";
+import { createBook, updateBookById } from "database/Book";
+// Context
+import { loadBooks } from "context/StoreContext";
 // Types
 import { NotificationType } from "types/notifications";
 
@@ -72,13 +74,10 @@ const CreateDiaryModal: React.FC = () => {
     try {
       if (inputText) {
         const result = await createBook(inputText, color);
-        const books = await getAllBooks();
 
         if (result === "success") {
-          store.dispatch({
-            type: "LOAD_BOOKS",
-            payload: { books },
-          });
+          await loadBooks(store.dispatch);
+
           setInputText("");
           setColor(theme.colors.blue400);
           onClose();
@@ -109,13 +108,9 @@ const CreateDiaryModal: React.FC = () => {
       if (inputText) {
         const { bookId } = diary;
         const result = await updateBookById(bookId, inputText, color);
-        const books = await getAllBooks();
 
         if (result === "success") {
-          store.dispatch({
-            type: "LOAD_BOOKS",
-            payload: { books },
-          });
+          await loadBooks(store.dispatch);
           setInputText("");
           onClose();
           notification.dispatch({
