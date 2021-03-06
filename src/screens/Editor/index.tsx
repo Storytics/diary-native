@@ -219,7 +219,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     try {
       // create a new page
       if (content && !params.isEdit) {
-        const res = await createPage(content, params.bookId);
+        const res = await createPage(content, params.bookId, String(dayjs()));
         if (res === "success") {
           await refreshActivities();
         }

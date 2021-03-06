@@ -43,6 +43,7 @@ export interface StoreState {
   hasPasswordPin: boolean;
   passwordPin: string | null;
   isLocalAuthentication: boolean;
+  checkForBackups: boolean;
 }
 
 export interface AddBookPayload {
@@ -110,6 +111,13 @@ export interface SetLocalAuthPayload {
   };
 }
 
+export interface SetCheckForBackupsPayload {
+  type: "SET_CHECK_FOR_BACKUPS";
+  payload: {
+    check: boolean;
+  };
+}
+
 export type StoreActions =
   | AddBookPayload
   | LoadBooksPayload
@@ -119,7 +127,8 @@ export type StoreActions =
   | SetDarkThemePayload
   | SetIsHomeScreenLoadingPayload
   | SetPasswordPinPayload
-  | SetLocalAuthPayload;
+  | SetLocalAuthPayload
+  | SetCheckForBackupsPayload;
 
 export interface Context {
   state: StoreState;

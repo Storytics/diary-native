@@ -35,6 +35,7 @@ const initialState = {
   hasPasswordPin: false,
   passwordPin: null,
   isLocalAuthentication: false,
+  checkForBackups: false,
 };
 
 export const StoreContext = createContext<Context>({
@@ -91,6 +92,11 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
         ...state,
         isLocalAuthentication: action.payload.isLocalAuthentication,
       };
+    case "SET_CHECK_FOR_BACKUPS":
+      return {
+        ...state,
+        checkForBackups: action.payload.check,
+      };
     default:
       return state;
   }
@@ -135,58 +141,61 @@ export const dispatchAuthenticationStatus = async (
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const loadBooks = async (dispatch: React.Dispatch<StoreActions>) => {
+  try {
+    const books = await getAllBooks();
+    dispatch({
+      type: "LOAD_BOOKS",
+      payload: { books },
+    });
+  } catch (e) {
+    console.log("Error loading all books = ", e);
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const loadActivity = async (dispatch: React.Dispatch<StoreActions>) => {
+  try {
+    const activity = await getAllActivity();
+    dispatch({
+      type: "LOAD_ACTIVITY",
+      payload: { activity },
+    });
+  } catch (e) {
+    console.log("Error loading all activity = ", e);
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const loadContent = async (dispatch: React.Dispatch<StoreActions>) => {
+  try {
+    await loadBooks(dispatch);
+    await loadActivity(dispatch);
+    const userPasswordPin = await AsyncStorage.getItem(userPasswordPinItem);
+
+    dispatch({
+      type: "SET_PASSWORD_PIN",
+      payload: {
+        hasPasswordPin: !!userPasswordPin,
+        passwordPin: userPasswordPin,
+      },
+    });
+
+    dispatch({
+      type: "SET_IS_HOME_SCREEN_LOADING",
+      payload: { isHomeScreenLoading: false },
+    });
+  } catch (e) {
+    console.log("error loading content = ", e);
+  }
+};
+
 export const StoreContextProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
 
   useEffect(() => {
-    const loadBooks = async () => {
-      try {
-        const books = await getAllBooks();
-        dispatch({
-          type: "LOAD_BOOKS",
-          payload: { books },
-        });
-      } catch (e) {
-        console.log("Error loading all books = ", e);
-      }
-    };
-
-    const loadActivity = async () => {
-      try {
-        const activity = await getAllActivity();
-        dispatch({
-          type: "LOAD_ACTIVITY",
-          payload: { activity },
-        });
-      } catch (e) {
-        console.log("Error loading all activity = ", e);
-      }
-    };
-
-    const loadContent = async () => {
-      try {
-        await loadBooks();
-        await loadActivity();
-        const userPasswordPin = await AsyncStorage.getItem(userPasswordPinItem);
-
-        dispatch({
-          type: "SET_PASSWORD_PIN",
-          payload: {
-            hasPasswordPin: !!userPasswordPin,
-            passwordPin: userPasswordPin,
-          },
-        });
-
-        dispatch({
-          type: "SET_IS_HOME_SCREEN_LOADING",
-          payload: { isHomeScreenLoading: false },
-        });
-      } catch (e) {
-        console.log("error loading content = ", e);
-      }
-    };
-
-    loadContent();
+    loadContent(dispatch);
   }, []);
 
   useEffect(() => {

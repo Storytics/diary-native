@@ -18,6 +18,9 @@ import Modals from "modals/index";
 // Hooks
 import useStore from "hooks/useStore";
 
+/** URL polyfill. Required for Supabase queries to work in React Native. */
+import "react-native-url-polyfill/auto";
+
 interface Props {
   isFontsLoading: boolean;
   isDatabaseLoading: boolean;

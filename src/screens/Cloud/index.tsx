@@ -120,6 +120,7 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
         });
       } else {
         navigation.navigate("Home");
+        dispatch({ type: "SET_CHECK_FOR_BACKUPS", payload: { check: true } });
       }
     } catch (e) {
       notification.dispatch({

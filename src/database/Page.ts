@@ -27,15 +27,16 @@ export const getAllPagesByBookId = async (
 
 export const createPage = async (
   content: string,
-  bookId: number
+  bookId: number,
+  createdAt: string
 ): Promise<string> =>
   new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql("INSERT INTO page (content, bookId) VALUES (?, ?);", [
-          content,
-          bookId,
-        ]);
+        tx.executeSql(
+          "INSERT INTO page (content, bookId, createdAt) VALUES (?, ?, ?);",
+          [content, bookId, createdAt]
+        );
       },
       (error: SQLite.SQLError) => {
         reject(error);

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+// Context
+import { loadActivity, loadBooks } from "context/StoreContext";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
@@ -13,12 +15,47 @@ import useStore from "hooks/useStore";
 import { HomeNavigationProps } from "types/navigation";
 // Locales
 import i18n from "locales/index";
+// Database
+import { importDataToDatabase } from "database/Global";
+// API
+import supabase from "libs/supabase";
 
 const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
   const modalsContext = useModals();
   const {
-    state: { books, activity },
+    state: { books, activity, checkForBackups, user },
+    dispatch,
   } = useStore();
+
+  useEffect(() => {
+    if (checkForBackups) {
+      const onGetBackup = async () => {
+        try {
+          if (user) {
+            const { data } = await supabase
+              .from("backup")
+              .select("*")
+              .eq("user_id", user.id)
+              .order("created_at", { ascending: true })
+              .limit(1);
+
+            if (data && data?.length > 0) {
+              await importDataToDatabase(JSON.parse(data[0].data));
+              await loadBooks(dispatch);
+              await loadActivity(dispatch);
+              dispatch({
+                type: "SET_CHECK_FOR_BACKUPS",
+                payload: { check: false },
+              });
+            }
+          }
+        } catch (error) {
+          console.log("onGetBackup Error = ", error);
+        }
+      };
+      onGetBackup();
+    }
+  }, [checkForBackups, dispatch, user]);
 
   return (
     <CustomSafeArea>

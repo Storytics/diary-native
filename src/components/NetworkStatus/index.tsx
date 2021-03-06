@@ -63,13 +63,15 @@ const NetworkStatusComponent: React.FC = () => {
   const theme = useTheme();
   const {
     state: { networkStatus, subscriptionStatus, user },
+    dispatch,
   } = useStore();
   const navigation = useNavigation();
   const notification = useNotification();
 
   const onCreateBackup = async () => {
     try {
-      if (user) {
+      const session = supabase.auth.session();
+      if (user && session) {
         const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
 
         const isSync =
@@ -79,6 +81,13 @@ const NetworkStatusComponent: React.FC = () => {
           );
 
         if (!isSync) {
+          dispatch({
+            type: "SET_NETWORK_STATUS",
+            payload: {
+              status: NetworkStatus.loading,
+            },
+          });
+
           const allData = await exportAllData();
           await supabase.from("backup").insert([
             {
@@ -88,6 +97,13 @@ const NetworkStatusComponent: React.FC = () => {
           ]);
 
           await AsyncStorage.setItem(userCloudLastSyncItem, String(new Date()));
+
+          dispatch({
+            type: "SET_NETWORK_STATUS",
+            payload: {
+              status: NetworkStatus.authenticated,
+            },
+          });
 
           notification.dispatch({
             type: "CREATE_NOTIFICATION",
@@ -119,7 +135,6 @@ const NetworkStatusComponent: React.FC = () => {
         navigation.navigate("Cloud", { type: AuthType.signin });
       }
     } catch (error) {
-      console.log(error);
       notification.dispatch({
         type: "CREATE_NOTIFICATION",
         payload: {
