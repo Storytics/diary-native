@@ -10,16 +10,27 @@ export const Container = styled.View<{ isKeyboardOpen?: boolean }>`
     `}
 `;
 
-export const ContentWrapper = styled.View`
+export const ContentWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
   display: flex;
   flex-grow: 1;
-  padding-bottom: 30px;
+  ${({ isKeyboardOpen }) =>
+    isKeyboardOpen
+      ? css`
+          padding-bottom: 100px;
+        `
+      : css`
+          padding-bottom: 30px;
+        `}
 `;
 
 export const ToolBarWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
   ${({ isKeyboardOpen }) =>
     isKeyboardOpen
       ? css`
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
           padding-bottom: 10px;
         `
       : css`

@@ -289,7 +289,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
             ref={noteBookScrollRef}
           >
             <Header hasBackButton onPress={onSave} text={params.bookTitle} />
-            <ContentWrapper>
+            <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
               <NoteBook
                 hasPaddingBottom={false}
                 page={params.pageNumber.toString() || "0"}
@@ -304,7 +304,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                       backgroundColor: theme.richEditor.backgroundColor,
                       color: theme.richEditor.textColor,
                       placeholderColor: theme.richEditor.placeholderColor,
-                      contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;}`,
+                      contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
                     }}
                     placeholder={i18n.t("editorScreen.richEditor.placeholder")}
                     initialFocus={false}
@@ -315,12 +315,6 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                       setContent(
                         sanitize(text, { whiteList: { div: ["style"] } })
                       )
-                    }
-                    editorInitializedCallback={() =>
-                      console.log("o Editor esta pronto")
-                    }
-                    onHeightChange={(height: number) =>
-                      console.log("altura mudou = ", height)
                     }
                   />
                 </EditorContainer>

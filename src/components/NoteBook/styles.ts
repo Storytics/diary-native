@@ -54,6 +54,10 @@ export const Content = styled.View`
   padding: 0 30px;
 `;
 
+export const ContentWrapper = styled.View`
+  flex-grow: 1;
+`;
+
 export const LinesWrapper = styled.View`
   ${flexGrow1};
   overflow: hidden;
