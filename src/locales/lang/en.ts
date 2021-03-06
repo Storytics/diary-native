@@ -131,6 +131,13 @@ export default {
     auth: {
       error: "Error verifying your account details",
     },
+    recoverAccount: {
+      success: "Recovery email sent successfully",
+      error: "Error sending recover email!",
+    },
+    formFields: {
+      empty: "Fields cannot be empty",
+    },
   },
   // Diary Screen
   diaryScreen: {
@@ -182,6 +189,13 @@ export default {
       footer: {
         text: "Dont have an account?",
         link: "Sign up",
+      },
+    },
+    recoverAccount: {
+      primaryButton: "Send recover email",
+      content: {
+        title: "Recover Account",
+        text: "We will send a recovery link to your email",
       },
     },
   },

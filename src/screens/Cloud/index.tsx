@@ -101,6 +101,9 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
   const [isCreateAccount, setIsCreateAccount] = useState(
     params.type === AuthType.signup
   );
+  const [isRecoveryAccount, setIsRecoveryAccount] = useState(
+    params.type === AuthType.recover
+  );
   const { dispatch } = useStore();
   const notification = useNotification();
 
@@ -184,7 +187,14 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
           await onSignIn();
         }
       } else {
-        Alert.alert("Fields cannot be empty");
+        notification.dispatch({
+          type: "CREATE_NOTIFICATION",
+          payload: {
+            isOpen: true,
+            message: i18n.t("notifications.formFields.empty"),
+            type: NotificationType.info,
+          },
+        });
       }
     } catch (error) {
       notification.dispatch({
@@ -196,6 +206,49 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
               ? "notifications.signup.error"
               : "notifications.signin.error"
           ),
+          type: NotificationType.danger,
+        },
+      });
+    }
+  };
+
+  const onHandleRecoveryAccount = async () => {
+    try {
+      // check for empty
+      if (emailValue && isRecoveryAccount) {
+        const { error } = await supabase.auth.api.resetPasswordForEmail(
+          emailValue
+        );
+
+        if (!error) {
+          notification.dispatch({
+            type: "CREATE_NOTIFICATION",
+            payload: {
+              isOpen: true,
+              message: i18n.t("notifications.recoverAccount.success"),
+              type: NotificationType.success,
+            },
+          });
+          setEmailValue("");
+          setIsCreateAccount(false);
+          setIsRecoveryAccount(false);
+        }
+      } else {
+        notification.dispatch({
+          type: "CREATE_NOTIFICATION",
+          payload: {
+            isOpen: true,
+            message: i18n.t("notifications.formFields.empty"),
+            type: NotificationType.warning,
+          },
+        });
+      }
+    } catch (error) {
+      notification.dispatch({
+        type: "CREATE_NOTIFICATION",
+        payload: {
+          isOpen: true,
+          message: i18n.t("notifications.recoverAccount.error"),
           type: NotificationType.danger,
         },
       });
@@ -216,7 +269,11 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
               text={
                 isCreateAccount
                   ? i18n.t("cloudScreen.signUp.content.title")
-                  : i18n.t("cloudScreen.logIn.content.title")
+                  : i18n.t(
+                      isRecoveryAccount
+                        ? "cloudScreen.recoverAccount.content.title"
+                        : "cloudScreen.logIn.content.title"
+                    )
               }
             />
             {isCreateAccount ? (
@@ -250,7 +307,11 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
             ) : (
               <LoginContentWrapper>
                 <WelcomeBackText>
-                  {i18n.t("cloudScreen.logIn.content.text")}
+                  {i18n.t(
+                    isRecoveryAccount
+                      ? "cloudScreen.recoverAccount.content.text"
+                      : "cloudScreen.logIn.content.text"
+                  )}
                 </WelcomeBackText>
               </LoginContentWrapper>
             )}
@@ -265,27 +326,37 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
                 onChangeText={setEmailValue}
               />
             </Box>
-            <Box mb={20}>
-              <Input
-                title={i18n.t("cloudScreen.password.title")}
-                placeholderText={i18n.t("cloudScreen.password.placeholder")}
-                inputText={passwordValue}
-                onChangeText={setPasswordValue}
-                secureTextEntry
+            {!isRecoveryAccount && (
+              <Box mb={20}>
+                <Input
+                  title={i18n.t("cloudScreen.password.title")}
+                  placeholderText={i18n.t("cloudScreen.password.placeholder")}
+                  inputText={passwordValue}
+                  onChangeText={setPasswordValue}
+                  secureTextEntry
+                />
+              </Box>
+            )}
+            {isRecoveryAccount ? (
+              <Button
+                text={i18n.t("cloudScreen.recoverAccount.primaryButton")}
+                variant="primary"
+                onPress={onHandleRecoveryAccount}
               />
-            </Box>
-            <Button
-              text={
-                isCreateAccount
-                  ? i18n.t("cloudScreen.signUp.primaryButton")
-                  : i18n.t("cloudScreen.logIn.primaryButton")
-              }
-              variant="primary"
-              onPress={onHandleAuthentication}
-            />
-            {!isCreateAccount && (
+            ) : (
+              <Button
+                text={
+                  isCreateAccount
+                    ? i18n.t("cloudScreen.signUp.primaryButton")
+                    : i18n.t("cloudScreen.logIn.primaryButton")
+                }
+                variant="primary"
+                onPress={onHandleAuthentication}
+              />
+            )}
+            {!isCreateAccount && !isRecoveryAccount && (
               <ForgotPasswordContainer>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setIsRecoveryAccount(true)}>
                   <Text>{i18n.t("cloudScreen.logIn.forgotPassword")}</Text>
                 </TouchableOpacity>
               </ForgotPasswordContainer>
@@ -299,9 +370,10 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
                 </Text>
               </Box>
               <TouchableOpacity
-                onPress={() =>
-                  setIsCreateAccount((prevState: boolean) => !prevState)
-                }
+                onPress={() => {
+                  setIsRecoveryAccount(false);
+                  setIsCreateAccount((prevState: boolean) => !prevState);
+                }}
               >
                 <SmallTitle color={theme.colors.primary}>
                   {isCreateAccount
