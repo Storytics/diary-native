@@ -130,7 +130,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   const { isKeyboardOpen } = useKeyboard();
   const theme = useTheme();
   const { dispatch } = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
 
   // Scroll Ref - scroll initial to top
   const noteBookScrollRef = useRef<ScrollView>(null);
@@ -228,14 +228,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
             ? "notifications.editPage.success"
             : "notifications.savePage.success";
 
-        notification.dispatch({
-          type: "CREATE_NOTIFICATION",
-          payload: {
-            isOpen: true,
-            message: i18n.t(message),
-            type: NotificationType.success,
-          },
-        });
+        notification(i18n.t(message), NotificationType.success);
       }
 
       // Remove any saved drafts before going back
@@ -251,14 +244,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         ? "notifications.editPage.error"
         : "notifications.savePage.error";
 
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t(message),
-          type: NotificationType.danger,
-        },
-      });
+      notification(i18n.t(message), NotificationType.danger);
     }
   };
 

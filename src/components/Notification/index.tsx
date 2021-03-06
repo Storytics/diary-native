@@ -74,8 +74,10 @@ const Notification: React.FC = () => {
   const notificationAnimation = useRef(new Animated.Value(0)).current;
   const theme = useTheme();
   const {
-    state: { message, isOpen, type },
-    dispatch,
+    context: {
+      state: { message, isOpen, type },
+      dispatch,
+    },
   } = useNotification();
   const { color } = theme.notification;
   const componentHeight = 84; // 10 + 54 + 20

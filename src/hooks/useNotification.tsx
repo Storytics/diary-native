@@ -1,15 +1,36 @@
 import { useContext } from "react";
 import { NotificationsContext } from "context/NotificationContext";
-import { Context } from "types/notifications";
+import { Context, NotificationType } from "types/notifications";
+import i18n from "locales/index";
 
-const useNotification = (): Context => {
+interface ReturnType {
+  notification: (message: string, type: NotificationType) => void;
+  context: Context;
+}
+
+const useNotification = (): ReturnType => {
   const context = useContext(NotificationsContext);
   if (context === undefined) {
     throw new Error(
       `useNotification must be used within a NotificationContextProvider.`
     );
   }
-  return context;
+
+  const setNotification = (message: string, type: NotificationType) => {
+    context.dispatch({
+      type: "CREATE_NOTIFICATION",
+      payload: {
+        isOpen: true,
+        message,
+        type,
+      },
+    });
+  };
+
+  return {
+    context,
+    notification: setNotification,
+  } as const;
 };
 
 export default useNotification;

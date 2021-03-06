@@ -77,7 +77,7 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
     state: { hasPasswordPin, passwordPin },
     dispatch,
   } = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
 
   const animationWidth = useMemo(
     () => [12, 55, 98, 140][code.length - 1 || 0],
@@ -120,25 +120,18 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
           type: "SET_PASSWORD_PIN",
           payload: { hasPasswordPin: true, passwordPin: code.toString() },
         });
-        notification.dispatch({
-          type: "CREATE_NOTIFICATION",
-          payload: {
-            isOpen: true,
-            message: i18n.t("notifications.savePasswordPin.success"),
-            type: NotificationType.success,
-          },
-        });
+        notification(
+          i18n.t("notifications.savePasswordPin.success"),
+          NotificationType.success
+        );
+
         navigation.navigate("Home");
       }
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.savePasswordPin.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.savePasswordPin.error"),
+        NotificationType.danger
+      );
     }
   };
 

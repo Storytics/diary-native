@@ -22,7 +22,7 @@ import "react-native-url-polyfill/auto";
 
 const MenuModal: React.FC = () => {
   const store = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
   const [isPinProtected, setIsPinProtected] = useState(false);
 
   const {
@@ -51,14 +51,10 @@ const MenuModal: React.FC = () => {
         payload: { isDarkTheme: value },
       });
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.changeTheme.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.changeTheme.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -78,14 +74,10 @@ const MenuModal: React.FC = () => {
         }, 100);
       }
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.removePasswordPin.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.removePasswordPin.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -106,14 +98,10 @@ const MenuModal: React.FC = () => {
         },
       });
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.logout.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.logout.error"),
+        NotificationType.danger
+      );
     }
   };
 

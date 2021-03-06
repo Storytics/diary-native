@@ -44,7 +44,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const [isEditorLoading, setEditorLoading] = useState(true);
   const theme = useTheme();
   const isFocused = useIsFocused();
-  const notification = useNotification();
+  const { notification } = useNotification();
 
   const isCreatePage = useMemo(() => pageNumber + 1 === bookPages.length, [
     pageNumber,
@@ -70,14 +70,10 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
           setBookPages([...pages, defaultPage]);
           setPageNumber(activityIndex === -1 ? pages.length : activityIndex);
         } catch (e) {
-          notification.dispatch({
-            type: "CREATE_NOTIFICATION",
-            payload: {
-              isOpen: true,
-              message: i18n.t("notifications.loadPages.error"),
-              type: NotificationType.danger,
-            },
-          });
+          notification(
+            i18n.t("notifications.loadPages.error"),
+            NotificationType.danger
+          );
         }
       };
 

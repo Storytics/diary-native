@@ -8,7 +8,7 @@ import Modal from "components/Modal";
 // Database
 import { deleteBookById } from "database/Book";
 // Context
-import { loadBooks, loadActivity } from "context/StoreContext";
+import { loadActivity, loadBooks } from "context/StoreContext";
 // Locales
 import i18n from "locales/index";
 // Types
@@ -20,7 +20,7 @@ const DiaryActionsModal: React.FC = () => {
     state: { isDiaryActionsModalOpen, diary },
   } = useModals();
   const store = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
 
   const onClose = useCallback(() => {
     dispatch({
@@ -37,24 +37,16 @@ const DiaryActionsModal: React.FC = () => {
         await loadBooks(store.dispatch);
         await loadActivity(store.dispatch);
         onClose();
-        notification.dispatch({
-          type: "CREATE_NOTIFICATION",
-          payload: {
-            isOpen: true,
-            message: i18n.t("notifications.deleteDiary.success"),
-            type: NotificationType.success,
-          },
-        });
+        notification(
+          i18n.t("notifications.deleteDiary.success"),
+          NotificationType.success
+        );
       }
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.deleteDiary.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.deleteDiary.error"),
+        NotificationType.danger
+      );
     }
   };
 

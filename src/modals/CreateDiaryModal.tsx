@@ -22,7 +22,7 @@ const CreateDiaryModal: React.FC = () => {
   const [color, setColor] = useState(theme.colors.blue400);
   const [colorIndex, setColorIndex] = useState(0);
   const store = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
   const {
     dispatch,
     state: { isCreateDiaryOpen, isEditDiary, diary },
@@ -81,25 +81,17 @@ const CreateDiaryModal: React.FC = () => {
           setInputText("");
           setColor(theme.colors.blue400);
           onClose();
-          notification.dispatch({
-            type: "CREATE_NOTIFICATION",
-            payload: {
-              isOpen: true,
-              message: i18n.t("notifications.createDiary.success"),
-              type: NotificationType.success,
-            },
-          });
+          notification(
+            i18n.t("notifications.createDiary.success"),
+            NotificationType.success
+          );
         }
       }
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.createDiary.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.createDiary.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -113,25 +105,17 @@ const CreateDiaryModal: React.FC = () => {
           await loadBooks(store.dispatch);
           setInputText("");
           onClose();
-          notification.dispatch({
-            type: "CREATE_NOTIFICATION",
-            payload: {
-              isOpen: true,
-              message: i18n.t("notifications.editDiary.success"),
-              type: NotificationType.success,
-            },
-          });
+          notification(
+            i18n.t("notifications.editDiary.success"),
+            NotificationType.success
+          );
         }
       }
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.editDiary.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.editDiary.error"),
+        NotificationType.danger
+      );
     }
   };
 

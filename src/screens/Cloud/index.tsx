@@ -105,7 +105,7 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
     params.type === AuthType.recover
   );
   const { dispatch } = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
 
   const handleAuthenticationStatus = async (user: User) => {
     try {
@@ -123,14 +123,7 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
         dispatch({ type: "SET_CHECK_FOR_BACKUPS", payload: { check: true } });
       }
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.auth.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(i18n.t("notifications.auth.error"), NotificationType.danger);
     }
   };
 
@@ -145,14 +138,10 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
         await handleAuthenticationStatus(user as User);
       }
     } catch (error) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.signup.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.signup.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -167,14 +156,10 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
         await handleAuthenticationStatus(user as User);
       }
     } catch (error) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.signin.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.signin.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -188,28 +173,20 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
           await onSignIn();
         }
       } else {
-        notification.dispatch({
-          type: "CREATE_NOTIFICATION",
-          payload: {
-            isOpen: true,
-            message: i18n.t("notifications.formFields.empty"),
-            type: NotificationType.info,
-          },
-        });
+        notification(
+          i18n.t("notifications.formFields.empty"),
+          NotificationType.info
+        );
       }
     } catch (error) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t(
-            isCreateAccount
-              ? "notifications.signup.error"
-              : "notifications.signin.error"
-          ),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t(
+          isCreateAccount
+            ? "notifications.signup.error"
+            : "notifications.signin.error"
+        ),
+        NotificationType.danger
+      );
     }
   };
 
@@ -222,37 +199,25 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
         );
 
         if (!error) {
-          notification.dispatch({
-            type: "CREATE_NOTIFICATION",
-            payload: {
-              isOpen: true,
-              message: i18n.t("notifications.recoverAccount.success"),
-              type: NotificationType.success,
-            },
-          });
+          notification(
+            i18n.t("notifications.recoverAccount.success"),
+            NotificationType.success
+          );
           setEmailValue("");
           setIsCreateAccount(false);
           setIsRecoveryAccount(false);
         }
       } else {
-        notification.dispatch({
-          type: "CREATE_NOTIFICATION",
-          payload: {
-            isOpen: true,
-            message: i18n.t("notifications.formFields.empty"),
-            type: NotificationType.warning,
-          },
-        });
+        notification(
+          i18n.t("notifications.formFields.empty"),
+          NotificationType.warning
+        );
       }
     } catch (error) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.recoverAccount.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.recoverAccount.error"),
+        NotificationType.danger
+      );
     }
   };
 

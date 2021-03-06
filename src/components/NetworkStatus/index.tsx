@@ -66,7 +66,7 @@ const NetworkStatusComponent: React.FC = () => {
     dispatch,
   } = useStore();
   const navigation = useNavigation();
-  const notification = useNotification();
+  const { notification } = useNotification();
 
   const onCreateBackup = async () => {
     try {
@@ -104,45 +104,19 @@ const NetworkStatusComponent: React.FC = () => {
               status: NetworkStatus.authenticated,
             },
           });
-
-          notification.dispatch({
-            type: "CREATE_NOTIFICATION",
-            payload: {
-              isOpen: true,
-              message: i18n.t("cloud.sync.success"),
-              type: NotificationType.success,
-            },
-          });
+          notification(i18n.t("cloud.sync.success"), NotificationType.success);
         } else {
-          notification.dispatch({
-            type: "CREATE_NOTIFICATION",
-            payload: {
-              isOpen: true,
-              message: i18n.t("cloud.sync.updateToDate"),
-              type: NotificationType.success,
-            },
-          });
+          notification(
+            i18n.t("cloud.sync.updateToDate"),
+            NotificationType.success
+          );
         }
       } else {
-        notification.dispatch({
-          type: "CREATE_NOTIFICATION",
-          payload: {
-            isOpen: true,
-            message: i18n.t("cloud.sync.expired"),
-            type: NotificationType.info,
-          },
-        });
+        notification(i18n.t("cloud.sync.expired"), NotificationType.info);
         navigation.navigate("Cloud", { type: AuthType.signin });
       }
     } catch (error) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("cloud.sync.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(i18n.t("cloud.sync.error"), NotificationType.danger);
     }
   };
 
