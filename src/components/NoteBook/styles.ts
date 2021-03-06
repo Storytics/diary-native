@@ -84,5 +84,16 @@ export const LoadingContainer = styled.View`
   bottom: 0;
   left: 0;
   padding: 0 30px;
+  overflow: hidden;
   background-color: ${({ theme }) => theme.noteBook.backgroundColor};
+`;
+
+export const LoadingBox = styled.View<{ width?: number; top: number }>`
+  position: absolute;
+  left: 30px;
+  top: ${({ top }) => (top ? `${top}px` : "16px")};
+  width: ${({ width }) => (width ? `${width}%` : "100%")};
+  height: 20px;
+  border-radius: 2px;
+  background-color: ${({ theme }) => theme.noteBook.lineColor};
 `;

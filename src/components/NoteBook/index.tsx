@@ -14,6 +14,7 @@ import {
   Line,
   Footer,
   LoadingContainer,
+  LoadingBox,
 } from "./styles";
 
 interface ActivityCardProps {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const AnimatedLine = Animated.createAnimatedComponent(Line);
+const AnimatedLoadingBox = Animated.createAnimatedComponent(LoadingBox);
 
 const NoteBook: React.FC<ActivityCardProps> = ({
   page = "1",
@@ -108,12 +109,10 @@ const NoteBook: React.FC<ActivityCardProps> = ({
           </ContentWrapper>
           {isLoading && (
             <LoadingContainer>
-              {[...Array(numberOfLinesToRender)].map((e, i) => (
-                <AnimatedLine
-                  style={animationStyles}
-                  key={i.toString()}
-                  height={lineHeight}
-                />
+              <AnimatedLoadingBox style={animationStyles} top={16} />
+              <AnimatedLoadingBox style={animationStyles} top={56} width={50} />
+              {[...Array(16)].map((e, i) => (
+                <Line key={i.toString()} height={lineHeight} />
               ))}
             </LoadingContainer>
           )}
