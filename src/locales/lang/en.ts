@@ -13,6 +13,9 @@ export default {
     },
   },
   terms: {
+    netWorkStatus: {
+      offline: "No internet connection",
+    },
     section: {
       title: "Terms & Conditions",
     },

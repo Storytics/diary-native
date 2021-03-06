@@ -25,8 +25,8 @@ export const LeftIconContainer = styled.View`
 `;
 
 export const ContentContainer = styled.View`
-  padding: 0 20px;
-  flex-grow: 1;
+  padding: 0 15px 0 20px;
+  flex: 1;
 `;
 
 export const TextContainer = styled.View`

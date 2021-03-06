@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Linking, Text } from "react-native";
+import { Linking } from "react-native";
 import { WebViewMessageEvent } from "react-native-webview";
 // Components
 import Container from "components/Container";
@@ -7,6 +7,7 @@ import Header from "components/Header";
 import OverlaySpinner from "components/OverlaySpinner";
 import CustomSafeArea from "components/CustomSafeArea";
 import CustomHeaderWebView from "components/CustomHeaderWebView";
+import Placeholder from "components/Placeholder";
 // Hooks
 import useStore from "hooks/useStore";
 // Utils
@@ -21,7 +22,7 @@ import { NetworkStatus } from "types/store";
 // Locales
 import i18n from "locales/index";
 // Styles
-import { Overlay } from "./styles";
+import { Overlay, PlaceholderContainer } from "./styles";
 
 interface Props {
   page: LegalType;
@@ -82,7 +83,12 @@ const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
       <CustomSafeArea>
         <Container>
           {renderHeader()}
-          <Text>No internet connection</Text>
+          <PlaceholderContainer>
+            <Placeholder
+              icon="wifi-off"
+              text={i18n.t("terms.netWorkStatus.offline")}
+            />
+          </PlaceholderContainer>
         </Container>
       </CustomSafeArea>
     );
