@@ -15,6 +15,8 @@ import Modal from "components/Modal";
 import { NotificationType } from "types/notifications";
 import { NetworkStatus, SubscriptionStatus } from "types/store";
 import { AuthType } from "types/navigation";
+// Context
+import { setNetworkStatus } from "context/StoreContext";
 // API
 import supabase from "libs/supabase";
 
@@ -89,12 +91,7 @@ const MenuModal: React.FC = () => {
           subscriptionStatus: SubscriptionStatus.inactive,
         },
       });
-      store.dispatch({
-        type: "SET_NETWORK_STATUS",
-        payload: {
-          status: NetworkStatus.online,
-        },
-      });
+      setNetworkStatus(store.dispatch, NetworkStatus.online);
     } catch (e) {
       notification(
         i18n.t("notifications.logout.error"),

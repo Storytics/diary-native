@@ -17,6 +17,8 @@ import { AuthType } from "types/navigation";
 import i18n from "locales/index";
 // Database
 import { exportAllData } from "database/Global";
+// Context
+import { setNetworkStatus } from "context/StoreContext";
 // API
 import supabase from "libs/supabase";
 // Utils
@@ -37,24 +39,6 @@ interface RenderButtonProps {
   name: string;
   onPress?: () => void;
 }
-
-/*
-const onGetBackup = async () => {
-  try {
-    const { data, error } = await supabase
-      .from("backup")
-      .select("*")
-      // .eq("user_id", "82e3e8cb-ff55-4453-bd1a-9734d2146a03")
-      .order("created_at", { ascending: true })
-      .limit(1);
-
-    console.log("onGetBackup data = ", data);
-    console.log("error = ", error);
-  } catch (error) {
-    console.log("onGetBackup Error = ", error);
-  }
-};
- */
 
 const NetworkStatusComponent: React.FC = () => {
   const theme = useTheme();
@@ -78,12 +62,7 @@ const NetworkStatusComponent: React.FC = () => {
           );
 
         if (!isSync) {
-          dispatch({
-            type: "SET_NETWORK_STATUS",
-            payload: {
-              status: NetworkStatus.loading,
-            },
-          });
+          setNetworkStatus(dispatch, NetworkStatus.loading);
 
           const allData = await exportAllData();
           await supabase.from("backup").insert([
@@ -94,13 +73,7 @@ const NetworkStatusComponent: React.FC = () => {
           ]);
 
           await AsyncStorage.setItem(userCloudLastSyncItem, String(new Date()));
-
-          dispatch({
-            type: "SET_NETWORK_STATUS",
-            payload: {
-              status: NetworkStatus.authenticated,
-            },
-          });
+          setNetworkStatus(dispatch, NetworkStatus.authenticated);
           notification(i18n.t("cloud.sync.success"), NotificationType.success);
         } else {
           notification(

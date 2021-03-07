@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 // Context
-import { loadActivity, loadBooks } from "context/StoreContext";
+import {
+  loadActivity,
+  loadBooks,
+  setNetworkStatus,
+} from "context/StoreContext";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
@@ -13,6 +17,7 @@ import useModals from "hooks/useModals";
 import useStore from "hooks/useStore";
 // Types
 import { HomeNavigationProps } from "types/navigation";
+import { NetworkStatus } from "types/store";
 // Locales
 import i18n from "locales/index";
 // Database
@@ -36,13 +41,18 @@ const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
               .from("backup")
               .select("*")
               .eq("user_id", user.id)
-              .order("created_at", { ascending: true })
+              .order("created_at", { ascending: false })
               .limit(1);
 
             if (data && data?.length > 0) {
+              // Set loading state
+              setNetworkStatus(dispatch, NetworkStatus.loading);
+              // imports the creates the new books and pages from the backup
               await importDataToDatabase(JSON.parse(data[0].data));
               await loadBooks(dispatch);
               await loadActivity(dispatch);
+              // stops the loading and returns to the auth state
+              setNetworkStatus(dispatch, NetworkStatus.authenticated);
               dispatch({
                 type: "SET_CHECK_FOR_BACKUPS",
                 payload: { check: false },

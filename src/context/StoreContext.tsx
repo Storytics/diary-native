@@ -100,6 +100,17 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
   }
 };
 
+export const setNetworkStatus = (
+  dispatch: React.Dispatch<StoreActions>,
+  status: NetworkStatus
+) =>
+  dispatch({
+    type: "SET_NETWORK_STATUS",
+    payload: {
+      status,
+    },
+  });
+
 export const dispatchAuthenticationStatus = async (
   user: User,
   dispatch: React.Dispatch<StoreActions>
@@ -122,14 +133,10 @@ export const dispatchAuthenticationStatus = async (
         },
       });
 
-      dispatch({
-        type: "SET_NETWORK_STATUS",
-        payload: {
-          status: hasSubscription
-            ? NetworkStatus.authenticated
-            : NetworkStatus.lock,
-        },
-      });
+      setNetworkStatus(
+        dispatch,
+        hasSubscription ? NetworkStatus.authenticated : NetworkStatus.lock
+      );
 
       return hasSubscription;
     }
@@ -203,8 +210,6 @@ export const StoreContextProvider: React.FC = ({ children }) => {
         const user = supabase.auth.user();
         const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
 
-        console.log("isInternetReachable = ", isInternetReachable);
-
         const isSync =
           lastCloudSync && dayjs(lastCloudSync).isAfter(dayjs(new Date()));
 
@@ -218,19 +223,12 @@ export const StoreContextProvider: React.FC = ({ children }) => {
           status = NetworkStatus.sync;
         }
 
-        dispatch({
-          type: "SET_NETWORK_STATUS",
-          payload: {
-            status: isInternetReachable ? status : NetworkStatus.offline,
-          },
-        });
+        setNetworkStatus(
+          dispatch,
+          isInternetReachable ? status : NetworkStatus.offline
+        );
       } catch (e) {
-        dispatch({
-          type: "SET_NETWORK_STATUS",
-          payload: {
-            status: NetworkStatus.offline,
-          },
-        });
+        setNetworkStatus(dispatch, NetworkStatus.offline);
       }
     };
 
