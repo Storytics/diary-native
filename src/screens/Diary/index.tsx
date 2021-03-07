@@ -28,10 +28,10 @@ import { EditorContainer } from "../styles";
 import { NoteBookContainer, NavigationContainer } from "./styles";
 
 const defaultPage = {
-  id: 0,
+  id: "",
   content: "",
   createdAt: String(dayjs()),
-  bookId: 0,
+  bookId: "",
 };
 
 const DiaryScreen: React.FC<DiaryNavigationProps> = ({
@@ -45,7 +45,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const [isEditorLoading, setEditorLoading] = useState(true);
   const theme = useTheme();
   const isFocused = useIsFocused();
-  const notification = useNotification();
+  const { notification } = useNotification();
   const {
     state: { isDarkTheme },
   } = useStore();
@@ -75,14 +75,10 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
           setBookPages([...pages, defaultPage]);
           setPageNumber(activityIndex === -1 ? pages.length : activityIndex);
         } catch (e) {
-          notification.dispatch({
-            type: "CREATE_NOTIFICATION",
-            payload: {
-              isOpen: true,
-              message: i18n.t("notifications.loadPages.error"),
-              type: NotificationType.danger,
-            },
-          });
+          notification(
+            i18n.t("notifications.loadPages.error"),
+            NotificationType.danger
+          );
         }
       };
 

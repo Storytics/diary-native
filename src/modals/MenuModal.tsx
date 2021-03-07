@@ -13,16 +13,16 @@ import Brand from "components/Brand";
 import Modal from "components/Modal";
 // Types
 import { NotificationType } from "types/notifications";
-import { LegalType } from "types/navigation";
 import { NetworkStatus, SubscriptionStatus } from "types/store";
+import { AuthType } from "types/navigation";
+// Context
+import { setNetworkStatus } from "context/StoreContext";
 // API
 import supabase from "libs/supabase";
-/** URL polyfill. Required for Supabase queries to work in React Native. */
-import "react-native-url-polyfill/auto";
 
 const MenuModal: React.FC = () => {
   const store = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
   const [isPinProtected, setIsPinProtected] = useState(false);
 
   const {
@@ -51,14 +51,10 @@ const MenuModal: React.FC = () => {
         payload: { isDarkTheme: value },
       });
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.changeTheme.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.changeTheme.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -78,14 +74,10 @@ const MenuModal: React.FC = () => {
         }, 100);
       }
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.removePasswordPin.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.removePasswordPin.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -99,15 +91,12 @@ const MenuModal: React.FC = () => {
           subscriptionStatus: SubscriptionStatus.inactive,
         },
       });
+      setNetworkStatus(store.dispatch, NetworkStatus.online);
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.logout.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.logout.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -138,7 +127,8 @@ const MenuModal: React.FC = () => {
           title={i18n.t("modal.menu.premium")}
           onPress={() => {
             onClose();
-            navigate("Cloud");
+            // @ts-ignore
+            navigate("Cloud", { type: AuthType.signup });
           }}
         />
       )}

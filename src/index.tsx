@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { StatusBar, View, AppState, AppStateStatus } from "react-native";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { AppState, AppStateStatus, StatusBar, View } from "react-native";
 import AppLoading from "expo-app-loading";
+// Components
 import Notification from "components/Notification";
+import { getLastCloudSync, uploadDataToCloud } from "components/NetworkStatus";
 import {
   SafeAreaProvider,
   initialWindowMetrics,
@@ -14,29 +16,73 @@ import themeDark from "theme/dark";
 import Navigation, { navigate } from "navigation/index";
 // Contexts
 import { ModalsContextProvider } from "context/ModalsContext";
-import { StoreContextProvider } from "context/StoreContext";
+import { setNetworkStatus, StoreContextProvider } from "context/StoreContext";
 import { NotificationsContextProvider } from "context/NotificationContext";
 // Modals
 import Modals from "modals/index";
 // Hooks
 import useStore from "hooks/useStore";
+import useInterval from "hooks/useInterval";
+// Types
+import { NetworkStatus, SubscriptionStatus } from "types/store";
+
+/** URL polyfill. Required for Supabase queries to work in React Native. */
+import "react-native-url-polyfill/auto";
+import supabase from "libs/supabase";
 
 interface Props {
-  fontsLoaded: boolean;
+  isFontsLoading: boolean;
   isDatabaseLoading: boolean;
 }
 
-const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
+// 31 Minutes
+const backupPollerTime = 1860000;
+
+const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const {
     state: {
+      user,
       isDarkTheme,
       isHomeScreenLoading,
       hasPasswordPin,
       isLocalAuthentication,
+      subscriptionStatus,
+      networkStatus,
     },
+    dispatch,
   } = useStore();
+
+  const hasBackupPoller = useMemo(
+    () =>
+      appStateVisible === "active" &&
+      subscriptionStatus === SubscriptionStatus.active &&
+      networkStatus === NetworkStatus.authenticated &&
+      user,
+    [appStateVisible, subscriptionStatus, networkStatus, user]
+  );
+
+  useInterval(
+    async () => {
+      try {
+        if (!isHomeScreenLoading && hasBackupPoller) {
+          const session = supabase.auth.session();
+          if (session && user) {
+            const isSync = await getLastCloudSync();
+            if (!isSync) {
+              await uploadDataToCloud(dispatch, user);
+            }
+          } else {
+            setNetworkStatus(dispatch, NetworkStatus.online);
+          }
+        }
+      } catch (e) {
+        console.log("Error uploading backup from poller = ", e);
+      }
+    },
+    hasBackupPoller ? backupPollerTime : null
+  );
 
   const theme = isDarkTheme ? themeDark : themeLight;
 
@@ -64,7 +110,7 @@ const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
     };
   }, []);
 
-  if ((!fontsLoaded && isDatabaseLoading) || isHomeScreenLoading) {
+  if ((isFontsLoading && isDatabaseLoading) || isHomeScreenLoading) {
     return <AppLoading />;
   }
 

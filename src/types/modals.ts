@@ -6,7 +6,7 @@ export interface ModalsState {
   isMenuModalOpen: boolean;
   isDiaryActionsModalOpen: boolean;
   diary: {
-    bookId: number;
+    bookId: string;
     bookTitle: string;
     bookColor: string;
   };
@@ -31,7 +31,7 @@ export interface DiaryModalPayload {
   type: "DIARY_ACTIONS_MODAL";
   payload: {
     isOpen: boolean;
-    bookId: number;
+    bookId: string;
     bookTitle: string;
     bookColor: string;
   };

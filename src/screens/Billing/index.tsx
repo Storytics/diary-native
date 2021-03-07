@@ -1,38 +1,86 @@
-import React from "react";
-import { WebView } from "react-native-webview";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useCallback, useState, useEffect } from "react";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
+import CustomHeaderWebView from "components/CustomHeaderWebView";
+import CustomSafeArea from "components/CustomSafeArea";
+import OverlaySpinner from "components/OverlaySpinner";
 // Utils
 import { billingUrl } from "utils/constants";
 // Types
 import { BillingNavigationProps } from "types/navigation";
+// Locales
+import i18n from "locales/index";
+import { WebViewMessageEvent } from "react-native-webview";
+// Styles
+import { Overlay } from "./styles";
+
+const injectScript = `
+  (function () {
+    window.onclick = function(e) {
+      e.preventDefault();
+      window.ReactNativeWebView.postMessage(e.target.href);
+      e.stopPropagation()
+    }
+  }());
+`;
 
 const Billing: React.FC<BillingNavigationProps> = ({
   navigation,
   route: { params },
-}) => (
-  <SafeAreaView>
-    <Container>
-      <Header
-        hasBackButton
-        onPress={() => {
-          navigation.goBack();
-        }}
-        text="Back to Authentication"
-      />
-      <WebView
-        source={{
-          uri: billingUrl,
-          headers: {
-            Cookie: `user=${JSON.stringify(params.user)};`,
-          },
-        }}
-        sharedCookiesEnabled
-      />
-    </Container>
-  </SafeAreaView>
-);
+}) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const onLoading = useCallback((state: boolean) => {
+    setTimeout(() => {
+      setIsLoading(state);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    console.log("the user  = ", params.user);
+  }, [params.user]);
+
+  const onMessage = ({ nativeEvent: { data } }: WebViewMessageEvent) => {
+    console.log("onMessage data = ", data);
+  };
+
+  const renderHeader = () => (
+    <Header
+      hasBackButton
+      onPress={() => {
+        navigation.navigate("Home");
+      }}
+      text={i18n.t("billing.section.title")}
+    />
+  );
+
+  return (
+    <CustomSafeArea>
+      <Container>
+        {isLoading && (
+          <Overlay>
+            {renderHeader()}
+            <OverlaySpinner />
+          </Overlay>
+        )}
+        {renderHeader()}
+        <CustomHeaderWebView
+          source={{
+            uri: billingUrl,
+            headers: {
+              "x-dia-native-user-id": String(params.user.id),
+              "x-dia-native-user-email": String(params.user.email),
+            },
+          }}
+          onLoad={() => onLoading(false)}
+          onError={() => onLoading(false)}
+          injectedJavaScript={injectScript}
+          onMessage={onMessage}
+        />
+      </Container>
+    </CustomSafeArea>
+  );
+};
 
 export default Billing;

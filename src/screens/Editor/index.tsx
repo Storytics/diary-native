@@ -18,6 +18,7 @@ import useKeyboard from "hooks/useKeyboard";
 import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userEditorDraftItem } from "utils/constants";
+import uuid from "uuid-random";
 // Types
 import { EditorNavigationProps } from "types/navigation";
 import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
@@ -25,7 +26,6 @@ import Header from "components/Header";
 import Theme from "theme/index";
 // Database
 import { createPage, updatePageById } from "database/Page";
-import { getAllActivity } from "database/Book";
 import { unescapeHtml } from "utils/functions";
 // Context
 import useStore from "hooks/useStore";
@@ -36,6 +36,8 @@ import useDebounce from "hooks/useDebounce";
 import { NotificationType } from "types/notifications";
 // Locales
 import i18n from "locales/index";
+// Context
+import { loadActivity } from "context/StoreContext";
 // Screens shared styles
 import { EditorContainer } from "../styles";
 // Styled components
@@ -130,7 +132,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   const { isKeyboardOpen } = useKeyboard();
   const theme = useTheme();
   const { dispatch } = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
 
   // Scroll Ref - scroll initial to top
   const noteBookScrollRef = useRef<ScrollView>(null);
@@ -204,25 +206,18 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     {}
   );
 
-  const refreshActivities = async () => {
-    try {
-      const activity = await getAllActivity();
-      dispatch({
-        type: "LOAD_ACTIVITY",
-        payload: { activity },
-      });
-    } catch (e) {
-      console.log("Error refreshing activities ", e);
-    }
-  };
-
   const onSave = async () => {
     try {
       // create a new page
       if (content && !params.isEdit) {
-        const res = await createPage(content, params.bookId);
+        const res = await createPage(
+          uuid(),
+          content,
+          params.bookId,
+          String(dayjs())
+        );
         if (res === "success") {
-          await refreshActivities();
+          await loadActivity(dispatch);
         }
       }
 
@@ -230,7 +225,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
       if (content && params.isEdit && params.page) {
         const res = await updatePageById(params.page.id, content);
         if (res === "success") {
-          await refreshActivities();
+          await loadActivity(dispatch);
         }
       }
 
@@ -240,14 +235,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
             ? "notifications.editPage.success"
             : "notifications.savePage.success";
 
-        notification.dispatch({
-          type: "CREATE_NOTIFICATION",
-          payload: {
-            isOpen: true,
-            message: i18n.t(message),
-            type: NotificationType.success,
-          },
-        });
+        notification(i18n.t(message), NotificationType.success);
       }
 
       // Remove any saved drafts before going back
@@ -259,7 +247,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         navigation.navigate("Diary", {
           bookId: params.bookId,
           bookTitle: params.bookTitle,
-          activityPageId: params.pageNumber,
+          activityPageId: params.page?.id,
         });
       }, 0);
     } catch (e) {
@@ -267,14 +255,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         ? "notifications.editPage.error"
         : "notifications.savePage.error";
 
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t(message),
-          type: NotificationType.danger,
-        },
-      });
+      notification(i18n.t(message), NotificationType.danger);
     }
   };
 

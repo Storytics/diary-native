@@ -3,13 +3,13 @@ import { PageProps } from "./page";
 export interface BookProps {
   color: string;
   createdAt: string;
-  id: number;
+  id: string;
   title: string;
 }
 
 export interface BooksProps {
   book: {
-    id: number;
+    id: string;
     title: string;
     color: string;
     pages: Array<PageProps>;

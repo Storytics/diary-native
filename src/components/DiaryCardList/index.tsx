@@ -8,13 +8,13 @@ import { Container, DiaryCardContainer, PlaceholderContainer } from "./styles";
 
 interface DiaryCardListProps {
   data: Array<{
-    id: number;
+    id: string;
     title: string;
     color: string;
   }>;
   placeholderText: string;
-  onPress: (bookId: number, title: string) => void;
-  onPressMore: (bookId: number, title: string, color: string) => void;
+  onPress: (bookId: string, title: string) => void;
+  onPressMore: (bookId: string, title: string, color: string) => void;
 }
 
 const styles = StyleSheet.create({

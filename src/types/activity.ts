@@ -1,7 +1,7 @@
 export interface ActivityProps {
   title: string;
-  id: number;
+  id: string;
   createdAt: string;
-  bookId: number;
+  bookId: string;
   content: string;
 }

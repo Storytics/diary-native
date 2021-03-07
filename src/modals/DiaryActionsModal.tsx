@@ -6,7 +6,9 @@ import useNotification from "hooks/useNotification";
 // Components
 import Modal from "components/Modal";
 // Database
-import { deleteBookById, getAllActivity, getAllBooks } from "database/Book";
+import { deleteBookById } from "database/Book";
+// Context
+import { loadActivity, loadBooks } from "context/StoreContext";
 // Locales
 import i18n from "locales/index";
 // Types
@@ -18,49 +20,33 @@ const DiaryActionsModal: React.FC = () => {
     state: { isDiaryActionsModalOpen, diary },
   } = useModals();
   const store = useStore();
-  const notification = useNotification();
+  const { notification } = useNotification();
 
   const onClose = useCallback(() => {
     dispatch({
       type: "DIARY_ACTIONS_MODAL",
-      payload: { isOpen: false, bookId: 0, bookTitle: "", bookColor: "" },
+      payload: { isOpen: false, bookId: "", bookTitle: "", bookColor: "" },
     });
   }, [dispatch]);
 
   const onDelete = async () => {
     try {
       const result = await deleteBookById(diary.bookId);
-      const books = await getAllBooks();
-      const activity = await getAllActivity();
 
       if (result === "success") {
-        store.dispatch({
-          type: "LOAD_BOOKS",
-          payload: { books },
-        });
-        store.dispatch({
-          type: "LOAD_ACTIVITY",
-          payload: { activity },
-        });
+        await loadBooks(store.dispatch);
+        await loadActivity(store.dispatch);
         onClose();
-        notification.dispatch({
-          type: "CREATE_NOTIFICATION",
-          payload: {
-            isOpen: true,
-            message: i18n.t("notifications.deleteDiary.success"),
-            type: NotificationType.success,
-          },
-        });
+        notification(
+          i18n.t("notifications.deleteDiary.success"),
+          NotificationType.success
+        );
       }
     } catch (e) {
-      notification.dispatch({
-        type: "CREATE_NOTIFICATION",
-        payload: {
-          isOpen: true,
-          message: i18n.t("notifications.deleteDiary.error"),
-          type: NotificationType.danger,
-        },
-      });
+      notification(
+        i18n.t("notifications.deleteDiary.error"),
+        NotificationType.danger
+      );
     }
   };
 

@@ -8,24 +8,19 @@ import Placeholder from "components/Placeholder";
 import ActivityCard from "components/ActivityCard";
 // utils
 import { unescapeHtml } from "utils//functions";
-import sanitize, {
-  escapeHtml,
-  escapeHtmlEntities,
-  escapeDangerHtml5Entities,
-} from "xss";
 
 import { Container, ActivityCardContainer } from "./styles";
 
 interface ActivityCardListProps {
   data: Array<{
     title: string;
-    id: number;
+    id: string;
     createdAt: string;
-    bookId: number;
+    bookId: string;
     content: string;
   }>;
   placeholderText: string;
-  onPress: (bookId: number, bookTitle: string, pageNumber: number) => void;
+  onPress: (bookId: string, bookTitle: string, activityPageId: string) => void;
 }
 
 // replace(/<\/?[^>]+(>|$)/g, "")

@@ -8,7 +8,7 @@ const initialState = {
   isMenuModalOpen: false,
   isDiaryActionsModalOpen: false,
   diary: {
-    bookId: 0,
+    bookId: "",
     bookTitle: "",
     bookColor: "",
   },

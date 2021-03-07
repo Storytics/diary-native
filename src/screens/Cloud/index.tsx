@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { Alert, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import i18n from "locales/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
@@ -15,33 +15,29 @@ import Header from "components/Header";
 import useStore from "hooks/useStore";
 import { dispatchAuthenticationStatus } from "context/StoreContext";
 // Types
-import { CloudScreenNavigationProp } from "types/navigation";
+import { AuthType, CloudNavigationProps } from "types/navigation";
 import { User } from "types/store";
+import { NotificationType } from "types/notifications";
+// Hooks
+import useNotification from "hooks/useNotification";
 // API
 import supabase from "libs/supabase";
 // Styled Components
 import {
   Box,
   ContentContainer,
+  FeaturesContainer,
+  FeaturesTextWrapper,
+  ForgotPasswordContainer,
   FormContainer,
   FormFooter,
-  ForgotPasswordContainer,
-  FeaturesContainer,
   ListItem,
   ListItemIconContainer,
   ListItemsContainer,
   ListItemWrapper,
-  FeaturesTextWrapper,
   LoginContentWrapper,
   WelcomeBackText,
 } from "./styles";
-
-/** URL polyfill. Required for Supabase queries to work in React Native. */
-import "react-native-url-polyfill/auto";
-
-interface Props {
-  navigation: CloudScreenNavigationProp;
-}
 
 interface ListItemProps {
   iconName: string;
@@ -92,12 +88,21 @@ const InlineListItem: React.FC<ListItemProps> = ({ iconName, text }) => {
   );
 };
 
-const DiaryScreen: React.FC<Props> = ({ navigation }) => {
+const DiaryScreen: React.FC<CloudNavigationProps> = ({
+  navigation,
+  route: { params },
+}) => {
   const theme = useTheme();
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-  const [isCreateAccount, setIsCreateAccount] = useState(true);
+  const [isCreateAccount, setIsCreateAccount] = useState(
+    params.type === AuthType.signup
+  );
+  const [isRecoveryAccount, setIsRecoveryAccount] = useState(
+    params.type === AuthType.recover
+  );
   const { dispatch } = useStore();
+  const { notification } = useNotification();
 
   const handleAuthenticationStatus = async (user: User) => {
     try {
@@ -110,39 +115,56 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
         navigation.navigate("Billing", {
           user: user as User,
         });
+      } else {
+        navigation.navigate("Home");
+        dispatch({ type: "SET_CHECK_FOR_BACKUPS", payload: { check: true } });
       }
     } catch (e) {
-      console.log("error handling auth status after login or sign up ", e);
+      notification(i18n.t("notifications.auth.error"), NotificationType.danger);
     }
   };
 
   const onSignUp = async () => {
     try {
-      const { user } = await supabase.auth.signUp({
+      const { user, error } = await supabase.auth.signUp({
         email: emailValue.toLocaleLowerCase(),
         password: passwordValue,
       });
+
+      if (error) {
+        notification(error.message, NotificationType.danger);
+      }
 
       if (user) {
         await handleAuthenticationStatus(user as User);
       }
     } catch (error) {
-      console.log("SignUp Error = ", error);
+      notification(
+        i18n.t("notifications.signup.error"),
+        NotificationType.danger
+      );
     }
   };
 
   const onSignIn = async () => {
     try {
-      const { user } = await supabase.auth.signIn({
+      const { user, error } = await supabase.auth.signIn({
         email: emailValue.toLocaleLowerCase(),
         password: passwordValue,
       });
+
+      if (error) {
+        notification(error.message, NotificationType.danger);
+      }
 
       if (user) {
         await handleAuthenticationStatus(user as User);
       }
     } catch (error) {
-      console.log("onSignIn Error = ", error);
+      notification(
+        i18n.t("notifications.signin.error"),
+        NotificationType.danger
+      );
     }
   };
 
@@ -156,14 +178,50 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
           await onSignIn();
         }
       } else {
-        Alert.alert("Fields cannot be empty");
+        notification(
+          i18n.t("notifications.formFields.empty"),
+          NotificationType.info
+        );
       }
     } catch (error) {
-      console.log(
-        `Error ${
-          isCreateAccount ? "Creating a new account" : "log in to the account"
-        } = `,
-        error
+      notification(
+        i18n.t(
+          isCreateAccount
+            ? "notifications.signup.error"
+            : "notifications.signin.error"
+        ),
+        NotificationType.danger
+      );
+    }
+  };
+
+  const onHandleRecoveryAccount = async () => {
+    try {
+      // check for empty
+      if (emailValue && isRecoveryAccount) {
+        const { error } = await supabase.auth.api.resetPasswordForEmail(
+          emailValue
+        );
+
+        if (!error) {
+          notification(
+            i18n.t("notifications.recoverAccount.success"),
+            NotificationType.success
+          );
+          setEmailValue("");
+          setIsCreateAccount(false);
+          setIsRecoveryAccount(false);
+        }
+      } else {
+        notification(
+          i18n.t("notifications.formFields.empty"),
+          NotificationType.warning
+        );
+      }
+    } catch (error) {
+      notification(
+        i18n.t("notifications.recoverAccount.error"),
+        NotificationType.danger
       );
     }
   };
@@ -182,7 +240,11 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
               text={
                 isCreateAccount
                   ? i18n.t("cloudScreen.signUp.content.title")
-                  : i18n.t("cloudScreen.logIn.content.title")
+                  : i18n.t(
+                      isRecoveryAccount
+                        ? "cloudScreen.recoverAccount.content.title"
+                        : "cloudScreen.logIn.content.title"
+                    )
               }
             />
             {isCreateAccount ? (
@@ -216,7 +278,11 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
             ) : (
               <LoginContentWrapper>
                 <WelcomeBackText>
-                  {i18n.t("cloudScreen.logIn.content.text")}
+                  {i18n.t(
+                    isRecoveryAccount
+                      ? "cloudScreen.recoverAccount.content.text"
+                      : "cloudScreen.logIn.content.text"
+                  )}
                 </WelcomeBackText>
               </LoginContentWrapper>
             )}
@@ -231,27 +297,37 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
                 onChangeText={setEmailValue}
               />
             </Box>
-            <Box mb={20}>
-              <Input
-                title={i18n.t("cloudScreen.password.title")}
-                placeholderText={i18n.t("cloudScreen.password.placeholder")}
-                inputText={passwordValue}
-                onChangeText={setPasswordValue}
-                secureTextEntry
+            {!isRecoveryAccount && (
+              <Box mb={20}>
+                <Input
+                  title={i18n.t("cloudScreen.password.title")}
+                  placeholderText={i18n.t("cloudScreen.password.placeholder")}
+                  inputText={passwordValue}
+                  onChangeText={setPasswordValue}
+                  secureTextEntry
+                />
+              </Box>
+            )}
+            {isRecoveryAccount ? (
+              <Button
+                text={i18n.t("cloudScreen.recoverAccount.primaryButton")}
+                variant="primary"
+                onPress={onHandleRecoveryAccount}
               />
-            </Box>
-            <Button
-              text={
-                isCreateAccount
-                  ? i18n.t("cloudScreen.signUp.primaryButton")
-                  : i18n.t("cloudScreen.logIn.primaryButton")
-              }
-              variant="primary"
-              onPress={onHandleAuthentication}
-            />
-            {!isCreateAccount && (
+            ) : (
+              <Button
+                text={
+                  isCreateAccount
+                    ? i18n.t("cloudScreen.signUp.primaryButton")
+                    : i18n.t("cloudScreen.logIn.primaryButton")
+                }
+                variant="primary"
+                onPress={onHandleAuthentication}
+              />
+            )}
+            {!isCreateAccount && !isRecoveryAccount && (
               <ForgotPasswordContainer>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setIsRecoveryAccount(true)}>
                   <Text>{i18n.t("cloudScreen.logIn.forgotPassword")}</Text>
                 </TouchableOpacity>
               </ForgotPasswordContainer>
@@ -265,9 +341,10 @@ const DiaryScreen: React.FC<Props> = ({ navigation }) => {
                 </Text>
               </Box>
               <TouchableOpacity
-                onPress={() =>
-                  setIsCreateAccount((prevState: boolean) => !prevState)
-                }
+                onPress={() => {
+                  setIsRecoveryAccount(false);
+                  setIsCreateAccount((prevState: boolean) => !prevState);
+                }}
               >
                 <SmallTitle color={theme.colors.primary}>
                   {isCreateAccount

@@ -5,7 +5,7 @@ import { PageProps } from "types/page";
 import Connection from "./DatabaseConnection";
 
 export const getAllPagesByBookId = async (
-  bookId: number
+  bookId: string
 ): Promise<PageProps[]> =>
   new Promise((resolve, reject) => {
     Connection.transaction(
@@ -26,16 +26,18 @@ export const getAllPagesByBookId = async (
   });
 
 export const createPage = async (
+  id: string,
   content: string,
-  bookId: number
+  bookId: string,
+  createdAt: string
 ): Promise<string> =>
   new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql("INSERT INTO page (content, bookId) VALUES (?, ?);", [
-          content,
-          bookId,
-        ]);
+        tx.executeSql(
+          "INSERT INTO page (id, content, bookId, createdAt) VALUES (?, ?, ?, ?);",
+          [id, content, bookId, createdAt]
+        );
       },
       (error: SQLite.SQLError) => {
         reject(error);
@@ -47,7 +49,7 @@ export const createPage = async (
   });
 
 export const updatePageById = async (
-  id: number,
+  id: string,
   content: string
 ): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -67,7 +69,7 @@ export const updatePageById = async (
     );
   });
 
-export const deletePageById = async (id: number): Promise<string> =>
+export const deletePageById = async (id: string): Promise<string> =>
   new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {

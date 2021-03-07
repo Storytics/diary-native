@@ -27,8 +27,15 @@ export default {
   },
   cloud: {
     sync: {
-      success: "Everything is up to date",
+      success: "Successfully saved in the cloud",
+      updateToDate: "Everything is up to date",
       error: "Error syncing to the cloud",
+      expired: "Session expired, login again and sync.",
+    },
+  },
+  billing: {
+    section: {
+      title: "Billing",
     },
   },
   modal: {
@@ -118,6 +125,22 @@ export default {
     logout: {
       error: "Something went wrong. Please try Again!",
     },
+    signup: {
+      error: "Error creating an account!",
+    },
+    signin: {
+      error: "Error signing into account!",
+    },
+    auth: {
+      error: "Error verifying your account details",
+    },
+    recoverAccount: {
+      success: "Recovery email sent successfully",
+      error: "Error sending recover email!",
+    },
+    formFields: {
+      empty: "Fields cannot be empty",
+    },
   },
   // Diary Screen
   diaryScreen: {
@@ -169,6 +192,13 @@ export default {
       footer: {
         text: "Dont have an account?",
         link: "Sign up",
+      },
+    },
+    recoverAccount: {
+      primaryButton: "Send recover email",
+      content: {
+        title: "Recover Account",
+        text: "We will send a recovery link to your email",
       },
     },
   },
