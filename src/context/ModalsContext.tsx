@@ -45,6 +45,14 @@ export const Reducer = (
           bookColor: action.payload.bookColor,
         },
       };
+    case "CLOSE_ALL_MODALS":
+      return {
+        ...state,
+        isCreateDiaryOpen: false,
+        isEditDiary: false,
+        isMenuModalOpen: false,
+        isDiaryActionsModalOpen: false,
+      };
     default:
       return state;
   }

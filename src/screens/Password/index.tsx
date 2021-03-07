@@ -20,6 +20,7 @@ import i18n from "locales/index";
 import * as LocalAuthentication from "expo-local-authentication";
 // Hooks
 import useStore from "hooks/useStore";
+import useModals from "hooks/useModals";
 import useNotification from "hooks/useNotification";
 // Styles
 import {
@@ -78,6 +79,7 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
     dispatch,
   } = useStore();
   const notification = useNotification();
+  const modals = useModals();
 
   const animationWidth = useMemo(
     () => [12, 55, 98, 140][code.length - 1 || 0],
@@ -92,6 +94,7 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     if (hasPasswordPin) {
+      modals.dispatch({ type: "CLOSE_ALL_MODALS" });
       if (passwordPin === code.toString()) {
         navigation.navigate("Home");
       }

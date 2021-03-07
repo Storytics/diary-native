@@ -37,10 +37,15 @@ export interface DiaryModalPayload {
   };
 }
 
+export interface CloseAllModalsPayload {
+  type: "CLOSE_ALL_MODALS";
+}
+
 export type ModalsActions =
   | CreateDiaryModalPayload
   | MenuModalPayload
-  | DiaryModalPayload;
+  | DiaryModalPayload
+  | CloseAllModalsPayload;
 
 export interface Context {
   state: ModalsState;
