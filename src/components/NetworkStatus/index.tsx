@@ -24,9 +24,6 @@ import { userCloudLastSyncItem } from "utils/constants";
 import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-/** URL polyfill. Required for Supabase queries to work in React Native. */
-import "react-native-url-polyfill/auto";
-
 const status = {
   loading: "cached",
   online: "cloud-off",

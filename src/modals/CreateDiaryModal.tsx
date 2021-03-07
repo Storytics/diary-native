@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useMemo, useEffect } from "react";
+// Locales
 import i18n from "locales/index";
 // Hooks
 import useModals from "hooks/useModals";
@@ -16,6 +17,8 @@ import { createBook, updateBookById } from "database/Book";
 import { loadBooks } from "context/StoreContext";
 // Types
 import { NotificationType } from "types/notifications";
+// Utils
+import uuid from "uuid-random";
 
 const CreateDiaryModal: React.FC = () => {
   const theme = useTheme();
@@ -73,7 +76,7 @@ const CreateDiaryModal: React.FC = () => {
   const onCreate = async () => {
     try {
       if (inputText) {
-        const result = await createBook(inputText, color);
+        const result = await createBook(uuid(), inputText, color);
 
         if (result === "success") {
           await loadBooks(store.dispatch);

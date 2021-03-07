@@ -17,8 +17,6 @@ import { NetworkStatus, SubscriptionStatus } from "types/store";
 import { AuthType } from "types/navigation";
 // API
 import supabase from "libs/supabase";
-/** URL polyfill. Required for Supabase queries to work in React Native. */
-import "react-native-url-polyfill/auto";
 
 const MenuModal: React.FC = () => {
   const store = useStore();

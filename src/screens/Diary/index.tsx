@@ -27,10 +27,10 @@ import { EditorContainer } from "../styles";
 import { NoteBookContainer, NavigationContainer } from "./styles";
 
 const defaultPage = {
-  id: 0,
+  id: "",
   content: "",
   createdAt: String(dayjs()),
-  bookId: 0,
+  bookId: "",
 };
 
 const DiaryScreen: React.FC<DiaryNavigationProps> = ({

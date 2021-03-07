@@ -15,7 +15,7 @@ export enum LegalType {
 
 export interface EditorNavigationParams {
   noteBookHeight: number;
-  bookId: number;
+  bookId: string;
   isEdit?: boolean;
   bookTitle: string;
   pageNumber: number;
@@ -23,9 +23,9 @@ export interface EditorNavigationParams {
 }
 
 export interface DiaryNavigationParams {
-  bookId: number;
+  bookId: string;
   bookTitle: string;
-  activityPageId?: number;
+  activityPageId?: string;
 }
 
 export interface BillingNavigationParams {

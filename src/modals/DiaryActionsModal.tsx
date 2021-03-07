@@ -25,7 +25,7 @@ const DiaryActionsModal: React.FC = () => {
   const onClose = useCallback(() => {
     dispatch({
       type: "DIARY_ACTIONS_MODAL",
-      payload: { isOpen: false, bookId: 0, bookTitle: "", bookColor: "" },
+      payload: { isOpen: false, bookId: "", bookTitle: "", bookColor: "" },
     });
   }, [dispatch]);
 

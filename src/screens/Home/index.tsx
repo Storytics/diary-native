@@ -63,14 +63,14 @@ const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
         <Header text={i18n.t("diaries.section.title")} />
         <DiaryCardList
           data={books}
-          onPress={(bookId: number, bookTitle: string) => {
+          onPress={(bookId: string, bookTitle: string) => {
             navigation.navigate("Diary", {
               bookId,
               bookTitle,
             });
           }}
           onPressMore={(
-            bookId: number,
+            bookId: string,
             bookTitle: string,
             bookColor: string
           ) => {
@@ -85,9 +85,9 @@ const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
         <ActivityCardList
           data={activity}
           onPress={(
-            bookId: number,
+            bookId: string,
             bookTitle: string,
-            activityPageId: number
+            activityPageId: string
           ) => {
             navigation.navigate("Diary", {
               bookId,

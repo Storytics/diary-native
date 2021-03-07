@@ -29,13 +29,10 @@ export const exportAllData = async (): Promise<Array<Data>> => {
 export const importDataToDatabase = async (data: Array<Data>) => {
   try {
     data.map(async (book) => {
-      await createBook(book.title, book.color);
+      await createBook(book.id, book.title, book.color);
 
       book.pages.map(async (page: PageProps) => {
-        console.log("page = ", page);
-        const go = await createPage(page.content, page.bookId, page.createdAt);
-
-        console.log("goo = ", go);
+        await createPage(page.id, page.content, page.bookId, page.createdAt);
       });
     });
   } catch (e) {

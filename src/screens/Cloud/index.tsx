@@ -39,9 +39,6 @@ import {
   WelcomeBackText,
 } from "./styles";
 
-/** URL polyfill. Required for Supabase queries to work in React Native. */
-import "react-native-url-polyfill/auto";
-
 interface ListItemProps {
   iconName: string;
   text: string;

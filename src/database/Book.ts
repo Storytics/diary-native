@@ -43,7 +43,7 @@ export const getAllActivity = async (): Promise<ActivityProps[]> =>
     );
   });
 
-export const getBookById = async (id: number): Promise<BookProps[]> =>
+export const getBookById = async (id: string): Promise<BookProps[]> =>
   new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
@@ -63,13 +63,15 @@ export const getBookById = async (id: number): Promise<BookProps[]> =>
   });
 
 export const createBook = async (
+  id: string,
   title: string,
   color: string
 ): Promise<string> =>
   new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {
-        tx.executeSql("INSERT INTO book (title, color) VALUES (?, ?);", [
+        tx.executeSql("INSERT INTO book (id, title, color) VALUES (?, ?, ?);", [
+          id,
           title,
           color,
         ]);
@@ -84,7 +86,7 @@ export const createBook = async (
   });
 
 export const updateBookById = async (
-  id: number,
+  id: string,
   title: string,
   color: string
 ): Promise<string> =>
@@ -106,7 +108,7 @@ export const updateBookById = async (
     );
   });
 
-export const deleteBookById = async (id: number): Promise<string> =>
+export const deleteBookById = async (id: string): Promise<string> =>
   new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {

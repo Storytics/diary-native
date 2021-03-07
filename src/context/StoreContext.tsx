@@ -21,8 +21,6 @@ import {
 } from "types/store";
 // API
 import supabase from "libs/supabase";
-/** URL polyfill. Required for Supabase queries to work in React Native. */
-import "react-native-url-polyfill/auto";
 
 const initialState = {
   books: [],

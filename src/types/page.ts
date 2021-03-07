@@ -1,6 +1,6 @@
 export interface PageProps {
-  id: number;
+  id: string;
   content: string;
   createdAt: string;
-  bookId: number;
+  bookId: string;
 }

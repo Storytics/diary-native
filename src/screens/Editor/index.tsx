@@ -18,6 +18,7 @@ import useKeyboard from "hooks/useKeyboard";
 import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userEditorDraftItem } from "utils/constants";
+import uuid from "uuid-random";
 // Types
 import { EditorNavigationProps } from "types/navigation";
 import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
@@ -208,7 +209,12 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     try {
       // create a new page
       if (content && !params.isEdit) {
-        const res = await createPage(content, params.bookId, String(dayjs()));
+        const res = await createPage(
+          uuid(),
+          content,
+          params.bookId,
+          String(dayjs())
+        );
         if (res === "success") {
           await loadActivity(dispatch);
         }
@@ -237,7 +243,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
       navigation.navigate("Diary", {
         bookId: params.bookId,
         bookTitle: params.bookTitle,
-        activityPageId: params.pageNumber,
+        activityPageId: params.page?.id,
       });
     } catch (e) {
       const message = params.isEdit
