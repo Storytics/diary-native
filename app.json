@@ -23,6 +23,7 @@
       }
     },
     "android": {
+      "versionCode": 2,
       "enableDangerousExperimentalLeanBuilds": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
