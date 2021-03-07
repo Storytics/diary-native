@@ -126,10 +126,14 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
 
   const onSignUp = async () => {
     try {
-      const { user } = await supabase.auth.signUp({
+      const { user, error } = await supabase.auth.signUp({
         email: emailValue.toLocaleLowerCase(),
         password: passwordValue,
       });
+
+      if (error) {
+        notification(error.message, NotificationType.danger);
+      }
 
       if (user) {
         await handleAuthenticationStatus(user as User);
@@ -144,10 +148,14 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
 
   const onSignIn = async () => {
     try {
-      const { user } = await supabase.auth.signIn({
+      const { user, error } = await supabase.auth.signIn({
         email: emailValue.toLocaleLowerCase(),
         password: passwordValue,
       });
+
+      if (error) {
+        notification(error.message, NotificationType.danger);
+      }
 
       if (user) {
         await handleAuthenticationStatus(user as User);
