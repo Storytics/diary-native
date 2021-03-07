@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { StatusBar, View, AppState, AppStateStatus } from "react-native";
 import AppLoading from "expo-app-loading";
 import Notification from "components/Notification";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from "react-native-safe-area-context";
 // Styles
 import { ThemeProvider } from "styled-components/native";
 import themeLight from "theme/index";
@@ -90,7 +93,7 @@ const Register: React.FC<Props> = ({ fontsLoaded, isDatabaseLoading }) => {
 };
 
 const App: React.FC<Props> = (props) => (
-  <SafeAreaProvider>
+  <SafeAreaProvider initialMetrics={initialWindowMetrics}>
     <StoreContextProvider>
       <Register {...props} />
     </StoreContextProvider>
