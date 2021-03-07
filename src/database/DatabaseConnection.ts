@@ -6,8 +6,6 @@ const Connection = SQLite.openDatabase(SQLiteDatabaseName, "1.0");
 export const DatabaseInit = async (): Promise<unknown> =>
   new Promise((resolve, reject) => {
     const SQLQueries = [
-      `DROP TABLE IF EXISTS page`,
-      `DROP TABLE IF EXISTS book`,
       `CREATE TABLE IF NOT EXISTS book (id TEXT NOT NULL PRIMARY KEY, title TEXT NOT NULL, color TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP);`,
       `CREATE TABLE IF NOT EXISTS page (id TEXT NOT NULL PRIMARY KEY, content TEXT NOT NULL, createdAt TEXT DEFAULT CURRENT_TIMESTAMP, bookId INT, FOREIGN KEY (bookId) REFERENCES book (id) ON DELETE CASCADE);`,
     ];

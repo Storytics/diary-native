@@ -1,6 +1,10 @@
 import React from "react";
-import { useTheme } from "styled-components/native";
+// Components
 import { MaterialIcons } from "@expo/vector-icons";
+// Utils
+import Constants from "expo-constants";
+// Styles
+import { useTheme } from "styled-components/native";
 import { Container, ContentWrapper, StyledText } from "./styles";
 
 interface BrandProps {
@@ -19,7 +23,9 @@ const Brand: React.FC<BrandProps> = () => {
           size={16}
           color={theme.brand.textColor}
         />
-        <StyledText> {year}</StyledText>
+        <StyledText>{year}</StyledText>
+        <StyledText> | </StyledText>
+        <StyledText>v{Constants.manifest.version}</StyledText>
       </ContentWrapper>
     </Container>
   );
