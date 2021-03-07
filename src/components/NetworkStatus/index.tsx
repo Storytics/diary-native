@@ -10,7 +10,12 @@ import useStore from "hooks/useStore";
 import { useNavigation } from "@react-navigation/core";
 import useNotification from "hooks/useNotification";
 // Types
-import { NetworkStatus, SubscriptionStatus, User } from "types/store";
+import {
+  NetworkStatus,
+  StoreActions,
+  SubscriptionStatus,
+  User,
+} from "types/store";
 import { NotificationType } from "types/notifications";
 import { AuthType } from "types/navigation";
 // Locales
@@ -40,6 +45,34 @@ interface RenderButtonProps {
   onPress?: () => void;
 }
 
+export const getLastCloudSync = async () => {
+  const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
+
+  return (
+    lastCloudSync &&
+    dayjs(lastCloudSync).isAfter(dayjs(new Date()).subtract(30, "minutes"))
+  );
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const uploadDataToCloud = async (
+  dispatch: React.Dispatch<StoreActions>,
+  user: User
+) => {
+  setNetworkStatus(dispatch, NetworkStatus.loading);
+
+  const allData = await exportAllData();
+  await supabase.from("backup").insert([
+    {
+      data: JSON.stringify(allData),
+      user_id: user.id,
+    },
+  ]);
+
+  await AsyncStorage.setItem(userCloudLastSyncItem, String(new Date()));
+  setNetworkStatus(dispatch, NetworkStatus.authenticated);
+};
+
 const NetworkStatusComponent: React.FC = () => {
   const theme = useTheme();
   const {
@@ -53,27 +86,10 @@ const NetworkStatusComponent: React.FC = () => {
     try {
       const session = supabase.auth.session();
       if (user && session) {
-        const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
-
-        const isSync =
-          lastCloudSync &&
-          dayjs(lastCloudSync).isAfter(
-            dayjs(new Date()).subtract(30, "minutes")
-          );
+        const isSync = await getLastCloudSync();
 
         if (!isSync) {
-          setNetworkStatus(dispatch, NetworkStatus.loading);
-
-          const allData = await exportAllData();
-          await supabase.from("backup").insert([
-            {
-              data: JSON.stringify(allData),
-              user_id: user.id,
-            },
-          ]);
-
-          await AsyncStorage.setItem(userCloudLastSyncItem, String(new Date()));
-          setNetworkStatus(dispatch, NetworkStatus.authenticated);
+          await uploadDataToCloud(dispatch, user);
           notification(i18n.t("cloud.sync.success"), NotificationType.success);
         } else {
           notification(
