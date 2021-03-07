@@ -73,7 +73,8 @@ export const Footer = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 30px;
+  height: 60px;
+  padding: 0 30px;
 `;
 
 export const LoadingContainer = styled.View`

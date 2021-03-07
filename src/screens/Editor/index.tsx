@@ -123,6 +123,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   navigation,
   route: { params },
 }) => {
+  const [isEditorLoading, setEditorLoading] = useState(true);
   const [content, setContent] = useState(params.page?.content || "");
   const RichTextRef = createRef<RichEditor>();
   // Keyboard Hook
@@ -252,11 +253,15 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
       // Remove any saved drafts before going back
       await AsyncStorage.removeItem(userEditorDraftItem);
 
-      navigation.navigate("Diary", {
-        bookId: params.bookId,
-        bookTitle: params.bookTitle,
-        activityPageId: params.pageNumber,
-      });
+      setEditorLoading(true);
+
+      setTimeout(() => {
+        navigation.navigate("Diary", {
+          bookId: params.bookId,
+          bookTitle: params.bookTitle,
+          activityPageId: params.pageNumber,
+        });
+      }, 0);
     } catch (e) {
       const message = params.isEdit
         ? "notifications.editPage.error"
@@ -275,6 +280,12 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
 
   const getDate =
     params.isEdit && params.page ? params.page.createdAt : dayjs();
+
+  const editorInitialized = () => {
+    setTimeout(() => {
+      setEditorLoading(false);
+    }, 500);
+  };
 
   return (
     <CustomSafeArea>
@@ -295,7 +306,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                 page={params.pageNumber.toString() || "0"}
                 date={dayjs(getDate).format("DD MMM YYYY")}
                 day={dayjs(getDate).format("dddd")}
-                isLoading={false}
+                isLoading={isEditorLoading}
               >
                 <EditorContainer>
                   <RichEditor
@@ -316,6 +327,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                         sanitize(text, { whiteList: { div: ["style"] } })
                       )
                     }
+                    editorInitializedCallback={editorInitialized}
                   />
                 </EditorContainer>
               </NoteBook>

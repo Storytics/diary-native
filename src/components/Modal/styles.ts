@@ -68,7 +68,7 @@ export const ContentContainer = styled.View<{
 
 export const Footer = styled.View<{ modalHasContent?: boolean }>`
   padding: ${({ modalHasContent }) => (modalHasContent ? "0" : "30px")} 30px
-    20px 30px;
+    30px 30px;
 `;
 
 export const FooterButtonContainer = styled.View`
