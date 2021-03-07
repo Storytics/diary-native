@@ -10,3 +10,7 @@ export const Overlay = styled.View`
   bottom: 0;
   z-index: 2;
 `;
+
+export const PlaceholderContainer = styled.View`
+  padding: 0 30px;
+`;

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, ScrollView, Animated } from "react-native";
+import { StyleSheet, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "styled-components/native";
 import { Text } from "components/Typography";
@@ -9,10 +9,12 @@ import {
   Header,
   HeaderWrapper,
   Content,
+  ContentWrapper,
   LinesWrapper,
   Line,
   Footer,
   LoadingContainer,
+  LoadingBox,
 } from "./styles";
 
 interface ActivityCardProps {
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const AnimatedLine = Animated.createAnimatedComponent(Line);
+const AnimatedLoadingBox = Animated.createAnimatedComponent(LoadingBox);
 
 const NoteBook: React.FC<ActivityCardProps> = ({
   page = "1",
@@ -91,10 +93,7 @@ const NoteBook: React.FC<ActivityCardProps> = ({
           </HeaderWrapper>
         </Header>
         <Content>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ flexGrow: 1 }}
-          >
+          <ContentWrapper>
             <LinesWrapper
               pointerEvents="none"
               onLayout={(e) => {
@@ -107,15 +106,13 @@ const NoteBook: React.FC<ActivityCardProps> = ({
               ))}
             </LinesWrapper>
             {children}
-          </ScrollView>
+          </ContentWrapper>
           {isLoading && (
             <LoadingContainer>
-              {[...Array(numberOfLinesToRender)].map((e, i) => (
-                <AnimatedLine
-                  style={animationStyles}
-                  key={i.toString()}
-                  height={lineHeight}
-                />
+              <AnimatedLoadingBox style={animationStyles} top={16} />
+              <AnimatedLoadingBox style={animationStyles} top={56} width={50} />
+              {[...Array(16)].map((e, i) => (
+                <Line key={i.toString()} height={lineHeight} />
               ))}
             </LoadingContainer>
           )}

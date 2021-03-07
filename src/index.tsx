@@ -1,10 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AppState, AppStateStatus, StatusBar, View } from "react-native";
 import AppLoading from "expo-app-loading";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 // Components
 import Notification from "components/Notification";
 import { getLastCloudSync, uploadDataToCloud } from "components/NetworkStatus";
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from "react-native-safe-area-context";
 // Styles
 import { ThemeProvider } from "styled-components/native";
 import themeLight from "theme/index";
@@ -136,7 +139,7 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
 };
 
 const App: React.FC<Props> = (props) => (
-  <SafeAreaProvider>
+  <SafeAreaProvider initialMetrics={initialWindowMetrics}>
     <StoreContextProvider>
       <Register {...props} />
     </StoreContextProvider>

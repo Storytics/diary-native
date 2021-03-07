@@ -54,6 +54,10 @@ export const Content = styled.View`
   padding: 0 30px;
 `;
 
+export const ContentWrapper = styled.View`
+  flex-grow: 1;
+`;
+
 export const LinesWrapper = styled.View`
   ${flexGrow1};
   overflow: hidden;
@@ -69,7 +73,8 @@ export const Footer = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 30px;
+  height: 60px;
+  padding: 0 30px;
 `;
 
 export const LoadingContainer = styled.View`
@@ -80,5 +85,16 @@ export const LoadingContainer = styled.View`
   bottom: 0;
   left: 0;
   padding: 0 30px;
+  overflow: hidden;
   background-color: ${({ theme }) => theme.noteBook.backgroundColor};
+`;
+
+export const LoadingBox = styled.View<{ width?: number; top: number }>`
+  position: absolute;
+  left: 30px;
+  top: ${({ top }) => (top ? `${top}px` : "16px")};
+  width: ${({ width }) => (width ? `${width}%` : "100%")};
+  height: 20px;
+  border-radius: 2px;
+  background-color: ${({ theme }) => theme.noteBook.lineColor};
 `;

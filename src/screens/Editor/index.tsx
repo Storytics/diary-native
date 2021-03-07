@@ -125,6 +125,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   navigation,
   route: { params },
 }) => {
+  const [isEditorLoading, setEditorLoading] = useState(true);
   const [content, setContent] = useState(params.page?.content || "");
   const RichTextRef = createRef<RichEditor>();
   // Keyboard Hook
@@ -240,11 +241,15 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
       // Remove any saved drafts before going back
       await AsyncStorage.removeItem(userEditorDraftItem);
 
-      navigation.navigate("Diary", {
-        bookId: params.bookId,
-        bookTitle: params.bookTitle,
-        activityPageId: params.page?.id,
-      });
+      setEditorLoading(true);
+
+      setTimeout(() => {
+        navigation.navigate("Diary", {
+          bookId: params.bookId,
+          bookTitle: params.bookTitle,
+          activityPageId: params.page?.id,
+        });
+      }, 0);
     } catch (e) {
       const message = params.isEdit
         ? "notifications.editPage.error"
@@ -256,6 +261,12 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
 
   const getDate =
     params.isEdit && params.page ? params.page.createdAt : dayjs();
+
+  const editorInitialized = () => {
+    setTimeout(() => {
+      setEditorLoading(false);
+    }, 500);
+  };
 
   return (
     <CustomSafeArea>
@@ -270,13 +281,13 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
             ref={noteBookScrollRef}
           >
             <Header hasBackButton onPress={onSave} text={params.bookTitle} />
-            <ContentWrapper>
+            <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
               <NoteBook
                 hasPaddingBottom={false}
                 page={params.pageNumber.toString() || "0"}
                 date={dayjs(getDate).format("DD MMM YYYY")}
                 day={dayjs(getDate).format("dddd")}
-                isLoading={false}
+                isLoading={isEditorLoading}
               >
                 <EditorContainer>
                   <RichEditor
@@ -285,7 +296,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                       backgroundColor: theme.richEditor.backgroundColor,
                       color: theme.richEditor.textColor,
                       placeholderColor: theme.richEditor.placeholderColor,
-                      contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;}`,
+                      contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
                     }}
                     placeholder={i18n.t("editorScreen.richEditor.placeholder")}
                     initialFocus={false}
@@ -297,12 +308,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                         sanitize(text, { whiteList: { div: ["style"] } })
                       )
                     }
-                    editorInitializedCallback={() =>
-                      console.log("o Editor esta pronto")
-                    }
-                    onHeightChange={(height: number) =>
-                      console.log("altura mudou = ", height)
-                    }
+                    editorInitializedCallback={editorInitialized}
                   />
                 </EditorContainer>
               </NoteBook>

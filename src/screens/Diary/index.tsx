@@ -10,6 +10,7 @@ import { unescapeHtml } from "utils/functions";
 import dayjs from "dayjs";
 // Hooks
 import useNotification from "hooks/useNotification";
+import useStore from "hooks/useStore";
 // Types
 import { DiaryNavigationProps } from "types/navigation";
 import { PageProps } from "types/page";
@@ -45,6 +46,9 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const theme = useTheme();
   const isFocused = useIsFocused();
   const { notification } = useNotification();
+  const {
+    state: { isDarkTheme },
+  } = useStore();
 
   const isCreatePage = useMemo(() => pageNumber + 1 === bookPages.length, [
     pageNumber,
@@ -60,6 +64,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
     useCallback(() => {
       const onLoadPages = async () => {
         try {
+          setEditorLoading(true);
           const pages = await getAllPagesByBookId(params.bookId);
           // This gets the page from the index and focus on the page
           // this is for activities and when the user edits or creates a page
@@ -109,20 +114,24 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
       (item: PageProps) => item.id === page.id
     );
 
-    navigation.navigate("Editor", {
-      noteBookHeight,
-      bookId: params.bookId,
-      isEdit: !isCreatePage,
-      bookTitle: params.bookTitle,
-      pageNumber: isCreatePage ? bookPages.length : pageIndex + 1,
-      page,
-    });
+    setEditorLoading(isDarkTheme);
+
+    setTimeout(() => {
+      navigation.navigate("Editor", {
+        noteBookHeight,
+        bookId: params.bookId,
+        isEdit: !isCreatePage,
+        bookTitle: params.bookTitle,
+        pageNumber: isCreatePage ? bookPages.length : pageIndex + 1,
+        page,
+      });
+    }, 0);
   };
 
   const editorInitialized = () => {
     setTimeout(() => {
       setEditorLoading(false);
-    }, 2000);
+    }, 500);
   };
 
   return (
@@ -131,7 +140,10 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
         <Header
           hasBackButton
           onPress={() => {
-            navigation.navigate("Home");
+            setEditorLoading(isDarkTheme);
+            setTimeout(() => {
+              navigation.navigate("Home");
+            }, 0);
           }}
           text={params.bookTitle}
         />

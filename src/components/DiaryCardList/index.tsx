@@ -66,6 +66,9 @@ const DiaryCardList: React.FC<DiaryCardListProps> = ({
             <Placeholder icon="auto-stories" text={placeholderText} />
           </PlaceholderContainer>
         }
+        snapToAlignment="start"
+        snapToInterval={175}
+        decelerationRate={0.95}
       />
       {!!data.length && (
         <LinearGradient

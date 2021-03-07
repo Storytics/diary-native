@@ -72,6 +72,9 @@ const ActivityCardList: React.FC<ActivityCardListProps> = ({
         ListEmptyComponent={
           <Placeholder icon="text-snippet" text={placeholderText} />
         }
+        snapToAlignment="start"
+        snapToInterval={85}
+        decelerationRate={0.95}
       />
       {!!data.length && (
         <LinearGradient
