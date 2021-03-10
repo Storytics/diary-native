@@ -208,10 +208,11 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
 
   const onSave = async () => {
     try {
+      const newPageId = uuid();
       // create a new page
       if (content && !params.isEdit) {
         const res = await createPage(
-          uuid(),
+          newPageId,
           content,
           params.bookId,
           String(dayjs())
@@ -229,7 +230,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         }
       }
 
-      if (content) {
+      if (content && content !== params.page?.content) {
         const message =
           params.isEdit && params.page
             ? "notifications.editPage.success"
@@ -240,14 +241,13 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
 
       // Remove any saved drafts before going back
       await AsyncStorage.removeItem(userEditorDraftItem);
-
       setEditorLoading(true);
 
       setTimeout(() => {
         navigation.navigate("Diary", {
           bookId: params.bookId,
           bookTitle: params.bookTitle,
-          activityPageId: params.page?.id,
+          activityPageId: !params.isEdit ? newPageId : params.page?.id,
         });
       }, 0);
     } catch (e) {

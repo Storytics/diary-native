@@ -145,7 +145,7 @@ export default {
   // Diary Screen
   diaryScreen: {
     richEditor: {
-      placeholder: "Click on the blue button to create a new page.",
+      placeholder: "Click on the + button to create a new page.",
     },
   },
   // Editor Screen

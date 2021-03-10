@@ -28,7 +28,7 @@ import { EditorContainer } from "../styles";
 import { NoteBookContainer, NavigationContainer } from "./styles";
 
 const defaultPage = {
-  id: "",
+  id: "0",
   content: "",
   createdAt: String(dayjs()),
   bookId: "",
@@ -156,9 +156,9 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
           }}
         >
           <NoteBook
-            key={`page-${currentPage.id.toString()}-${
-              isFocused ? "focus" : "blur"
-            }`}
+            key={`page-${currentPage.content
+              .substring(0, 45)
+              .replace(/\\s/g, "-")}-${isFocused ? "focus" : "blur"}`}
             date={dayjs(currentPage.createdAt).format("DD MMM YYYY")}
             day={dayjs(currentPage.createdAt).format("dddd")}
             page={`${pageNumber + 1} / ${bookPages.length}`}
