@@ -147,7 +147,10 @@ const CustomModal: React.FC<ActivityCardProps> = ({
             contentContainerStyle={styles(theme).scrollViewContent}
           >
             <TouchOutsideContainer>
-              <TouchableWithoutFeedback onPress={onClose}>
+              <TouchableWithoutFeedback
+                onPress={onClose}
+                accessibilityLabel="Close Modal"
+              >
                 <TouchOutsideSpacer />
               </TouchableWithoutFeedback>
             </TouchOutsideContainer>

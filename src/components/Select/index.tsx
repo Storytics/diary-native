@@ -104,6 +104,7 @@ const Select: React.FC<SelectProps> = ({
             underlayColor={handleColorType(button.color, theme).underlayColor}
             color={handleColorType(button.color, theme).backgroundColor}
             isLastChild={length === index + 1}
+            accessibilityLabel={`Selected color: ${button.color}`}
           >
             <InnerButton isSelected={isSelectedValue === index}>
               {isSelectedValue === index && (
