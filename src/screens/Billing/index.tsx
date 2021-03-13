@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState } from "react";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
@@ -15,31 +15,11 @@ import { WebViewMessageEvent } from "react-native-webview";
 // Styles
 import { Overlay } from "./styles";
 
-const injectScript = `
-  (function () {
-    window.onclick = function(e) {
-      e.preventDefault();
-      window.ReactNativeWebView.postMessage(e.target.href);
-      e.stopPropagation()
-    }
-  }());
-`;
-
 const Billing: React.FC<BillingNavigationProps> = ({
   navigation,
   route: { params },
 }) => {
   const [isLoading, setIsLoading] = useState(true);
-
-  const onLoading = useCallback((state: boolean) => {
-    setTimeout(() => {
-      setIsLoading(state);
-    }, 2000);
-  }, []);
-
-  useEffect(() => {
-    console.log("the user  = ", params.user);
-  }, [params.user]);
 
   const onMessage = ({ nativeEvent: { data } }: WebViewMessageEvent) => {
     console.log("onMessage data = ", data);
@@ -73,9 +53,7 @@ const Billing: React.FC<BillingNavigationProps> = ({
               "x-dia-native-user-email": String(params.user.email),
             },
           }}
-          onLoad={() => onLoading(false)}
-          onError={() => onLoading(false)}
-          injectedJavaScript={injectScript}
+          onChangeLoading={(state: boolean) => setIsLoading(state)}
           onMessage={onMessage}
         />
       </Container>

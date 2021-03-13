@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Linking } from "react-native";
 import { WebViewMessageEvent } from "react-native-webview";
 // Components
@@ -29,28 +29,12 @@ interface Props {
   navigation: PrivacyScreenNavigationProp | TermsScreenNavigationProp;
 }
 
-const injectScript = `
-  (function () {
-    window.onclick = function(e) {
-      e.preventDefault();
-      window.ReactNativeWebView.postMessage(e.target.href);
-      e.stopPropagation()
-    }
-  }());
-`;
-
 const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const {
     state: { networkStatus, isDarkTheme },
   } = useStore();
-
-  const onLoading = useCallback((state: boolean) => {
-    setTimeout(() => {
-      setIsLoading(state);
-    }, 2000);
-  }, []);
 
   const renderHeader = () => (
     <Header
@@ -107,15 +91,14 @@ const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
         <CustomHeaderWebView
           source={{
             uri: page === LegalType.terms ? termsUrl : privacyUrl,
+            // uri: "https://webhook.site/4ac434fd-eb7d-42e3-b894-b43c55d3d0d7",
             headers: {
               "x-is-native": "true",
               "x-is-native-dark": String(isDarkTheme),
             },
           }}
+          onChangeLoading={(state: boolean) => setIsLoading(state)}
           sharedCookiesEnabled
-          onLoad={() => onLoading(false)}
-          onError={() => onLoading(false)}
-          injectedJavaScript={injectScript}
           onMessage={onMessage}
         />
       </Container>

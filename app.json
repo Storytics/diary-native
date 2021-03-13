@@ -29,7 +29,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "pt.storytics.diary"
+      "package": "pt.storytics.diary",
+      "permissions": [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "ACCESS_NETWORK_STATE",
+        "ACCESS_WIFI_STATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

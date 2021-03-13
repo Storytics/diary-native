@@ -7,7 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Placeholder from "components/Placeholder";
 import ActivityCard from "components/ActivityCard";
 // utils
-import { unescapeHtml } from "utils//functions";
+import { unescapeHtml, cleanUpContent } from "utils//functions";
 
 import { Container, ActivityCardContainer } from "./styles";
 
@@ -59,9 +59,7 @@ const ActivityCardList: React.FC<ActivityCardListProps> = ({
           <ActivityCardContainer>
             <ActivityCard
               title={item.title}
-              description={unescapeHtml(item.content)
-                .replace(/<\/?[^>]+(>|$)/g, "")
-                .replace(/&nbsp;/g, "")}
+              description={cleanUpContent(item.content)}
               onPress={() => onPress(item.bookId, item.title, item.id)}
             />
           </ActivityCardContainer>
