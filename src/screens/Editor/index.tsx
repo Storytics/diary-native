@@ -1,10 +1,9 @@
-import React, { createRef, useState, useRef, useEffect } from "react";
+import React, { createRef, useState, useEffect, useRef } from "react";
 import {
-  View,
   StyleSheet,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Animated,
 } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -41,7 +40,13 @@ import { loadActivity } from "context/StoreContext";
 // Screens shared styles
 import { EditorContainer } from "../styles";
 // Styled components
-import { Container, ContentWrapper, ToolBarWrapper } from "./styles";
+import {
+  Container,
+  ContentWrapper,
+  ToolBarWrapper,
+  HeaderContainer,
+  HeaderKeepSpacer,
+} from "./styles";
 
 const toolBarActions: Array<{
   id: string;
@@ -75,30 +80,11 @@ const toolBarActions: Array<{
 
 const styles = (theme: typeof Theme) =>
   StyleSheet.create({
-    // Tool Bar
-    richToolBarContainer: {
-      paddingLeft: 20,
-      paddingRight: 20,
-    },
     // Normal state
     richToolBar: {
       backgroundColor: theme.toolBar.backgroundColor,
-      height: 60,
-      borderRadius: 30,
-    },
-    // Add shadow when writing
-    richToolBarFloating: {
-      backgroundColor: theme.toolBar.backgroundColor,
-      height: 60,
-      borderRadius: 30,
-      shadowColor: theme.toolBar.shadowColor,
-      shadowOffset: {
-        width: 0,
-        height: 0,
-      },
-      shadowOpacity: 0.22,
-      shadowRadius: 2.22,
-      elevation: 3,
+      height: 50,
+      borderRadius: 25,
     },
     // Icons wrapper
     flatContainer: {
@@ -106,14 +92,8 @@ const styles = (theme: typeof Theme) =>
       flexGrow: 1,
       flexDirection: "row",
       justifyContent: "space-between",
-      paddingRight: 10,
-      paddingLeft: 10,
-    },
-    // Container inside a scroll view
-    scrollViewContent: {
-      display: "flex",
-      flexGrow: 1,
-      paddingTop: 30,
+      paddingRight: 5,
+      paddingLeft: 5,
     },
     keyboardAvoidingView: {
       display: "flex",
@@ -121,10 +101,14 @@ const styles = (theme: typeof Theme) =>
     },
   });
 
+const AnimatedHeader = Animated.createAnimatedComponent(HeaderContainer);
+
 const EditorScreen: React.FC<EditorNavigationProps> = ({
   navigation,
   route: { params },
 }) => {
+  const headerAnimation = useRef(new Animated.Value(0)).current;
+  const [editorHeight, setEditorHeight] = useState(40);
   const [isEditorLoading, setEditorLoading] = useState(true);
   const [content, setContent] = useState(params.page?.content || "");
   const RichTextRef = createRef<RichEditor>();
@@ -133,9 +117,6 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   const theme = useTheme();
   const { dispatch } = useStore();
   const { notification } = useNotification();
-
-  // Scroll Ref - scroll initial to top
-  const noteBookScrollRef = useRef<ScrollView>(null);
 
   useDebounce(
     async () => {
@@ -155,15 +136,6 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     2000,
     [content]
   );
-
-  useEffect(() => {
-    if (isKeyboardOpen) {
-      noteBookScrollRef.current?.scrollTo({
-        y: 0,
-        animated: true,
-      });
-    }
-  }, [isKeyboardOpen]);
 
   useEffect(() => {
     const checkForDrafts = async () => {
@@ -268,6 +240,30 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     }, 500);
   };
 
+  useEffect(() => {
+    if (isKeyboardOpen) {
+      Animated.timing(headerAnimation, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    } else {
+      Animated.timing(headerAnimation, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [headerAnimation, isKeyboardOpen]);
+
+  const animationStyles = {
+    opacity: headerAnimation,
+    height: headerAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 85],
+    }),
+  };
+
   return (
     <CustomSafeArea>
       <KeyboardAvoidingView
@@ -275,72 +271,76 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         style={styles(theme).keyboardAvoidingView}
         keyboardVerticalOffset={30}
       >
-        <Container isKeyboardOpen={isKeyboardOpen}>
-          <ScrollView
-            contentContainerStyle={styles(theme).scrollViewContent}
-            ref={noteBookScrollRef}
+        <Container>
+          <HeaderKeepSpacer>
+            <AnimatedHeader style={animationStyles}>
+              <Header
+                hasMarginBottom={false}
+                hasBackButton
+                onPress={onSave}
+                text={params.bookTitle}
+              />
+            </AnimatedHeader>
+          </HeaderKeepSpacer>
+          <ContentWrapper
+            onLayout={(e) => {
+              const { height } = e.nativeEvent.layout;
+              setEditorHeight(Math.floor(height) - 52);
+            }}
           >
-            <Header hasBackButton onPress={onSave} text={params.bookTitle} />
-            <ContentWrapper isKeyboardOpen={isKeyboardOpen}>
-              <NoteBook
-                hasPaddingBottom={false}
-                page={params.pageNumber.toString() || "0"}
-                date={dayjs(getDate).format("DD MMM YYYY")}
-                day={dayjs(getDate).format("dddd")}
-                isLoading={isEditorLoading}
-              >
-                <EditorContainer>
-                  <RichEditor
-                    ref={RichTextRef}
-                    editorStyle={{
-                      backgroundColor: theme.richEditor.backgroundColor,
-                      color: theme.richEditor.textColor,
-                      placeholderColor: theme.richEditor.placeholderColor,
-                      contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
-                    }}
-                    placeholder={i18n.t("editorScreen.richEditor.placeholder")}
-                    initialFocus={false}
-                    disabled={false}
-                    useContainer={false}
-                    initialContentHTML={unescapeHtml(content)}
-                    onChange={(text: string) =>
-                      setContent(
-                        sanitize(text, { whiteList: { div: ["style"] } })
-                      )
-                    }
-                    editorInitializedCallback={editorInitialized}
-                  />
-                </EditorContainer>
-              </NoteBook>
-            </ContentWrapper>
-          </ScrollView>
+            <NoteBook
+              hasPaddingBottom={false}
+              page={params.pageNumber.toString() || "0"}
+              date={dayjs(getDate).format("DD MMM YYYY")}
+              day={dayjs(getDate).format("dddd")}
+              isLoading={isEditorLoading}
+              isSimpleLayout
+            >
+              <EditorContainer editorHeight={editorHeight}>
+                <RichEditor
+                  ref={RichTextRef}
+                  editorStyle={{
+                    backgroundColor: theme.richEditor.backgroundColor,
+                    color: theme.richEditor.textColor,
+                    placeholderColor: theme.richEditor.placeholderColor,
+                    contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
+                  }}
+                  placeholder={i18n.t("editorScreen.richEditor.placeholder")}
+                  initialFocus={false}
+                  disabled={false}
+                  useContainer={false}
+                  initialContentHTML={unescapeHtml(content)}
+                  onChange={(text: string) =>
+                    setContent(
+                      sanitize(text, { whiteList: { div: ["style"] } })
+                    )
+                  }
+                  editorInitializedCallback={editorInitialized}
+                />
+              </EditorContainer>
+            </NoteBook>
+          </ContentWrapper>
           {/* ToolBar */}
           <ToolBarWrapper isKeyboardOpen={isKeyboardOpen}>
-            <View style={styles(theme).richToolBarContainer}>
-              <RichToolbar
-                style={
-                  isKeyboardOpen
-                    ? styles(theme).richToolBarFloating
-                    : styles(theme).richToolBar
-                }
-                // @ts-ignore
-                flatContainerStyle={styles(theme).flatContainer}
-                editor={RichTextRef}
-                disabled={false}
-                iconTint={theme.toolBar.button.default.iconColor}
-                selectedIconTint={theme.toolBar.button.active.iconColor}
-                iconSize={24}
-                actions={[
-                  "justifyLeft",
-                  "justifyCenter",
-                  "justifyRight",
-                  "bold",
-                  "italic",
-                  "underline",
-                ]}
-                iconMap={iconMap}
-              />
-            </View>
+            <RichToolbar
+              style={styles(theme).richToolBar}
+              // @ts-ignore
+              flatContainerStyle={styles(theme).flatContainer}
+              editor={RichTextRef}
+              disabled={false}
+              iconTint={theme.toolBar.button.default.iconColor}
+              selectedIconTint={theme.toolBar.button.active.iconColor}
+              iconSize={24}
+              actions={[
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "bold",
+                "italic",
+                "underline",
+              ]}
+              iconMap={iconMap}
+            />
           </ToolBarWrapper>
         </Container>
       </KeyboardAvoidingView>

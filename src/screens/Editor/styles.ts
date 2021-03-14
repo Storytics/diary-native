@@ -1,39 +1,29 @@
-import styled, { css } from "styled-components/native";
+import styled from "styled-components/native";
 
-export const Container = styled.View<{ isKeyboardOpen?: boolean }>`
+export const Container = styled.View`
   display: flex;
   flex-grow: 1;
-  ${({ isKeyboardOpen }) =>
-    isKeyboardOpen &&
-    css`
-      justify-content: flex-end;
-    `}
 `;
 
-export const ContentWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
+export const HeaderKeepSpacer = styled.View`
+  padding-top: 2.5px;
+  padding-bottom: 2.5px;
+  min-height: 5px;
+`;
+
+export const HeaderContainer = styled.View`
+  height: 85px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+`;
+
+export const ContentWrapper = styled.View`
   display: flex;
   flex-grow: 1;
-  ${({ isKeyboardOpen }) =>
-    isKeyboardOpen
-      ? css`
-          padding-bottom: 100px;
-        `
-      : css`
-          padding-bottom: 30px;
-        `}
 `;
 
 export const ToolBarWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
-  ${({ isKeyboardOpen }) =>
-    isKeyboardOpen
-      ? css`
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          padding-bottom: 10px;
-        `
-      : css`
-          padding-bottom: 30px;
-        `}
+  padding: 5px;
 `;

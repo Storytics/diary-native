@@ -24,6 +24,7 @@ interface ActivityCardProps {
   hasPaddingBottom?: boolean;
   noteBookHeight?: number;
   isLoading: boolean;
+  isSimpleLayout?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -46,6 +47,7 @@ const NoteBook: React.FC<ActivityCardProps> = ({
   children,
   noteBookHeight,
   isLoading = true,
+  isSimpleLayout = false,
 }) => {
   const linesAnimation = useRef(new Animated.Value(0)).current;
   const [numberOfLinesToRender, setNumberOfLinesToRender] = useState(0);
@@ -75,7 +77,11 @@ const NoteBook: React.FC<ActivityCardProps> = ({
   };
 
   return (
-    <Container hasPaddingBottom={hasPaddingBottom} height={noteBookHeight}>
+    <Container
+      hasPaddingBottom={hasPaddingBottom}
+      height={noteBookHeight}
+      isSimpleLayout={isSimpleLayout}
+    >
       <Wrapper>
         <LinearGradient
           start={{ x: 0, y: 0 }}
@@ -86,13 +92,15 @@ const NoteBook: React.FC<ActivityCardProps> = ({
           ]}
           style={styles.linearGradient}
         />
-        <Header>
-          <HeaderWrapper>
-            <Text>{date}</Text>
-            <Text color={theme.noteBook.header.dayColor}>{day}</Text>
-          </HeaderWrapper>
-        </Header>
-        <Content>
+        {!isSimpleLayout && (
+          <Header>
+            <HeaderWrapper>
+              <Text>{date}</Text>
+              <Text color={theme.noteBook.header.dayColor}>{day}</Text>
+            </HeaderWrapper>
+          </Header>
+        )}
+        <Content isSimpleLayout={isSimpleLayout}>
           <ContentWrapper>
             <LinesWrapper
               pointerEvents="none"
@@ -108,18 +116,20 @@ const NoteBook: React.FC<ActivityCardProps> = ({
             {children}
           </ContentWrapper>
           {isLoading && (
-            <LoadingContainer>
+            <LoadingContainer isSimpleLayout={isSimpleLayout}>
               <AnimatedLoadingBox style={animationStyles} top={16} />
               <AnimatedLoadingBox style={animationStyles} top={56} width={50} />
-              {[...Array(16)].map((e, i) => (
+              {[...Array(20)].map((e, i) => (
                 <Line key={i.toString()} height={lineHeight} />
               ))}
             </LoadingContainer>
           )}
         </Content>
-        <Footer>
-          <Text>{page}</Text>
-        </Footer>
+        {!isSimpleLayout && (
+          <Footer>
+            <Text>{page}</Text>
+          </Footer>
+        )}
       </Wrapper>
     </Container>
   );

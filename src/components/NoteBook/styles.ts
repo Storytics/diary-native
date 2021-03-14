@@ -8,9 +8,10 @@ const flexGrow1 = css`
 export const Container = styled.View<{
   hasPaddingBottom?: boolean;
   height?: number;
+  isSimpleLayout?: boolean;
 }>`
   ${flexGrow1};
-  padding-right: 20px;
+  padding-right: ${({ isSimpleLayout }) => (isSimpleLayout ? "5px" : "20px")};
   ${({ hasPaddingBottom }) =>
     hasPaddingBottom &&
     css`
@@ -48,14 +49,22 @@ export const HeaderWrapper = styled.View`
   ${borderStyle};
 `;
 
-export const Content = styled.View`
+export const Content = styled.View<{ isSimpleLayout?: boolean }>`
   position: relative;
   flex: 1;
-  padding: 0 30px;
+  ${({ isSimpleLayout }) =>
+    isSimpleLayout
+      ? css`
+          padding: 22px 30px 30px 30px;
+        `
+      : css`
+          padding: 0 30px;
+        `};
 `;
 
 export const ContentWrapper = styled.View`
-  flex-grow: 1;
+  flex: 1;
+  overflow: hidden;
 `;
 
 export const LinesWrapper = styled.View`
@@ -73,16 +82,16 @@ export const Footer = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60px;
+  height: 58px;
   padding: 0 30px;
 `;
 
-export const LoadingContainer = styled.View`
+export const LoadingContainer = styled.View<{ isSimpleLayout?: boolean }>`
   z-index: 20;
   position: absolute;
-  top: 0;
+  top: ${({ isSimpleLayout }) => (isSimpleLayout ? "22px" : "0")};
   right: 0;
-  bottom: 0;
+  bottom: ${({ isSimpleLayout }) => (isSimpleLayout ? "30px" : "0")};
   left: 0;
   padding: 0 30px;
   overflow: hidden;
