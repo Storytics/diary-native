@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import i18n from "locales/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
@@ -28,7 +28,6 @@ import {
   ContentContainer,
   FeaturesContainer,
   FeaturesTextWrapper,
-  ForgotPasswordContainer,
   FormContainer,
   FormFooter,
   ListItem,
