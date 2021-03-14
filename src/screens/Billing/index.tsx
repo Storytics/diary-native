@@ -22,7 +22,13 @@ const Billing: React.FC<BillingNavigationProps> = ({
   const [isLoading, setIsLoading] = useState(true);
 
   const onMessage = ({ nativeEvent: { data } }: WebViewMessageEvent) => {
-    console.log("onMessage data = ", data);
+    if (data !== undefined && data !== null) {
+      if (data.includes("diary/privacy")) {
+        navigation.navigate("Privacy");
+      } else if (data.includes("diary/terms")) {
+        navigation.navigate("Terms");
+      }
+    }
   };
 
   const renderHeader = () => (
@@ -55,6 +61,9 @@ const Billing: React.FC<BillingNavigationProps> = ({
           }}
           onChangeLoading={(state: boolean) => setIsLoading(state)}
           onMessage={onMessage}
+          contentMode="mobile"
+          thirdPartyCookiesEnabled
+          sharedCookiesEnabled
         />
       </Container>
     </CustomSafeArea>
