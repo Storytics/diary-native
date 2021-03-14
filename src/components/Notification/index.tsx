@@ -8,9 +8,14 @@ import useNotification from "hooks/useNotification";
 import Theme from "theme/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import RoundButton from "components/RoundButton";
-import { SmallTitle } from "components/Typography";
 import { useTheme } from "styled-components/native";
-import { Container, LeftIconWrapper, TextContainer, Wrapper } from "./styles";
+import {
+  Container,
+  LeftIconWrapper,
+  TextContainer,
+  Wrapper,
+  StyledSmallTitle,
+} from "./styles";
 
 const handleNotificationType = (
   type: NotificationType,
@@ -147,9 +152,9 @@ const Notification: React.FC = () => {
           />
         </LeftIconWrapper>
         <TextContainer>
-          <SmallTitle numberOfLines={1} color={color}>
+          <StyledSmallTitle numberOfLines={2} color={color}>
             {message}
-          </SmallTitle>
+          </StyledSmallTitle>
         </TextContainer>
         <RoundButton
           size="small"

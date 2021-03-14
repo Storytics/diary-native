@@ -213,8 +213,8 @@ const Theme = {
       borderColor: colors.gray700,
       linearGradient: [colors.gray800, colors.gray900],
       icon: {
-        backgroundColor: colors.blue400,
-        color: colors.blue100,
+        backgroundColor: colors.gray900,
+        color: colors.gray300,
       },
     },
     form: {

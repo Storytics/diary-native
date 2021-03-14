@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import { SmallTitle } from "components/Typography";
 
 export const Container = styled.View<{ paddingTop: number }>`
   position: absolute;
@@ -31,6 +32,10 @@ export const LeftIconWrapper = styled.View`
 export const TextContainer = styled.View`
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
+  flex: 1;
   padding: 0 8px;
+`;
+
+export const StyledSmallTitle = styled(SmallTitle)`
+  line-height: 18px;
 `;

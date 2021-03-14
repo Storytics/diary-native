@@ -326,11 +326,22 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
               />
             )}
             {!isCreateAccount && !isRecoveryAccount && (
-              <ForgotPasswordContainer>
+              <Box mt={10}>
                 <TouchableOpacity onPress={() => setIsRecoveryAccount(true)}>
-                  <Text>{i18n.t("cloudScreen.logIn.forgotPassword")}</Text>
+                  <Text alignCenter>
+                    {i18n.t("cloudScreen.logIn.forgotPassword")}
+                  </Text>
                 </TouchableOpacity>
-              </ForgotPasswordContainer>
+              </Box>
+            )}
+            {isCreateAccount && (
+              <Box mt={10}>
+                <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
+                  <Text alignCenter lineHeight={18}>
+                    {i18n.t("cloudScreen.signUp.terms")}
+                  </Text>
+                </TouchableOpacity>
+              </Box>
             )}
             <FormFooter>
               <Box mr={3}>

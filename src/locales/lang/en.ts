@@ -166,6 +166,7 @@ export default {
     },
     // signUp specific
     signUp: {
+      terms: "By creating an account you're accepting our terms and conditions",
       primaryButton: "Sign Up",
       content: {
         title: "Better with premium",

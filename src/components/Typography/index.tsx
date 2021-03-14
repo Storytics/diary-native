@@ -2,6 +2,8 @@ import styled, { css } from "styled-components/native";
 
 interface TextProps {
   color?: string;
+  alignCenter?: boolean;
+  lineHeight?: number;
 }
 
 const titlesSharedStyles = css`
@@ -39,8 +41,13 @@ const textSharedStyles = css`
 export const Text = styled.Text<TextProps>`
   ${textSharedStyles};
   font-size: 14px;
-  line-height: 16px;
+  line-height: ${({ lineHeight }) => (lineHeight ? `${lineHeight}px` : "16px")};
   color: ${({ theme, color }) => color || theme.typography.defaultColors.text};
+  ${({ alignCenter }) =>
+    alignCenter &&
+    css`
+      text-align: center;
+    `};
 `;
 
 export const MediumText = styled.Text<TextProps>`

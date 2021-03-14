@@ -107,7 +107,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   navigation,
   route: { params },
 }) => {
-  const headerAnimation = useRef(new Animated.Value(0)).current;
+  const headerAnimation = useRef(new Animated.Value(1)).current;
   const [editorHeight, setEditorHeight] = useState(40);
   const [isEditorLoading, setEditorLoading] = useState(true);
   const [content, setContent] = useState(params.page?.content || "");

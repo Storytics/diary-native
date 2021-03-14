@@ -27,7 +27,7 @@ export const ContentContainer = styled.View`
 export const FeaturesContainer = styled.View`
   ${flexGrow1};
   justify-content: center;
-  padding: 30px 25px;
+  padding: 20px 25px;
 `;
 
 export const FeaturesTextWrapper = styled.View`
@@ -83,13 +83,6 @@ export const FormFooter = styled.View`
   flex-direction: row;
   justify-content: center;
   margin-top: 30px;
-`;
-
-/* Login Forgot Password Styles */
-export const ForgotPasswordContainer = styled.View`
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
 `;
 
 /* Login Content Wrapper Styles */
