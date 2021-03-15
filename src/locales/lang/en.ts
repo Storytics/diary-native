@@ -191,7 +191,7 @@ export default {
         text: "Hello Again!\nWelcome\nback",
       },
       footer: {
-        text: "Dont have an account?",
+        text: "don't have an account?",
         link: "Sign up",
       },
     },
