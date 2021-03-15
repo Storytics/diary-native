@@ -35,8 +35,8 @@ interface Props {
   isDatabaseLoading: boolean;
 }
 
-// 31 Minutes
-const backupPollerTime = 1860000;
+// 15 Minutes
+const backupPollerTime = 900000;
 
 const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
   const appState = useRef(AppState.currentState);

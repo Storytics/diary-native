@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { Platform } from "react-native";
 import { WebView, WebViewProps } from "react-native-webview";
 
 const injectScript = `
@@ -31,22 +32,32 @@ const CustomHeaderWebView = React.forwardRef(
       [onChangeLoading]
     );
 
+    // @ts-ignore
+    const onShouldStartLoadWithRequest = (request) => {
+      // If we're loading the current URI, allow it to load
+      if (request.url === currentURI) return true;
+      // We're loading a new URL -- change state first
+      setURI(request.url);
+      return false;
+    };
+
+    const config =
+      Platform.OS === "android"
+        ? {
+            onShouldStartLoadWithRequest,
+            ...rest,
+          }
+        : { ...rest };
+
     return (
       <WebView
         // @ts-ignore
         ref={ref}
         source={newSource}
-        onShouldStartLoadWithRequest={(request) => {
-          // If we're loading the current URI, allow it to load
-          if (request.url === currentURI) return true;
-          // We're loading a new URL -- change state first
-          setURI(request.url);
-          return false;
-        }}
         onLoad={() => onLoading(false)}
         onError={() => onLoading(false)}
         injectedJavaScript={injectScript}
-        {...rest}
+        {...config}
       />
     );
   }
