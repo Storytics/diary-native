@@ -5,8 +5,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 // Components
-import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "components/Button";
+import CustomSafeArea from "components/CustomSafeArea";
 import Input from "components/Input";
 import { SmallTitle, Text } from "components/Typography";
 import Container from "components/Container";
@@ -179,7 +179,7 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
       } else {
         notification(
           i18n.t("notifications.formFields.empty"),
-          NotificationType.info
+          NotificationType.danger
         );
       }
     } catch (error) {
@@ -226,7 +226,7 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
   };
 
   return (
-    <SafeAreaView>
+    <CustomSafeArea>
       <Container hasPadding={false}>
         <ScrollView contentContainerStyle={styles.scrollView}>
           <ContentContainer>
@@ -366,7 +366,7 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
           </FormContainer>
         </ScrollView>
       </Container>
-    </SafeAreaView>
+    </CustomSafeArea>
   );
 };
 

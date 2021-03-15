@@ -4,11 +4,19 @@ import { useTheme } from "styled-components/native";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const styles = (theme: typeof Theme, insets: { top: number; bottom: number }) =>
+interface CustomSafeAreaProps {
+  backgroundColor?: string;
+}
+
+const styles = (
+  theme: typeof Theme,
+  insets: { top: number; bottom: number },
+  backgroundColor?: string
+) =>
   StyleSheet.create({
     safeAreaContainer: {
       height: "100%",
-      backgroundColor: theme.container.backgroundColor,
+      backgroundColor: backgroundColor || theme.container.backgroundColor,
     },
     safeArea: {
       flexGrow: 1,
@@ -17,12 +25,17 @@ const styles = (theme: typeof Theme, insets: { top: number; bottom: number }) =>
     },
   });
 
-const CustomSafeArea: React.FC = ({ children }) => {
+const CustomSafeArea: React.FC<CustomSafeAreaProps> = ({
+  children,
+  backgroundColor,
+}) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   return (
-    <View style={styles(theme, insets).safeAreaContainer}>
-      <View style={styles(theme, insets).safeArea}>{children}</View>
+    <View style={styles(theme, insets, backgroundColor).safeAreaContainer}>
+      <View style={styles(theme, insets, backgroundColor).safeArea}>
+        {children}
+      </View>
     </View>
   );
 };

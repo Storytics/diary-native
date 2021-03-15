@@ -10,6 +10,9 @@ interface HeaderProps {
   onPress?: () => void;
   hasMarginBottom?: boolean;
   hasTitle?: boolean;
+  underlayColor?: string;
+  iconColor?: string;
+  titleColor?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -18,6 +21,9 @@ const Header: React.FC<HeaderProps> = ({
   onPress,
   hasMarginBottom = true,
   hasTitle = true,
+  underlayColor,
+  iconColor,
+  titleColor,
 }) => {
   const theme = useTheme();
   return (
@@ -26,18 +32,23 @@ const Header: React.FC<HeaderProps> = ({
         <IconContainer>
           <RoundButton
             onPress={onPress}
-            underlayColor={theme.header.underlayColor}
+            underlayColor={underlayColor || theme.header.underlayColor}
           >
             <MaterialIcons
               name="arrow-back"
               size={24}
-              color={theme.header.iconColor}
+              color={iconColor || theme.header.iconColor}
             />
           </RoundButton>
         </IconContainer>
       )}
       {hasTitle && (
-        <StyledLargeTitle numberOfLines={2}>{text}</StyledLargeTitle>
+        <StyledLargeTitle
+          color={titleColor || theme.header.titleColor}
+          numberOfLines={2}
+        >
+          {text}
+        </StyledLargeTitle>
       )}
     </Container>
   );

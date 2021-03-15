@@ -31,6 +31,7 @@ const Theme = {
     iconColor: colors.gray300,
     // -200 of background
     underlayColor: colors.gray700,
+    titleColor: colors.gray300,
   },
   diaryCard: {
     backgroundColor: colors.gray800,

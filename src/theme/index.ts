@@ -30,6 +30,7 @@ const Theme = {
   header: {
     iconColor: colors.gray800,
     underlayColor: colors.gray300,
+    titleColor: colors.gray800,
   },
   diaryCard: {
     backgroundColor: colors.white,

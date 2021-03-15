@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useTheme } from "styled-components";
+import { StatusBar } from "react-native";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
@@ -19,6 +21,7 @@ const Billing: React.FC<BillingNavigationProps> = ({
   navigation,
   route: { params },
 }) => {
+  const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
 
   const onMessage = ({ nativeEvent: { data } }: WebViewMessageEvent) => {
@@ -33,6 +36,9 @@ const Billing: React.FC<BillingNavigationProps> = ({
 
   const renderHeader = () => (
     <Header
+      iconColor={theme.colors.gray800}
+      underlayColor={theme.colors.gray300}
+      titleColor={theme.colors.gray800}
       hasBackButton
       onPress={() => {
         navigation.navigate("Home");
@@ -42,31 +48,37 @@ const Billing: React.FC<BillingNavigationProps> = ({
   );
 
   return (
-    <CustomSafeArea>
-      <Container>
-        {isLoading && (
-          <Overlay>
-            {renderHeader()}
-            <OverlaySpinner />
-          </Overlay>
-        )}
-        {renderHeader()}
-        <CustomHeaderWebView
-          source={{
-            uri: billingUrl,
-            headers: {
-              "x-dia-native-user-id": String(params.user.id),
-              "x-dia-native-user-email": String(params.user.email),
-            },
-          }}
-          onChangeLoading={(state: boolean) => setIsLoading(state)}
-          onMessage={onMessage}
-          contentMode="mobile"
-          thirdPartyCookiesEnabled
-          sharedCookiesEnabled
-        />
-      </Container>
-    </CustomSafeArea>
+    <>
+      <StatusBar
+        backgroundColor={theme.colors.gray100}
+        barStyle="dark-content"
+      />
+      <CustomSafeArea backgroundColor={theme.colors.gray100}>
+        <Container backgroundColor={theme.colors.gray100}>
+          {isLoading && (
+            <Overlay>
+              {renderHeader()}
+              <OverlaySpinner />
+            </Overlay>
+          )}
+          {renderHeader()}
+          <CustomHeaderWebView
+            source={{
+              uri: billingUrl,
+              headers: {
+                "x-dia-native-user-id": String(params.user.id),
+                "x-dia-native-user-email": String(params.user.email),
+              },
+            }}
+            onChangeLoading={(state: boolean) => setIsLoading(state)}
+            onMessage={onMessage}
+            contentMode="mobile"
+            thirdPartyCookiesEnabled
+            sharedCookiesEnabled
+          />
+        </Container>
+      </CustomSafeArea>
+    </>
   );
 };
 
