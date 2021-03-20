@@ -92,14 +92,16 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  /* useEffect(() => {
-    if (hasPasswordPin) {
-      modals.dispatch({ type: "CLOSE_ALL_MODALS" });
-      if (passwordPin === code.toString()) {
-        navigation.navigate("Home");
-      }
+  useEffect(() => {
+    if (passwordPin === code.toString()) {
+      navigation.navigate("Home");
     }
-  }, [hasPasswordPin, passwordPin, code, navigation, modals]); */
+  }, [passwordPin, code, navigation]);
+
+  useEffect(() => {
+    modals.dispatch({ type: "CLOSE_ALL_MODALS" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const getHardwareSettings = async () => {
