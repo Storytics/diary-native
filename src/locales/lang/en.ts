@@ -137,6 +137,8 @@ export default {
     },
     signup: {
       error: "Error creating an account.",
+      invalidEmail: "Please type a valid email.",
+      invalidPassword: "Please type a password at least 8 characters.",
     },
     signin: {
       error: "Error signing into account.",

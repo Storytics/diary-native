@@ -20,6 +20,8 @@ import { User } from "types/store";
 import { NotificationType } from "types/notifications";
 // Hooks
 import useNotification from "hooks/useNotification";
+// Utils
+import { isValidEmail } from "utils/functions";
 // API
 import supabase from "libs/supabase";
 // Styled Components
@@ -125,6 +127,22 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
 
   const onSignUp = async () => {
     try {
+      if (!isValidEmail(emailValue)) {
+        notification(
+          i18n.t("notifications.signup.invalidEmail"),
+          NotificationType.danger
+        );
+        return;
+      }
+
+      if (passwordValue.length < 8) {
+        notification(
+          i18n.t("notifications.signup.invalidPassword"),
+          NotificationType.danger
+        );
+        return;
+      }
+
       const { user, error } = await supabase.auth.signUp({
         email: emailValue.toLocaleLowerCase().trim(),
         password: passwordValue,
