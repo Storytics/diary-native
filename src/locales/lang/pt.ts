@@ -47,6 +47,10 @@ export default {
   modal: {
     create: {
       title: "Novo Diário",
+      inputs: {
+        title: "Título",
+        identifier: "Identificador",
+      },
       buttons: {
         primary: "Guardar",
         secondary: "Cancelar",
