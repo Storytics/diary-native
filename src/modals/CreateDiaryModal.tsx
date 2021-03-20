@@ -137,13 +137,13 @@ const CreateDiaryModal: React.FC = () => {
       secondaryButtonText={i18n.t(translations.buttons.secondary)}
     >
       <Input
-        title="Title"
+        title={i18n.t("modal.create.inputs.title")}
         inputText={inputText}
         onChangeText={setInputText}
         hasMarginBottom
       />
       <Select
-        title="Identifier"
+        title={i18n.t("modal.create.inputs.identifier")}
         initialIndex={colorIndex}
         onChange={(value: string) => setColor(value)}
       />

@@ -42,6 +42,10 @@ export default {
   modal: {
     create: {
       title: "New Diary",
+      inputs: {
+        title: "Title",
+        identifier: "Identifier",
+      },
       buttons: {
         primary: "Save",
         secondary: "Cancel",
