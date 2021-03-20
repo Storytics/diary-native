@@ -9,12 +9,13 @@ export default {
   activity: {
     section: {
       title: "Recent Activity",
-      placeholderText: "Recent activity appears here",
+      placeholderText: "The recent activity appears here",
     },
   },
   terms: {
     netWorkStatus: {
-      offline: "No internet connection",
+      offline:
+        "No internet connection, please check your connection again, or connect to Wi-Fi.",
     },
     section: {
       title: "Terms & Conditions",
@@ -27,10 +28,10 @@ export default {
   },
   cloud: {
     sync: {
-      success: "Successfully saved in the cloud",
-      updateToDate: "Everything is up to date",
-      error: "Error syncing to the cloud",
-      expired: "Session expired, login again and sync.",
+      success: "Upload to cloud successfully.",
+      updateToDate: "Everything is up to date.",
+      error: "Something went wrong, unable to sync.",
+      expired: "Whoops, your session has expired.",
     },
   },
   billing: {
@@ -64,8 +65,8 @@ export default {
       buttons: {
         primary: "Edit",
         hold: {
-          text: "Delete",
-          feedbackText: "Delete",
+          text: "Hold to Delete",
+          feedbackText: "Sure?",
         },
       },
     },
@@ -73,7 +74,7 @@ export default {
   // Input Component
   input: {
     placeholder: "Type something here",
-    error: "Input can't be empty",
+    error: "The field can't be empty",
   },
   // Border Button
   borderButton: {
@@ -90,83 +91,83 @@ export default {
   // Notifications
   notifications: {
     createDiary: {
-      success: "Diary created with success",
-      error: "Error creating diary",
+      success: "Diary created with success.",
+      error: "Error creating diary.",
     },
     editDiary: {
-      success: "Diary edited with success",
-      error: "Error editing diary",
+      success: "Diary updated with success.",
+      error: "Error updating diary.",
     },
     deleteDiary: {
-      success: "Diary deleted with success",
-      error: "Error deleting diary",
+      success: "Diary deleted with success.",
+      error: "Error deleting diary.",
     },
     changeTheme: {
-      error: "Error changing theme",
+      error: "Error switching theme.",
     },
     loadPages: {
-      error: "Error loading pages for this diary",
+      error: "Error loading pages for this diary.",
     },
     editPage: {
-      success: "Page edited with success",
-      error: "Error editing the page",
+      success: "Page updated with success.",
+      error: "Error updating the page.",
     },
     savePage: {
-      success: "Page saved with success",
-      error: "Error saving the page",
+      success: "Page saved with success.",
+      error: "Error saving the page.",
     },
     savePasswordPin: {
-      success: "Pin created with success",
-      error: "Error creating pin",
+      success: "Pin code created with success.",
+      error: "Error creating pin code.",
     },
     removePasswordPin: {
-      error: "Error removing pin",
+      error: "Error removing pin code.",
     },
     logout: {
-      error: "Something went wrong. Please try Again!",
+      error: "Something went wrong. Please try again.",
     },
     signup: {
-      error: "Error creating an account!",
+      error: "Error creating an account.",
     },
     signin: {
-      error: "Error signing into account!",
+      error: "Error signing into account.",
     },
     auth: {
-      error: "Error verifying your account details",
+      error: "Error verifying your account details.",
     },
     recoverAccount: {
-      success: "Recovery email sent successfully",
-      error: "Error sending recover email!",
+      success: "Recovery email sent successfully.",
+      error: "Error sending recover email.",
     },
     formFields: {
-      empty: "Fields cannot be empty",
+      empty: "The fields can't be empty.",
     },
   },
   // Diary Screen
   diaryScreen: {
     richEditor: {
-      placeholder: "Click on the + button to create a new page.",
+      placeholder: "Click on the plus button to create a new page.",
     },
   },
   // Editor Screen
   editorScreen: {
     richEditor: {
-      placeholder: "Start writing here.",
+      placeholder: "What's on your mind?",
     },
   },
   // Cloud Screen
   cloudScreen: {
     email: {
       title: "Email",
-      placeholder: "example@gmail.com",
+      placeholder: "example@domain.com",
     },
     password: {
       title: "Password",
-      placeholder: "••••••",
+      placeholder: "at least 8 characters.",
     },
     // signUp specific
     signUp: {
-      terms: "By creating an account you're accepting our terms and conditions",
+      terms: "By creating an account you're accepting our terms & conditions",
       primaryButton: "Sign Up",
       content: {
         title: "Better with premium",
@@ -174,7 +175,7 @@ export default {
         value: "1.99$/Month",
         // break word
         listItem1: "Backup\ndata",
-        listItem2: "Premium\nfeatures",
+        listItem2: "Secure\ndata",
         listItem3: "Multiple\ndevices",
       },
       footer: {
@@ -191,15 +192,15 @@ export default {
         text: "Hello Again!\nWelcome\nback",
       },
       footer: {
-        text: "don't have an account?",
+        text: "Don't have an account?",
         link: "Sign up",
       },
     },
     recoverAccount: {
-      primaryButton: "Send recover email",
+      primaryButton: "Send Recover Email",
       content: {
-        title: "Recover Account",
-        text: "We will send a recovery link to your email",
+        title: "Forgot Password",
+        text: "Please enter your email address to receive a recovery link",
       },
     },
   },
