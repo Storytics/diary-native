@@ -6,10 +6,13 @@ import "dayjs/locale/pt";
 import "dayjs/locale/en";
 // Languages
 import English from "./lang/en";
+import Portuguese from "./lang/pt";
 
 // Set the key-value pairs for the different languages to support.
 i18n.translations = {
   en: English,
+  "pt-BR": Portuguese,
+  "pt-PT": Portuguese,
 };
 
 const currentLang = Localization.locale;
@@ -18,6 +21,7 @@ i18n.locale = currentLang;
 
 const dateLanguage = {
   "pt-PT": "pt",
+  "pt-BR": "pt",
   en: "en",
 };
 
