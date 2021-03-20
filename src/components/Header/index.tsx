@@ -2,7 +2,8 @@ import React from "react";
 import RoundButton from "components/RoundButton";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Container, StyledLargeTitle, IconContainer } from "./styles";
+import { LargeTitle } from "components/Typography";
+import { Container, IconContainer } from "./styles";
 
 interface HeaderProps {
   text?: string;
@@ -43,12 +44,12 @@ const Header: React.FC<HeaderProps> = ({
         </IconContainer>
       )}
       {hasTitle && (
-        <StyledLargeTitle
+        <LargeTitle
           color={titleColor || theme.header.titleColor}
           numberOfLines={2}
         >
           {text}
-        </StyledLargeTitle>
+        </LargeTitle>
       )}
     </Container>
   );

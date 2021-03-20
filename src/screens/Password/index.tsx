@@ -92,14 +92,14 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (hasPasswordPin) {
       modals.dispatch({ type: "CLOSE_ALL_MODALS" });
       if (passwordPin === code.toString()) {
         navigation.navigate("Home");
       }
     }
-  }, [hasPasswordPin, passwordPin, code, navigation, modals]);
+  }, [hasPasswordPin, passwordPin, code, navigation, modals]); */
 
   useEffect(() => {
     const getHardwareSettings = async () => {
@@ -173,7 +173,7 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
         {!hasPasswordPin && (
           <Header
             hasBackButton
-            text="Create Password"
+            text={i18n.t("password.section.title")}
             onPress={() => {
               navigation.navigate("Home");
             }}

@@ -26,6 +26,11 @@ export default {
       title: "Privacy Policy",
     },
   },
+  password: {
+    section: {
+      title: "Create PIN",
+    },
+  },
   cloud: {
     sync: {
       success: "Upload to cloud successfully.",
@@ -170,7 +175,7 @@ export default {
       terms: "By creating an account you're accepting our terms & conditions",
       primaryButton: "Sign Up",
       content: {
-        title: "Better with premium",
+        title: "Better with Premium",
         subtitle: "Unlock premium features",
         value: "1.99$/Month",
         // break word

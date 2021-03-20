@@ -8,7 +8,7 @@ export default {
   },
   activity: {
     section: {
-      title: "Atividade recente",
+      title: "Atividade Recente",
       placeholderText: "A atividade recente aparece aqui",
     },
   },
@@ -24,6 +24,11 @@ export default {
   privacy: {
     section: {
       title: "Política de Privacidade",
+    },
+  },
+  password: {
+    section: {
+      title: "Criar PIN",
     },
   },
   cloud: {
@@ -170,7 +175,7 @@ export default {
       terms: "Ao criar uma conta, aceita nossos termos e condições",
       primaryButton: "Inscrever-se",
       content: {
-        title: "Melhor com premium",
+        title: "Melhor com Premium",
         subtitle: "Desbloquear recursos premium",
         value: "1.99$/Mês",
         // break word

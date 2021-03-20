@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components/native";
-import { LargeTitle } from "components/Typography";
 
 export const Container = styled.View<{
   hasBackButton?: boolean;
@@ -14,10 +13,6 @@ export const Container = styled.View<{
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
-
-export const StyledLargeTitle = styled(LargeTitle)`
-  text-transform: capitalize;
 `;
 
 export const IconContainer = styled.View`

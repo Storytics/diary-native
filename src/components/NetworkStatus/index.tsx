@@ -50,7 +50,7 @@ export const getLastCloudSync = async () => {
 
   return (
     lastCloudSync &&
-    dayjs(lastCloudSync).isAfter(dayjs(new Date()).subtract(30, "minutes"))
+    dayjs(lastCloudSync).isAfter(dayjs(new Date()).subtract(15, "minutes"))
   );
 };
 
