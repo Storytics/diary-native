@@ -118,10 +118,10 @@ export default {
     },
     savePasswordPin: {
       success: "Pin code created with success.",
-      error: "Error creating pin code.",
+      error: "Error creating PIN code.",
     },
     removePasswordPin: {
-      error: "Error removing pin code.",
+      error: "Error removing PIN code.",
     },
     logout: {
       error: "Something went wrong. Please try again.",
