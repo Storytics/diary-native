@@ -172,7 +172,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
                   backgroundColor: theme.richEditor.backgroundColor,
                   color: theme.richEditor.textColor,
                   placeholderColor: theme.richEditor.placeholderColor,
-                  contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;}`,
+                  contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px; display: flex; flex-direction: column;`,
                 }}
                 placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
                 disabled

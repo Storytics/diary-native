@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Animated,
+  ScrollView,
 } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -108,7 +109,6 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   route: { params },
 }) => {
   const headerAnimation = useRef(new Animated.Value(1)).current;
-  const [editorHeight, setEditorHeight] = useState(40);
   const [isEditorLoading, setEditorLoading] = useState(true);
   const [content, setContent] = useState(params.page?.content || "");
   const RichTextRef = createRef<RichEditor>();
@@ -282,12 +282,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
               />
             </AnimatedHeader>
           </HeaderKeepSpacer>
-          <ContentWrapper
-            onLayout={(e) => {
-              const { height } = e.nativeEvent.layout;
-              setEditorHeight(Math.floor(height) - 52);
-            }}
-          >
+          <ContentWrapper>
             <NoteBook
               hasPaddingBottom={false}
               page={params.pageNumber.toString() || "0"}
@@ -296,14 +291,14 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
               isLoading={isEditorLoading}
               isSimpleLayout
             >
-              <EditorContainer editorHeight={editorHeight}>
+              <EditorContainer>
                 <RichEditor
                   ref={RichTextRef}
                   editorStyle={{
                     backgroundColor: theme.richEditor.backgroundColor,
                     color: theme.richEditor.textColor,
                     placeholderColor: theme.richEditor.placeholderColor,
-                    contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px;`,
+                    contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px; display: flex; flex-direction: column;`,
                   }}
                   placeholder={i18n.t("editorScreen.richEditor.placeholder")}
                   initialFocus={false}

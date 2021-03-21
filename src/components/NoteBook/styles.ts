@@ -75,6 +75,7 @@ export const LinesWrapper = styled.View`
 
 export const Line = styled.View<{ height?: number }>`
   height: ${({ height }) => (height ? `${height}px` : "40px")};
+  flex-shrink: 0;
   ${borderStyle};
 `;
 
