@@ -190,7 +190,7 @@ export default {
         listItem3: "Múltiplo\ndispositivos",
       },
       footer: {
-        text: "já tem uma conta?",
+        text: "Já tem uma conta?",
         link: "Iniciar Sessão",
       },
     },
