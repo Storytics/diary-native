@@ -16,7 +16,6 @@ import PrivacyScreen from "screens/Legal/Privacy";
 import TermsScreen from "screens/Legal/Terms";
 // Types
 import { RootStackParamList } from "types/navigation";
-import { useTheme } from "styled-components";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -26,30 +25,56 @@ export const navigate = (name: string, params?: RootStackParamList) => {
   navigationRef.current?.navigate(name, params);
 };
 
-const Navigation: React.FC = () => {
-  const theme = useTheme();
-  return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator
-        initialRouteName="Home"
-        headerMode="none"
-        mode="card"
-        screenOptions={{
-          headerStyle: { elevation: 0 },
-          cardStyle: { backgroundColor: theme.container.backgroundColor },
-        }}
-      >
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Diary" component={DiaryScreen} />
-        <Stack.Screen name="Editor" component={EditorScreen} />
-        <Stack.Screen name="Cloud" component={CloudScreen} />
-        <Stack.Screen name="Password" component={PasswordScreen} />
-        <Stack.Screen name="Billing" component={BillingScreen} />
-        <Stack.Screen name="Terms" component={TermsScreen} />
-        <Stack.Screen name="Privacy" component={PrivacyScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+const Navigation: React.FC = () => (
+  <NavigationContainer ref={navigationRef}>
+    <Stack.Navigator
+      initialRouteName="Home"
+      headerMode="none"
+      mode="card"
+      screenOptions={{
+        headerStyle: { elevation: 0 },
+        cardStyle: { backgroundColor: "red" },
+        detachPreviousScreen: true,
+      }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ cardStyle: { backgroundColor: "red" } }}
+      />
+      <Stack.Screen
+        name="Diary"
+        component={DiaryScreen}
+        options={{ cardStyle: { backgroundColor: "red" } }}
+      />
+      <Stack.Screen
+        name="Editor"
+        component={EditorScreen}
+        options={{ cardStyle: { backgroundColor: "red" } }}
+      />
+      <Stack.Screen
+        name="Cloud"
+        component={CloudScreen}
+        options={{ cardStyle: { backgroundColor: "red" } }}
+      />
+      <Stack.Screen
+        name="Password"
+        component={PasswordScreen}
+        options={{ cardStyle: { backgroundColor: "red" } }}
+      />
+      <Stack.Screen name="Billing" component={BillingScreen} />
+      <Stack.Screen
+        name="Terms"
+        component={TermsScreen}
+        options={{ cardStyle: { backgroundColor: "red" } }}
+      />
+      <Stack.Screen
+        name="Privacy"
+        component={PrivacyScreen}
+        options={{ cardStyle: { backgroundColor: "red" } }}
+      />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
 
 export default Navigation;
