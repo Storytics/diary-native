@@ -27,14 +27,7 @@ export const navigate = (name: string, params?: RootStackParamList) => {
 
 const Navigation: React.FC = () => (
   <NavigationContainer ref={navigationRef}>
-    <Stack.Navigator
-      initialRouteName="Home"
-      headerMode="none"
-      mode="card"
-      screenOptions={({ navigation }) => ({
-        detachPreviousScreen: !navigation.isFocused(),
-      })}
-    >
+    <Stack.Navigator initialRouteName="Home" headerMode="none" mode="card">
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Diary" component={DiaryScreen} />
       <Stack.Screen name="Editor" component={EditorScreen} />
