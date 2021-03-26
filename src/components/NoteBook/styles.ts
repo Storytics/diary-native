@@ -108,3 +108,12 @@ export const LoadingBox = styled.View<{ width?: number; top: number }>`
   border-radius: 2px;
   background-color: ${({ theme }) => theme.noteBook.lineColor};
 `;
+
+// Position editor in notebook
+export const EditorContainer = styled.View`
+  position: absolute;
+  left: 0;
+  top: 8px;
+  right: 0;
+  bottom: 8px;
+`;

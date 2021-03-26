@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Animated } from "react-native";
+import { StyleSheet, Animated, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "styled-components/native";
 import { Text } from "components/Typography";
@@ -15,6 +15,7 @@ import {
   Footer,
   LoadingContainer,
   LoadingBox,
+  EditorContainer,
 } from "./styles";
 
 interface ActivityCardProps {
@@ -102,18 +103,24 @@ const NoteBook: React.FC<ActivityCardProps> = ({
         )}
         <Content isSimpleLayout={isSimpleLayout}>
           <ContentWrapper>
-            <LinesWrapper
-              pointerEvents="none"
-              onLayout={(e) => {
-                const { height } = e.nativeEvent.layout;
-                setNumberOfLinesToRender(Math.floor(height / lineHeight));
-              }}
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              bounces={false}
+              showsVerticalScrollIndicator={false}
             >
-              {[...Array(numberOfLinesToRender)].map((e, i) => (
-                <Line key={i.toString()} height={lineHeight} />
-              ))}
-            </LinesWrapper>
-            {children}
+              <LinesWrapper
+                pointerEvents="none"
+                onLayout={(e) => {
+                  const { height } = e.nativeEvent.layout;
+                  setNumberOfLinesToRender(Math.floor(height / lineHeight));
+                }}
+              >
+                {[...Array(numberOfLinesToRender)].map((e, i) => (
+                  <Line key={i.toString()} height={lineHeight} />
+                ))}
+              </LinesWrapper>
+              <EditorContainer>{children}</EditorContainer>
+            </ScrollView>
           </ContentWrapper>
           {isLoading && (
             <LoadingContainer isSimpleLayout={isSimpleLayout}>

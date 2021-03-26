@@ -22,8 +22,6 @@ import { NotificationType } from "types/notifications";
 import { getAllPagesByBookId } from "database/Page";
 // Locales
 import i18n from "locales/index";
-// Screens shared styles
-import { EditorContainer } from "../styles";
 // Styled components
 import { NoteBookContainer, NavigationContainer } from "./styles";
 
@@ -165,22 +163,20 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
             hasPaddingBottom={false}
             isLoading={isEditorLoading}
           >
-            <EditorContainer>
-              <RichEditor
-                ref={RichTextViewRef}
-                editorStyle={{
-                  backgroundColor: theme.richEditor.backgroundColor,
-                  color: theme.richEditor.textColor,
-                  placeholderColor: theme.richEditor.placeholderColor,
-                  contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px; display: flex; flex-direction: column;`,
-                }}
-                placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
-                disabled
-                initialContentHTML={unescapeHtml(currentPage.content)}
-                useContainer={false}
-                editorInitializedCallback={editorInitialized}
-              />
-            </EditorContainer>
+            <RichEditor
+              ref={RichTextViewRef}
+              editorStyle={{
+                backgroundColor: theme.richEditor.backgroundColor,
+                color: theme.richEditor.textColor,
+                placeholderColor: theme.richEditor.placeholderColor,
+                contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px; display: flex; flex-direction: column;`,
+              }}
+              placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
+              disabled
+              initialContentHTML={unescapeHtml(currentPage.content)}
+              useContainer={false}
+              editorInitializedCallback={editorInitialized}
+            />
           </NoteBook>
         </NoteBookContainer>
         <NavigationContainer>
