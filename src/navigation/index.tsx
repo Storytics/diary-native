@@ -12,6 +12,8 @@ import EditorScreen from "screens/Editor";
 import CloudScreen from "screens/Cloud";
 import PasswordScreen from "screens/Password";
 import BillingScreen from "screens/Billing";
+import CheckoutScreen from "screens/Billing/Checkout";
+import PortalScreen from "screens/Billing/Portal";
 import PrivacyScreen from "screens/Legal/Privacy";
 import TermsScreen from "screens/Legal/Terms";
 // Types
@@ -34,6 +36,8 @@ const Navigation: React.FC = () => (
       <Stack.Screen name="Cloud" component={CloudScreen} />
       <Stack.Screen name="Password" component={PasswordScreen} />
       <Stack.Screen name="Billing" component={BillingScreen} />
+      <Stack.Screen name="Checkout" component={CheckoutScreen} />
+      <Stack.Screen name="Portal" component={PortalScreen} />
       <Stack.Screen name="Terms" component={TermsScreen} />
       <Stack.Screen name="Privacy" component={PrivacyScreen} />
     </Stack.Navigator>

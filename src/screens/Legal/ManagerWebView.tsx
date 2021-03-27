@@ -6,7 +6,9 @@ import Container from "components/Container";
 import Header from "components/Header";
 import OverlaySpinner from "components/OverlaySpinner";
 import CustomSafeArea from "components/CustomSafeArea";
-import CustomHeaderWebView from "components/CustomHeaderWebView";
+import CustomHeaderWebView, {
+  injectScript,
+} from "components/CustomHeaderWebView";
 import Placeholder from "components/Placeholder";
 // Hooks
 import useStore from "hooks/useStore";
@@ -98,6 +100,7 @@ const ManagerWebView: React.FC<Props> = ({ navigation, page }) => {
             },
           }}
           onChangeLoading={(state: boolean) => setIsLoading(state)}
+          injectedJavaScript={injectScript}
           sharedCookiesEnabled
           onMessage={onMessage}
         />

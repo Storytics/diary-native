@@ -4,7 +4,9 @@ import { StatusBar } from "react-native";
 // Components
 import Container from "components/Container";
 import Header from "components/Header";
-import CustomHeaderWebView from "components/CustomHeaderWebView";
+import CustomHeaderWebView, {
+  injectScript,
+} from "components/CustomHeaderWebView";
 import CustomSafeArea from "components/CustomSafeArea";
 import OverlaySpinner from "components/OverlaySpinner";
 // Utils
@@ -30,6 +32,9 @@ const Billing: React.FC<BillingNavigationProps> = ({
         navigation.navigate("Privacy");
       } else if (data.includes("diary/terms")) {
         navigation.navigate("Terms");
+      } else if (data.includes("make payment")) {
+        const isMonthly = data.split("|")[1].trim() === "monthly";
+        navigation.navigate("Checkout", { user: params.user, isMonthly });
       }
     }
   };
@@ -71,6 +76,7 @@ const Billing: React.FC<BillingNavigationProps> = ({
               },
             }}
             onChangeLoading={(state: boolean) => setIsLoading(state)}
+            injectedJavaScript={injectScript}
             onMessage={onMessage}
             contentMode="mobile"
             thirdPartyCookiesEnabled

@@ -246,7 +246,10 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
   return (
     <CustomSafeArea>
       <Container hasPadding={false}>
-        <ScrollView contentContainerStyle={styles.scrollView}>
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          keyboardShouldPersistTaps
+        >
           <ContentContainer>
             <Header
               hasBackButton
@@ -318,7 +321,11 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
               <Box mb={20}>
                 <Input
                   title={i18n.t("cloudScreen.password.title")}
-                  placeholderText={i18n.t("cloudScreen.password.placeholder")}
+                  placeholderText={i18n.t(
+                    isCreateAccount
+                      ? "cloudScreen.password.placeholder"
+                      : "cloudScreen.password.loginPlaceholder"
+                  )}
                   inputText={passwordValue}
                   onChangeText={setPasswordValue}
                   secureTextEntry

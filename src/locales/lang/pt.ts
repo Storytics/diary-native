@@ -69,6 +69,7 @@ export default {
       pinProtection: "Proteção PIN",
       logout: "Sair da conta",
       premium: "Sincronizar com Premium",
+      portal: "Gerir Subscrição",
     },
     diaryActions: {
       buttons: {
@@ -175,6 +176,7 @@ export default {
     password: {
       title: "Senha",
       placeholder: "pelo menos 8 caracteres",
+      loginPlaceholder: "********",
     },
     // signUp specific
     signUp: {
