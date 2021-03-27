@@ -55,22 +55,20 @@ export const Content = styled.View<{ isSimpleLayout?: boolean }>`
   ${({ isSimpleLayout }) =>
     isSimpleLayout
       ? css`
-          padding: 22px 30px 30px 30px;
+          padding: 22px 0 30px 0;
         `
       : css`
-          padding: 0 30px;
+          padding: 0;
         `};
 `;
 
-export const ContentWrapper = styled.View`
-  flex: 1;
-  overflow: hidden;
-`;
-
 export const LinesWrapper = styled.View`
-  ${flexGrow1};
-  overflow: hidden;
+  position: absolute;
+  top: -8px;
+  right: 0;
+  left: 0;
   z-index: 1;
+  overflow: hidden;
 `;
 
 export const Line = styled.View<{ height?: number }>`
@@ -90,7 +88,7 @@ export const Footer = styled.View`
 export const LoadingContainer = styled.View<{ isSimpleLayout?: boolean }>`
   z-index: 20;
   position: absolute;
-  top: ${({ isSimpleLayout }) => (isSimpleLayout ? "22px" : "0")};
+  top: ${({ isSimpleLayout }) => (isSimpleLayout ? "14px" : "-8px")};
   right: 0;
   bottom: ${({ isSimpleLayout }) => (isSimpleLayout ? "30px" : "0")};
   left: 0;
@@ -107,4 +105,8 @@ export const LoadingBox = styled.View<{ width?: number; top: number }>`
   height: 20px;
   border-radius: 2px;
   background-color: ${({ theme }) => theme.noteBook.lineColor};
+`;
+
+export const ScrollViewWrapper = styled.View`
+  flex: 1;
 `;
