@@ -62,13 +62,16 @@ export const Content = styled.View<{ isSimpleLayout?: boolean }>`
         `};
 `;
 
+export const ScrollViewWrapper = styled.View`
+  flex: 1;
+`;
+
 export const LinesWrapper = styled.View`
   position: absolute;
   top: -8px;
   right: 0;
   left: 0;
   z-index: 1;
-  overflow: hidden;
 `;
 
 export const Line = styled.View<{ height?: number }>`
@@ -105,8 +108,4 @@ export const LoadingBox = styled.View<{ width?: number; top: number }>`
   height: 20px;
   border-radius: 2px;
   background-color: ${({ theme }) => theme.noteBook.lineColor};
-`;
-
-export const ScrollViewWrapper = styled.View`
-  flex: 1;
 `;
