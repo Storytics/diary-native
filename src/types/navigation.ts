@@ -32,6 +32,11 @@ export interface BillingNavigationParams {
   user: User;
 }
 
+export interface CheckoutNavigationParams extends BillingNavigationParams {
+  user: User;
+  isMonthly: boolean;
+}
+
 export interface CloudNavigationParams {
   type: AuthType;
 }
@@ -43,6 +48,8 @@ export type RootStackParamList = {
   Cloud: CloudNavigationParams;
   Password: undefined;
   Billing: BillingNavigationParams;
+  Checkout: CheckoutNavigationParams;
+  Portal: BillingNavigationParams;
   Terms: undefined;
   Privacy: undefined;
 };
@@ -108,6 +115,30 @@ export type BillingScreenNavigationProp = StackNavigationProp<
 
 export interface BillingNavigationProps {
   navigation: BillingScreenNavigationProp;
+  route: {
+    params: BillingNavigationParams;
+  };
+}
+
+export type CheckoutScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Checkout"
+>;
+
+export interface CheckoutNavigationProps {
+  navigation: CheckoutScreenNavigationProp;
+  route: {
+    params: CheckoutNavigationParams;
+  };
+}
+
+export type PortalScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Portal"
+>;
+
+export interface PortalNavigationProps {
+  navigation: PortalScreenNavigationProp;
   route: {
     params: BillingNavigationParams;
   };

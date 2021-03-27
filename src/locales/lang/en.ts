@@ -69,6 +69,7 @@ export default {
       pinProtection: "Pin Protection",
       logout: "Logout",
       premium: "Sync with Premium",
+      portal: "Manage Subscription",
     },
     diaryActions: {
       buttons: {

@@ -132,6 +132,18 @@ const MenuModal: React.FC = () => {
           }}
         />
       )}
+
+      {store.state.user &&
+        store.state.subscriptionStatus === SubscriptionStatus.active && (
+          <BorderButton
+            title={i18n.t("modal.menu.portal")}
+            onPress={() => {
+              onClose();
+              // @ts-ignore
+              navigate("Portal", { user: store.state.user });
+            }}
+          />
+        )}
       <BorderButton
         title={i18n.t("modal.menu.pinProtection")}
         hasCustomSwitch

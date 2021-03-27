@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Platform } from "react-native";
 import { WebView, WebViewProps } from "react-native-webview";
 
-const injectScript = `
+export const injectScript = `
   const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta);
   (function () {
     window.onclick = function(e) {
@@ -56,7 +56,6 @@ const CustomHeaderWebView = React.forwardRef(
         source={newSource}
         onLoad={() => onLoading(false)}
         onError={() => onLoading(false)}
-        injectedJavaScript={injectScript}
         {...config}
       />
     );
