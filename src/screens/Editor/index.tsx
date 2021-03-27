@@ -78,6 +78,12 @@ const toolBarActions: Array<{
 
 const styles = (theme: typeof Theme) =>
   StyleSheet.create({
+    richEditor: {
+      paddingBottom: 10,
+      display: "flex",
+      flexDirection: "column",
+      flexGrow: 1,
+    },
     // Normal state
     richToolBar: {
       backgroundColor: theme.toolBar.backgroundColor,
@@ -289,6 +295,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
               isSimpleLayout
             >
               <RichEditor
+                style={styles(theme).richEditor}
                 ref={RichTextRef}
                 editorStyle={{
                   backgroundColor: theme.richEditor.backgroundColor,

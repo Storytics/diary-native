@@ -9,7 +9,6 @@ import {
   Header,
   HeaderWrapper,
   Content,
-  ContentWrapper,
   LinesWrapper,
   Line,
   Footer,
@@ -55,6 +54,7 @@ const NoteBook: React.FC<ActivityCardProps> = ({
   isLoading = true,
   isSimpleLayout = false,
 }) => {
+  const scrollViewRef = useRef(null);
   const linesAnimation = useRef(new Animated.Value(0)).current;
   const [numberOfLinesToRender, setNumberOfLinesToRender] = useState(0);
   const theme = useTheme();
@@ -107,31 +107,34 @@ const NoteBook: React.FC<ActivityCardProps> = ({
           </Header>
         )}
         <Content isSimpleLayout={isSimpleLayout}>
-          <ContentWrapper>
-            <ScrollView
-              contentContainerStyle={styles.scrollViewStyles}
-              nestedScrollEnabled
-              bounces={false}
-              showsVerticalScrollIndicator={false}
-              fadingEdgeLength={300}
+          <ScrollView
+            ref={scrollViewRef}
+            contentContainerStyle={styles.scrollViewStyles}
+            nestedScrollEnabled
+            bounces={false}
+            showsVerticalScrollIndicator={false}
+            fadingEdgeLength={100}
+            /* TODO remove if not parameters necessary */
+            onContentSizeChange={(contentWidth, contentHeight) => {
+              // @ts-ignore
+              scrollViewRef.current.scrollToEnd({ animated: true });
+            }}
+          >
+            <ScrollViewWrapper
+              onLayout={(e) => {
+                const { height } = e.nativeEvent.layout;
+                setNumberOfLinesToRender(Math.floor(height / lineHeight));
+              }}
             >
-              <ScrollViewWrapper>
-                <LinesWrapper
-                  pointerEvents="none"
-                  onLayout={(e) => {
-                    const { height } = e.nativeEvent.layout;
-                    setNumberOfLinesToRender(Math.floor(height / lineHeight));
-                  }}
-                >
-                  {[...Array(numberOfLinesToRender)].map((e, i) => (
-                    <Line key={i.toString()} height={lineHeight} />
-                  ))}
-                </LinesWrapper>
-                {/* React Native Rich Editor */}
-                {children}
-              </ScrollViewWrapper>
-            </ScrollView>
-          </ContentWrapper>
+              <LinesWrapper pointerEvents="none">
+                {[...Array(numberOfLinesToRender)].map((e, i) => (
+                  <Line key={i.toString()} height={lineHeight} />
+                ))}
+              </LinesWrapper>
+              {/* React Native Rich Editor */}
+              {children}
+            </ScrollViewWrapper>
+          </ScrollView>
           {isLoading && (
             <LoadingContainer isSimpleLayout={isSimpleLayout}>
               <AnimatedLoadingBox style={animationStyles} top={16} />
