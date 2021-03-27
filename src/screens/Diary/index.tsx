@@ -174,7 +174,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
               placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
               disabled
               initialContentHTML={unescapeHtml(currentPage.content)}
-              useContainer={false}
+              useContainer
               editorInitializedCallback={editorInitialized}
             />
           </NoteBook>

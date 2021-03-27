@@ -55,10 +55,10 @@ export const Content = styled.View<{ isSimpleLayout?: boolean }>`
   ${({ isSimpleLayout }) =>
     isSimpleLayout
       ? css`
-          padding: 22px 30px 30px 30px;
+          padding: 22px 0 30px 0;
         `
       : css`
-          padding: 0 30px;
+          padding: 0;
         `};
 `;
 
@@ -68,8 +68,11 @@ export const ContentWrapper = styled.View`
 `;
 
 export const LinesWrapper = styled.View`
-  ${flexGrow1};
-  overflow: hidden;
+  position: absolute;
+  top: -8px;
+  right: 0;
+  left: 0;
+  bottom: 0;
   z-index: 1;
 `;
 
@@ -109,11 +112,7 @@ export const LoadingBox = styled.View<{ width?: number; top: number }>`
   background-color: ${({ theme }) => theme.noteBook.lineColor};
 `;
 
-// Position editor in notebook
-export const EditorContainer = styled.View`
-  position: absolute;
-  left: 0;
-  top: 8px;
-  right: 0;
-  bottom: 8px;
+export const ScrollViewWrapper = styled.View<{ height?: number }>`
+  flex-grow: 1;
+  height: ${({ height }) => (height ? `${height}px` : "auto")};
 `;

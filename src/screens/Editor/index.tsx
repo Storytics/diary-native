@@ -299,7 +299,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                 placeholder={i18n.t("editorScreen.richEditor.placeholder")}
                 initialFocus={false}
                 disabled={false}
-                useContainer={false}
+                useContainer
                 initialContentHTML={unescapeHtml(content)}
                 onChange={(text: string) =>
                   setContent(sanitize(text, { whiteList: { div: ["style"] } }))

@@ -15,7 +15,7 @@ import {
   Footer,
   LoadingContainer,
   LoadingBox,
-  EditorContainer,
+  ScrollViewWrapper,
 } from "./styles";
 
 interface ActivityCardProps {
@@ -35,6 +35,11 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
+  },
+  scrollViewStyles: {
+    flexGrow: 1,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
 });
 
@@ -104,22 +109,27 @@ const NoteBook: React.FC<ActivityCardProps> = ({
         <Content isSimpleLayout={isSimpleLayout}>
           <ContentWrapper>
             <ScrollView
-              contentContainerStyle={{ flexGrow: 1 }}
+              contentContainerStyle={styles.scrollViewStyles}
+              nestedScrollEnabled
               bounces={false}
               showsVerticalScrollIndicator={false}
+              fadingEdgeLength={300}
             >
-              <LinesWrapper
-                pointerEvents="none"
-                onLayout={(e) => {
-                  const { height } = e.nativeEvent.layout;
-                  setNumberOfLinesToRender(Math.floor(height / lineHeight));
-                }}
-              >
-                {[...Array(numberOfLinesToRender)].map((e, i) => (
-                  <Line key={i.toString()} height={lineHeight} />
-                ))}
-              </LinesWrapper>
-              <EditorContainer>{children}</EditorContainer>
+              <ScrollViewWrapper>
+                <LinesWrapper
+                  pointerEvents="none"
+                  onLayout={(e) => {
+                    const { height } = e.nativeEvent.layout;
+                    setNumberOfLinesToRender(Math.floor(height / lineHeight));
+                  }}
+                >
+                  {[...Array(numberOfLinesToRender)].map((e, i) => (
+                    <Line key={i.toString()} height={lineHeight} />
+                  ))}
+                </LinesWrapper>
+                {/* React Native Rich Editor */}
+                {children}
+              </ScrollViewWrapper>
             </ScrollView>
           </ContentWrapper>
           {isLoading && (
