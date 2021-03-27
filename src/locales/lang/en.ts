@@ -176,6 +176,7 @@ export default {
     password: {
       title: "Password",
       placeholder: "at least 8 characters.",
+      loginPlaceholder: "********",
     },
     // signUp specific
     signUp: {
