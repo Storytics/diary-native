@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   GestureResponderEvent,
+  ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Theme from "theme/index";
@@ -145,6 +146,7 @@ const CustomModal: React.FC<ActivityCardProps> = ({
         <Container>
           <StyledScrollView
             contentContainerStyle={styles(theme).scrollViewContent}
+            keyboardShouldPersistTaps="always"
           >
             <TouchOutsideContainer>
               <TouchableWithoutFeedback
