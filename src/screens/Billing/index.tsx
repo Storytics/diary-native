@@ -10,7 +10,7 @@ import CustomHeaderWebView, {
 import CustomSafeArea from "components/CustomSafeArea";
 import OverlaySpinner from "components/OverlaySpinner";
 // Utils
-import { billingUrl } from "utils/constants";
+import { billing } from "utils/constants";
 // Types
 import { BillingNavigationProps } from "types/navigation";
 // Locales
@@ -69,7 +69,7 @@ const Billing: React.FC<BillingNavigationProps> = ({
           {renderHeader()}
           <CustomHeaderWebView
             source={{
-              uri: billingUrl,
+              uri: billing.plans,
               headers: {
                 "x-dia-native-user-id": String(params.user.id),
                 "x-dia-native-user-email": String(params.user.email),

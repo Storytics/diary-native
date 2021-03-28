@@ -111,7 +111,7 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
   }, []);
 
   if ((isFontsLoading && isDatabaseLoading) || isHomeScreenLoading) {
-    return <AppLoading />;
+    return <AppLoading autoHideSplash />;
   }
 
   return (
@@ -137,7 +137,6 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
     </ThemeProvider>
   );
 };
-
 const App: React.FC<Props> = (props) => (
   <SafeAreaProvider initialMetrics={initialWindowMetrics}>
     <StoreContextProvider>

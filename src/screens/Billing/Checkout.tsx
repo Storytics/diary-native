@@ -12,7 +12,7 @@ import { setNetworkStatus } from "context/StoreContext";
 import { billing } from "utils/constants";
 // Types
 import { CheckoutNavigationProps } from "types/navigation";
-import { NetworkStatus, SubscriptionStatus } from "types/store";
+import { NetworkStatus, SubscriptionStatus, User } from "types/store";
 // Hooks
 import useStore from "hooks/useStore";
 // Styles
@@ -29,7 +29,7 @@ const Checkout: React.FC<CheckoutNavigationProps> = ({
   const onNavigationStateChange = ({ url }: WebViewNavigation) => {
     if (url) {
       if (url.includes("/diary/plans/select")) {
-        navigation.goBack();
+        navigation.navigate("Billing", { user: state.user as User });
       } else if (url.includes("/diary/plans/success")) {
         dispatch({
           type: "SET_AUTHENTICATION_STATUS",

@@ -248,7 +248,7 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
       <Container hasPadding={false}>
         <ScrollView
           contentContainerStyle={styles.scrollView}
-          keyboardShouldPersistTaps
+          keyboardShouldPersistTaps="always"
         >
           <ContentContainer>
             <Header

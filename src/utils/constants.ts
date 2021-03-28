@@ -5,12 +5,11 @@ export const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxMjgxNDQ4NCwiZXhwIjoxOTI4MzkwNDg0fQ.z-MICAaM9GVzKHcGpN8jY0KSXOngZWz72uwyfEDMCKk";
 
 export const billing = {
-  checkout: "http://localhost:3000/diary/plans/checkout",
-  plans: "http://localhost:3000/diary/plans/select",
-  portal: "http://localhost:3000/diary/plans/portal",
+  checkout: `https://billing.storytics.pt/diary/plans/checkout`,
+  plans: `https://billing.storytics.pt/diary/plans/select`,
+  portal: `https://billing.storytics.pt/diary/plans/portal`,
 };
 
-export const billingUrl = "http://localhost:3000/diary"; // "https://billing.storytics.pt/diary";
 export const termsUrl = "https://www.storytics.pt/diary/terms";
 export const privacyUrl = "https://www.storytics.pt/diary/privacy";
 export const userCloudLastSyncItem = "@st_dia_cloud_last_sync";
