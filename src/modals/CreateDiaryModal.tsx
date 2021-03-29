@@ -14,7 +14,7 @@ import Modal from "components/Modal";
 // Database
 import { createBook, updateBookById } from "database/Book";
 // Context
-import { loadBooks } from "context/StoreContext";
+import { loadActivity, loadBooks } from "context/StoreContext";
 // Types
 import { NotificationType } from "types/notifications";
 // Utils
@@ -106,6 +106,7 @@ const CreateDiaryModal: React.FC = () => {
 
         if (result === "success") {
           await loadBooks(store.dispatch);
+          await loadActivity(store.dispatch);
           setInputText("");
           onClose();
           notification(
