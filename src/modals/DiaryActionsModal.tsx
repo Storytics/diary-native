@@ -34,15 +34,14 @@ const DiaryActionsModal: React.FC = () => {
       const result = await deleteBookById(diary.bookId);
 
       if (result === "success") {
+        onClose();
         await loadBooks(store.dispatch);
         await loadActivity(store.dispatch);
-        setTimeout(() => {
-          onClose();
-          notification(
-            i18n.t("notifications.deleteDiary.success"),
-            NotificationType.success
-          );
-        }, 0);
+
+        notification(
+          i18n.t("notifications.deleteDiary.success"),
+          NotificationType.success
+        );
       }
     } catch (e) {
       notification(

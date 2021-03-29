@@ -1,9 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
-import {
-  Animated,
-  GestureResponderEvent,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Animated, GestureResponderEvent, Pressable } from "react-native";
 import i18n from "locales/index";
 import { MediumTitle } from "components/Typography";
 import { useTheme } from "styled-components/native";
@@ -48,7 +44,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({
   };
 
   return (
-    <TouchableWithoutFeedback
+    <Pressable
       delayLongPress={5000}
       onPressIn={() => {
         setAnimate(true);
@@ -79,7 +75,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({
           <LoaderAnimatedLoader pointerEvents="none" style={animationStyles} />
         )}
       </Container>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
