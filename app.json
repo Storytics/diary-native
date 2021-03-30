@@ -5,7 +5,7 @@
     "name": "Diary",
     "description": "Reflect on your daily events and save beautiful moments with Diary by Storytics.",
     "slug": "diary-by-storytics",
-    "version": "0.0.35",
+    "version": "0.0.37",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "backgroundColor": "#ffffff",

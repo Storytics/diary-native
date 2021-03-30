@@ -50,9 +50,6 @@ const HoldButton: React.FC<HoldButtonProps> = ({
         setAnimate(true);
         toggleAnimation();
       }}
-      onPress={() => {
-        setAnimate(false);
-      }}
       onPressOut={() => {
         setAnimate(false);
       }}

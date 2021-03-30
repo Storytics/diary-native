@@ -122,7 +122,6 @@ const Notification: React.FC = () => {
   }, [isOpen, dispatch]);
 
   const animationStyles = {
-    opacity: notificationAnimation,
     transform: [
       {
         translateY: notificationAnimation.interpolate({
