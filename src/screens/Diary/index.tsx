@@ -42,7 +42,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const [noteBookHeight, setNoteBookHeight] = useState(0);
   const [isEditorLoading, setEditorLoading] = useState(true);
   const theme = useTheme();
-  const isFocused = useIsFocused();
+  // const isFocused = useIsFocused();
   const { notification } = useNotification();
   const {
     state: { isDarkTheme },
@@ -154,9 +154,7 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
           }}
         >
           <NoteBook
-            key={`page-${currentPage.content
-              .substring(0, 45)
-              .replace(/\\s/g, "-")}-${isFocused ? "focus" : "blur"}`}
+            // key={`page-${currentPage.id}-${isFocused ? "focus" : "blur"}`}
             date={dayjs(currentPage.createdAt).format("DD MMM YYYY")}
             day={dayjs(currentPage.createdAt).format("dddd")}
             page={`${pageNumber + 1} / ${bookPages.length}`}

@@ -79,7 +79,6 @@ const toolBarActions: Array<{
 const styles = (theme: typeof Theme) =>
   StyleSheet.create({
     richEditor: {
-      paddingBottom: 10,
       display: "flex",
       flexDirection: "column",
       flexGrow: 1,

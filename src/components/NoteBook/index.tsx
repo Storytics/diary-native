@@ -118,10 +118,12 @@ const NoteBook: React.FC<ActivityCardProps> = ({
             showsVerticalScrollIndicator={false}
             fadingEdgeLength={100}
             onContentSizeChange={() => {
+              /*
               if (isSimpleLayout && isKeyboardOpen) {
                 // @ts-ignore
                 scrollViewRef.current.scrollToEnd({ animated: true });
               }
+              */
             }}
           >
             <ScrollViewWrapper
