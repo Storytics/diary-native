@@ -6,7 +6,7 @@ import Container from "components/Container";
 import NoteBook from "components/NoteBook";
 import CustomSafeArea from "components/CustomSafeArea";
 // Utils
-import { unescapeHtml } from "utils/functions";
+import { cleanUpContent, unescapeHtml } from "utils/functions";
 import dayjs from "dayjs";
 // Hooks
 import useNotification from "hooks/useNotification";
@@ -145,7 +145,9 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
         />
         <NoteBookContainer>
           <NoteBook
-            key={`page-${currentPage.id}-${isFocused ? "focus" : "blur"}`}
+            key={`page-${cleanUpContent(
+              currentPage.content.substring(0, 45).replace(/ /g, "-").trim()
+            )}-${isFocused ? "focus" : "blur"}`}
             date={dayjs(currentPage.createdAt).format("DD MMM YYYY")}
             day={dayjs(currentPage.createdAt).format("dddd")}
             page={`${pageNumber + 1} / ${bookPages.length}`}

@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Animated,
+  Alert,
 } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -112,7 +113,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
 }) => {
   const headerAnimation = useRef(new Animated.Value(1)).current;
   const [isEditorLoading, setEditorLoading] = useState(true);
-  const [content, setContent] = useState(params.page?.content || "");
+  const [content, setContent] = useState("");
   const RichTextRef = createRef<RichEditor>();
   // Keyboard Hook
   const { isKeyboardOpen } = useKeyboard();
@@ -142,16 +143,46 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   useEffect(() => {
     const checkForDrafts = async () => {
       const draft = await AsyncStorage.getItem(userEditorDraftItem);
-      if (draft) {
-        const draftData = JSON.parse(draft);
-        setContent(draftData.content);
+
+      if (draft && !isEditorLoading) {
+        Alert.alert(
+          i18n.t("alerts.draft.title"),
+          i18n.t("alerts.draft.message"),
+          [
+            {
+              text: i18n.t("alerts.draft.buttons.cancel"),
+              onPress: async () => {
+                await AsyncStorage.removeItem(userEditorDraftItem);
+              },
+              style: "cancel",
+            },
+            {
+              text: i18n.t("alerts.draft.buttons.ok"),
+              onPress: async () => {
+                const draftData = JSON.parse(draft);
+                RichTextRef.current?.setContentHTML(
+                  unescapeHtml(draftData.content)
+                );
+                await AsyncStorage.removeItem(userEditorDraftItem);
+              },
+            },
+          ],
+          { cancelable: false }
+        );
       }
     };
     // only check for draft on new pages
     if (!params.isEdit) {
       checkForDrafts();
     }
-  }, [params.bookId, params.isEdit]);
+
+    if (params.isEdit && !isEditorLoading) {
+      RichTextRef.current?.setContentHTML(
+        unescapeHtml(params.page?.content || "")
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.bookId, params.isEdit, isEditorLoading]);
 
   const iconMap = toolBarActions.reduce(
     (o, item) => ({
@@ -306,7 +337,6 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                 initialFocus={false}
                 disabled={false}
                 useContainer
-                initialContentHTML={unescapeHtml(content)}
                 onChange={(text: string) =>
                   setContent(sanitize(text, { whiteList: { div: ["style"] } }))
                 }
