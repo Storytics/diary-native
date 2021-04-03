@@ -1,10 +1,12 @@
 import React, { useState, createRef, useMemo, useCallback } from "react";
 import { useTheme } from "styled-components/native";
+import { ScrollView } from "react-native";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 // Components
 import Container from "components/Container";
 import NoteBook from "components/NoteBook";
 import CustomSafeArea from "components/CustomSafeArea";
+import BookLines from "components/BookLines";
 // Utils
 import { unescapeHtml } from "utils/functions";
 import dayjs from "dayjs";
@@ -161,20 +163,35 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
             hasPaddingBottom={false}
             isLoading={isEditorLoading}
           >
-            <RichEditor
-              ref={RichTextViewRef}
-              editorStyle={{
-                backgroundColor: theme.richEditor.backgroundColor,
-                color: theme.richEditor.textColor,
-                placeholderColor: theme.richEditor.placeholderColor,
-                contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px; display: flex; flex-direction: column;`,
-              }}
-              placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
-              disabled
-              initialContentHTML={unescapeHtml(currentPage.content)}
-              useContainer
-              editorInitializedCallback={editorInitialized}
-            />
+            <ScrollView
+              style={{ flex: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+              nestedScrollEnabled={false}
+              bounces={false}
+              showsVerticalScrollIndicator={false}
+              fadingEdgeLength={100}
+            >
+              <BookLines />
+              <RichEditor
+                ref={RichTextViewRef}
+                editorStyle={{
+                  backgroundColor: theme.richEditor.backgroundColor,
+                  color: theme.richEditor.textColor,
+                  placeholderColor: theme.richEditor.placeholderColor,
+                  contentCSSText: `font-family: sans-serif; 
+                                   font-size: 14px; 
+                                   padding: 0; 
+                                   line-height: 40px; 
+                                   display: flex; 
+                                   flex-direction: column;`,
+                }}
+                placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
+                disabled
+                initialContentHTML={unescapeHtml(currentPage.content)}
+                useContainer
+                editorInitializedCallback={editorInitialized}
+              />
+            </ScrollView>
           </NoteBook>
         </NoteBookContainer>
         <NavigationContainer>

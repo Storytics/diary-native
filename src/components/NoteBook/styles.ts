@@ -50,7 +50,7 @@ export const Content = styled.View<{ isSimpleLayout?: boolean }>`
   ${({ isSimpleLayout }) =>
     isSimpleLayout
       ? css`
-          padding: 22px 30px 30px 30px;
+          padding: 22px 0 30px 0;
         `
       : css`
           padding: 0 30px;
@@ -59,15 +59,6 @@ export const Content = styled.View<{ isSimpleLayout?: boolean }>`
 
 export const ContentWrapper = styled.View`
   flex: 1;
-`;
-
-export const LinesWrapper = styled.View`
-  position: absolute;
-  top: -8px;
-  right: 0;
-  left: 0;
-  bottom: -8px;
-  z-index: 1;
 `;
 
 export const Line = styled.View<{ height?: number }>`

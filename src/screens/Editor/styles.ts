@@ -25,5 +25,5 @@ export const ContentWrapper = styled.View`
 `;
 
 export const ToolBarWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
-  padding: 0 5px 5px 5px;
+  padding: 5px;
 `;

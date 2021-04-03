@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { StyleSheet, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "styled-components/native";
@@ -9,7 +9,6 @@ import {
   Header,
   HeaderWrapper,
   Content,
-  LinesWrapper,
   Line,
   Footer,
   LoadingContainer,
@@ -50,7 +49,6 @@ const NoteBook: React.FC<ActivityCardProps> = ({
   isSimpleLayout = false,
 }) => {
   const linesAnimation = useRef(new Animated.Value(0)).current;
-  const [numberOfLinesToRender, setNumberOfLinesToRender] = useState(0);
   const theme = useTheme();
   const lineHeight = 40;
 
@@ -102,17 +100,6 @@ const NoteBook: React.FC<ActivityCardProps> = ({
         )}
         <Content isSimpleLayout={isSimpleLayout}>
           <ContentWrapper>
-            <LinesWrapper
-              pointerEvents="none"
-              onLayout={(e) => {
-                const { height } = e.nativeEvent.layout;
-                setNumberOfLinesToRender(Math.floor(height / lineHeight));
-              }}
-            >
-              {[...Array(numberOfLinesToRender)].map((e, i) => (
-                <Line key={i.toString()} height={lineHeight} />
-              ))}
-            </LinesWrapper>
             {/* React Native Rich Editor */}
             {children}
           </ContentWrapper>
@@ -120,9 +107,10 @@ const NoteBook: React.FC<ActivityCardProps> = ({
             <LoadingContainer isSimpleLayout={isSimpleLayout}>
               <AnimatedLoadingBox style={animationStyles} top={16} />
               <AnimatedLoadingBox style={animationStyles} top={56} width={50} />
-              {[...Array(20)].map((e, i) => (
-                <Line key={i.toString()} height={lineHeight} />
-              ))}
+              {!isSimpleLayout &&
+                [...Array(20)].map((e, i) => (
+                  <Line key={i.toString()} height={lineHeight} />
+                ))}
             </LoadingContainer>
           )}
         </Content>
