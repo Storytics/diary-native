@@ -39,10 +39,9 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const RichTextViewRef = createRef<RichEditor>();
   const [bookPages, setBookPages] = useState<Array<PageProps>>([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const [noteBookHeight, setNoteBookHeight] = useState(0);
   const [isEditorLoading, setEditorLoading] = useState(true);
   const theme = useTheme();
-  // const isFocused = useIsFocused();
+  const isFocused = useIsFocused();
   const { notification } = useNotification();
   const {
     state: { isDarkTheme },
@@ -116,7 +115,6 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
 
     setTimeout(() => {
       navigation.navigate("Editor", {
-        noteBookHeight,
         bookId: params.bookId,
         isEdit: !isCreatePage,
         bookTitle: params.bookTitle,
@@ -145,16 +143,9 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
           }}
           text={params.bookTitle}
         />
-        <NoteBookContainer
-          onLayout={(e) => {
-            const { height } = e.nativeEvent.layout;
-            if (noteBookHeight <= 0) {
-              setNoteBookHeight(height);
-            }
-          }}
-        >
+        <NoteBookContainer>
           <NoteBook
-            // key={`page-${currentPage.id}-${isFocused ? "focus" : "blur"}`}
+            key={`page-${currentPage.id}-${isFocused ? "focus" : "blur"}`}
             date={dayjs(currentPage.createdAt).format("DD MMM YYYY")}
             day={dayjs(currentPage.createdAt).format("dddd")}
             page={`${pageNumber + 1} / ${bookPages.length}`}

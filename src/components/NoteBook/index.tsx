@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Animated, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "styled-components/native";
-import useKeyboard from "hooks/useKeyboard";
 import { Text } from "components/Typography";
 import {
   Container,
@@ -56,7 +55,6 @@ const NoteBook: React.FC<ActivityCardProps> = ({
   isSimpleLayout = false,
 }) => {
   // Keyboard Hook
-  const { isKeyboardOpen } = useKeyboard();
   const scrollViewRef = useRef(null);
   const linesAnimation = useRef(new Animated.Value(0)).current;
   const [numberOfLinesToRender, setNumberOfLinesToRender] = useState(0);

@@ -35,7 +35,9 @@ const DiaryActionsModal: React.FC = () => {
 
   const onDelete = async () => {
     try {
+      console.log("DELETE!");
       const result = await deleteBookById(diary.bookId);
+      console.log("result! = ", result);
 
       if (result === "success") {
         onClose();

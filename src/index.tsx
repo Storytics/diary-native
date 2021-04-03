@@ -1,6 +1,13 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import { AppState, AppStateStatus, StatusBar, View } from "react-native";
 import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
 // Components
 import Notification from "components/Notification";
 import { getLastCloudSync, uploadDataToCloud } from "components/NetworkStatus";
@@ -110,8 +117,12 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
     };
   }, []);
 
+  const onRemoveSplashScreen = useCallback(async () => {
+    await SplashScreen.hideAsync();
+  }, []);
+
   if ((isFontsLoading && isDatabaseLoading) || isHomeScreenLoading) {
-    return <AppLoading autoHideSplash />;
+    return <AppLoading onFinish={onRemoveSplashScreen} autoHideSplash />;
   }
 
   return (

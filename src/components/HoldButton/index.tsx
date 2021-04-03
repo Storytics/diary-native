@@ -36,7 +36,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({
     loadAnim.setValue(0);
     Animated.timing(loadAnim, {
       toValue: 1,
-      duration: 5000,
+      duration: 2000,
       useNativeDriver: false,
     }).start();
   }, [loadAnim]);
@@ -54,7 +54,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({
 
   return (
     <Pressable
-      delayLongPress={5000}
+      delayLongPress={2000}
       onPressIn={() => {
         setAnimate(true);
         toggleAnimation();
