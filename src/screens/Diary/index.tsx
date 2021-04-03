@@ -1,7 +1,13 @@
-import React, { useState, createRef, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  createRef,
+  useMemo,
+  useCallback,
+  useEffect,
+} from "react";
 import { useTheme } from "styled-components/native";
 import { ScrollView } from "react-native";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // Components
 import Container from "components/Container";
@@ -9,7 +15,7 @@ import NoteBook from "components/NoteBook";
 import CustomSafeArea from "components/CustomSafeArea";
 import BookLines from "components/BookLines";
 // Utils
-import { cleanUpContent, unescapeHtml } from "utils/functions";
+import { unescapeHtml } from "utils/functions";
 import dayjs from "dayjs";
 import { userEditorDraftItem } from "utils/constants";
 // Hooks
@@ -45,7 +51,6 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const [pageNumber, setPageNumber] = useState(0);
   const [isEditorLoading, setEditorLoading] = useState(true);
   const theme = useTheme();
-  const isFocused = useIsFocused();
   const { notification } = useNotification();
   const {
     state: { isDarkTheme },
@@ -77,10 +82,13 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
           setPageNumber(activityIndex === -1 ? pages.length : activityIndex);
 
           if (activityIndex !== -1) {
-            console.log("entrou aqui");
             // Remove any saved drafts before going back
             await AsyncStorage.removeItem(userEditorDraftItem);
           }
+
+          setTimeout(() => {
+            setEditorLoading(false);
+          }, 100);
         } catch (e) {
           notification(
             i18n.t("notifications.loadPages.error"),
@@ -94,12 +102,19 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
     }, [params.bookId, params.activityPageId])
   );
 
+  useEffect(() => {
+    RichTextViewRef.current?.setContentHTML(unescapeHtml(currentPage.content));
+    if (!isEditorLoading) {
+      setEditorLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, isEditorLoading]);
+
   const onPrevPage = () => {
     const prevPage = pageNumber - 1;
     const isValidPage = bookPages[prevPage];
 
     if (isValidPage) {
-      setEditorLoading(true);
       setPageNumber(prevPage);
     }
   };
@@ -109,7 +124,6 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
     const isValidPage = bookPages[nextPage];
 
     if (isValidPage) {
-      setEditorLoading(true);
       setPageNumber(nextPage);
     }
   };
@@ -155,9 +169,6 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
         />
         <NoteBookContainer>
           <NoteBook
-            key={`page-${cleanUpContent(
-              currentPage.content.substring(0, 45).replace(/ /g, "-").trim()
-            )}-${isFocused ? "focus" : "blur"}`}
             date={dayjs(currentPage.createdAt).format("DD MMM YYYY")}
             day={dayjs(currentPage.createdAt).format("dddd")}
             page={`${pageNumber + 1} / ${bookPages.length}`}
@@ -188,7 +199,6 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
                 }}
                 placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
                 disabled
-                initialContentHTML={unescapeHtml(currentPage.content)}
                 useContainer
                 editorInitializedCallback={editorInitialized}
               />
