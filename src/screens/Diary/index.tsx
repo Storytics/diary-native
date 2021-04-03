@@ -2,14 +2,16 @@ import React, { useState, createRef, useMemo, useCallback } from "react";
 import { useTheme } from "styled-components/native";
 import { ScrollView } from "react-native";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // Components
 import Container from "components/Container";
 import NoteBook from "components/NoteBook";
 import CustomSafeArea from "components/CustomSafeArea";
 import BookLines from "components/BookLines";
 // Utils
-import { unescapeHtml } from "utils/functions";
+import { cleanUpContent, unescapeHtml } from "utils/functions";
 import dayjs from "dayjs";
+import { userEditorDraftItem } from "utils/constants";
 // Hooks
 import useNotification from "hooks/useNotification";
 import useStore from "hooks/useStore";
@@ -41,10 +43,9 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   const RichTextViewRef = createRef<RichEditor>();
   const [bookPages, setBookPages] = useState<Array<PageProps>>([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const [noteBookHeight, setNoteBookHeight] = useState(0);
   const [isEditorLoading, setEditorLoading] = useState(true);
   const theme = useTheme();
-  // const isFocused = useIsFocused();
+  const isFocused = useIsFocused();
   const { notification } = useNotification();
   const {
     state: { isDarkTheme },
@@ -74,6 +75,12 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
 
           setBookPages([...pages, defaultPage]);
           setPageNumber(activityIndex === -1 ? pages.length : activityIndex);
+
+          if (activityIndex !== -1) {
+            console.log("entrou aqui");
+            // Remove any saved drafts before going back
+            await AsyncStorage.removeItem(userEditorDraftItem);
+          }
         } catch (e) {
           notification(
             i18n.t("notifications.loadPages.error"),
@@ -118,7 +125,6 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
 
     setTimeout(() => {
       navigation.navigate("Editor", {
-        noteBookHeight,
         bookId: params.bookId,
         isEdit: !isCreatePage,
         bookTitle: params.bookTitle,
@@ -147,16 +153,11 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
           }}
           text={params.bookTitle}
         />
-        <NoteBookContainer
-          onLayout={(e) => {
-            const { height } = e.nativeEvent.layout;
-            if (noteBookHeight <= 0) {
-              setNoteBookHeight(height);
-            }
-          }}
-        >
+        <NoteBookContainer>
           <NoteBook
-            // key={`page-${currentPage.id}-${isFocused ? "focus" : "blur"}`}
+            key={`page-${cleanUpContent(
+              currentPage.content.substring(0, 45).replace(/ /g, "-").trim()
+            )}-${isFocused ? "focus" : "blur"}`}
             date={dayjs(currentPage.createdAt).format("DD MMM YYYY")}
             day={dayjs(currentPage.createdAt).format("dddd")}
             page={`${pageNumber + 1} / ${bookPages.length}`}

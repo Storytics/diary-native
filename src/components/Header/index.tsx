@@ -32,8 +32,10 @@ const Header: React.FC<HeaderProps> = ({
       {hasBackButton && (
         <IconContainer>
           <RoundButton
+            size="large"
             onPress={onPress}
             underlayColor={underlayColor || theme.header.underlayColor}
+            accessibilityLabel="Go Back"
           >
             <MaterialIcons
               name="arrow-back"

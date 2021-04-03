@@ -75,7 +75,7 @@ const CreateDiaryModal: React.FC = () => {
 
   const onCreate = async () => {
     try {
-      if (inputText) {
+      if (inputText.trim()) {
         const result = await createBook(uuid(), inputText, color);
 
         if (result === "success") {
@@ -100,7 +100,7 @@ const CreateDiaryModal: React.FC = () => {
 
   const onEdit = async () => {
     try {
-      if (inputText) {
+      if (inputText.trim()) {
         const { bookId } = diary;
         const result = await updateBookById(bookId, inputText, color);
 

@@ -226,4 +226,15 @@ export default {
       },
     },
   },
+  alerts: {
+    draft: {
+      title: "Let's continue?",
+      message:
+        "You have an unsaved draft, load draft to continue writing where you left off.",
+      buttons: {
+        cancel: "Discard",
+        ok: "Load Draft",
+      },
+    },
+  },
 };

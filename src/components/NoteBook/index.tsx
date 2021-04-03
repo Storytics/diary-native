@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
-  },
+  }
 });
 
 const AnimatedLoadingBox = Animated.createAnimatedComponent(LoadingBox);
@@ -48,6 +48,7 @@ const NoteBook: React.FC<ActivityCardProps> = ({
   isLoading = true,
   isSimpleLayout = false,
 }) => {
+
   const linesAnimation = useRef(new Animated.Value(0)).current;
   const theme = useTheme();
   const lineHeight = 40;

@@ -156,7 +156,7 @@ const Notification: React.FC = () => {
           </StyledSmallTitle>
         </TextContainer>
         <RoundButton
-          size="small"
+          size="large"
           underlayColor={handleNotificationType(type, theme).underlayColor}
           onPress={() =>
             dispatch({

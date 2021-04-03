@@ -227,4 +227,15 @@ export default {
       },
     },
   },
+  alerts: {
+    draft: {
+      title: "Vamos continuar?",
+      message:
+        "Você tem um rascunho, carregue o rascunho para continuar escrevendo onde parou.",
+      buttons: {
+        cancel: "Descartar",
+        ok: "Carregar",
+      },
+    },
+  },
 };
