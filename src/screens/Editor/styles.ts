@@ -21,9 +21,9 @@ export const HeaderContainer = styled.View`
 
 export const ContentWrapper = styled.View`
   display: flex;
-  flex-grow: 1;
+  flex: 1;
 `;
 
 export const ToolBarWrapper = styled.View<{ isKeyboardOpen?: boolean }>`
-  padding: 5px;
+  padding: 0 5px 5px 5px;
 `;

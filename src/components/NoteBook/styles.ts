@@ -1,16 +1,11 @@
 import styled, { css } from "styled-components/native";
 
-const flexGrow1 = css`
-  display: flex;
-  flex-grow: 1;
-`;
-
 export const Container = styled.View<{
   hasPaddingBottom?: boolean;
   height?: number;
   isSimpleLayout?: boolean;
 }>`
-  ${flexGrow1};
+  flex: 1;
   padding-right: ${({ isSimpleLayout }) => (isSimpleLayout ? "5px" : "20px")};
   ${({ hasPaddingBottom }) =>
     hasPaddingBottom &&
@@ -21,7 +16,7 @@ export const Container = styled.View<{
 `;
 
 export const Wrapper = styled.View`
-  ${flexGrow1};
+  flex: 1;
   background-color: ${({ theme }) => theme.noteBook.backgroundColor};
   border-top-right-radius: ${({ theme }) => theme.sizes.borderRadius.large};
   border-bottom-right-radius: ${({ theme }) => theme.sizes.borderRadius.large};
@@ -55,14 +50,14 @@ export const Content = styled.View<{ isSimpleLayout?: boolean }>`
   ${({ isSimpleLayout }) =>
     isSimpleLayout
       ? css`
-          padding: 22px 0 30px 0;
+          padding: 22px 30px 30px 30px;
         `
       : css`
-          padding: 0;
+          padding: 0 30px;
         `};
 `;
 
-export const ScrollViewWrapper = styled.View`
+export const ContentWrapper = styled.View`
   flex: 1;
 `;
 
@@ -71,6 +66,7 @@ export const LinesWrapper = styled.View`
   top: -8px;
   right: 0;
   left: 0;
+  bottom: -8px;
   z-index: 1;
 `;
 
