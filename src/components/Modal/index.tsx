@@ -138,7 +138,7 @@ const CustomModal: React.FC<ActivityCardProps> = ({
         <Container>
           <StyledScrollView
             contentContainerStyle={styles(theme).scrollViewContent}
-            keyboardShouldPersistTaps="always"
+            keyboardShouldPersistTaps="handled"
           >
             <TouchOutsideContainer>
               <TouchableWithoutFeedback
