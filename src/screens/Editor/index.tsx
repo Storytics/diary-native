@@ -78,10 +78,9 @@ const toolBarActions: Array<{
 
 const styles = (theme: typeof Theme) =>
   StyleSheet.create({
+    // Editor styles
     richEditor: {
-      display: "flex",
-      flexDirection: "column",
-      flexGrow: 1,
+      flex: 1,
     },
     // Normal state
     richToolBar: {
@@ -98,9 +97,15 @@ const styles = (theme: typeof Theme) =>
       paddingRight: 5,
       paddingLeft: 5,
     },
-    keyboardAvoidingView: {
-      display: "flex",
+    flex1: {
+      flex: 1,
+    },
+    flexGrow1: {
       flexGrow: 1,
+    },
+    scrollViewContent: {
+      flexGrow: 1,
+      paddingBottom: 5,
     },
   });
 
@@ -270,7 +275,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     <CustomSafeArea>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles(theme).keyboardAvoidingView}
+        style={styles(theme).flexGrow1}
         keyboardVerticalOffset={30}
       >
         <Container>
@@ -294,13 +299,21 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
               isSimpleLayout
             >
               <RichEditor
-                style={styles(theme).richEditor}
+                style={styles(theme).richEditor} // flex: 1
                 ref={RichTextRef}
                 editorStyle={{
                   backgroundColor: theme.richEditor.backgroundColor,
                   color: theme.richEditor.textColor,
                   placeholderColor: theme.richEditor.placeholderColor,
-                  contentCSSText: `font-family: sans-serif; font-size: 14px; padding: 0; line-height: 40px; display: flex; flex-direction: column;`,
+                  contentCSSText: `font-family: sans-serif; 
+                                   font-size: 14px; 
+                                   padding: 0 30px 0 30px; 
+                                   line-height: 36px; 
+                                   display: flex; 
+                                   flex-direction: column; 
+                                   min-height: 200px; 
+                                   position: absolute; 
+                                   top: 0; right: 0; bottom: 0; left: 0;`,
                 }}
                 placeholder={i18n.t("editorScreen.richEditor.placeholder")}
                 initialFocus={false}

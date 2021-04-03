@@ -28,7 +28,7 @@ const Navigation: React.FC<DiaryCardProps> = ({
     <Container isPageNavigation={isPageNavigation}>
       <Wrapper>
         {isPageNavigation ? (
-          <RoundButton size="medium" onPress={onPressLeft}>
+          <RoundButton size="large" onPress={onPressLeft}>
             <MaterialIcons
               name="chevron-left"
               size={24}
@@ -56,7 +56,7 @@ const Navigation: React.FC<DiaryCardProps> = ({
             />
           </RoundButton>
         </MainButtonContainer>
-        <RoundButton size="medium" onPress={onPressRight}>
+        <RoundButton size="large" onPress={onPressRight}>
           <MaterialIcons
             name={isPageNavigation ? "chevron-right" : "menu"}
             size={24}

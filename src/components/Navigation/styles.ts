@@ -12,7 +12,7 @@ export const Container = styled.View<{ isPageNavigation?: boolean }>`
 `;
 
 export const MainButtonContainer = styled.View`
-  padding: 0 10px;
+  padding: 0 15px;
 `;
 
 export const Wrapper = styled.View`
@@ -20,7 +20,7 @@ export const Wrapper = styled.View`
   height: 60px;
   border-radius: 30px;
   overflow: hidden;
-  padding: 0 10px;
+  padding: 0 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
