@@ -49,6 +49,7 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({
           ? theme.button.primary.underlayColor
           : theme.button.default.underlayColor
       }
+      accessibilityLabel={text}
     >
       <MediumTitle
         color={

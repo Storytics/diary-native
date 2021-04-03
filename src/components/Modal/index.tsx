@@ -154,7 +154,11 @@ const CustomModal: React.FC<ActivityCardProps> = ({
                   <HeaderTextContainer>
                     <MediumTitle numberOfLines={1}>{title}</MediumTitle>
                   </HeaderTextContainer>
-                  <RoundButton size="medium" onPress={onClose}>
+                  <RoundButton
+                    size="large"
+                    onPress={onClose}
+                    accessibilityLabel="Close the modal with X"
+                  >
                     <MaterialIcons
                       name="close"
                       size={24}

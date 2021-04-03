@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   scrollViewStyles: {
-    flexGrow: 1,
+    // flexGrow: 1,
     paddingLeft: 30,
     paddingRight: 30,
   },

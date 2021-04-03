@@ -351,7 +351,12 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
             )}
             {!isCreateAccount && !isRecoveryAccount && (
               <Box mt={10}>
-                <TouchableOpacity onPress={() => setIsRecoveryAccount(true)}>
+                <TouchableOpacity
+                  onPress={() => setIsRecoveryAccount(true)}
+                  accessibilityLabel={i18n.t(
+                    "cloudScreen.logIn.forgotPassword"
+                  )}
+                >
                   <Text alignCenter>
                     {i18n.t("cloudScreen.logIn.forgotPassword")}
                   </Text>
@@ -360,7 +365,10 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
             )}
             {isCreateAccount && (
               <Box mt={10}>
-                <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Terms")}
+                  accessibilityLabel={i18n.t("cloudScreen.signUp.terms")}
+                >
                   <Text alignCenter lineHeight={18}>
                     {i18n.t("cloudScreen.signUp.terms")}
                   </Text>
@@ -380,6 +388,11 @@ const DiaryScreen: React.FC<CloudNavigationProps> = ({
                   setIsRecoveryAccount(false);
                   setIsCreateAccount((prevState: boolean) => !prevState);
                 }}
+                accessibilityLabel={
+                  isCreateAccount
+                    ? i18n.t("cloudScreen.signUp.footer.link")
+                    : i18n.t("cloudScreen.logIn.footer.link")
+                }
               >
                 <SmallTitle color={theme.colors.primary}>
                   {isCreateAccount
