@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 export const NoteBookContainer = styled.View`
   display: flex;
-  flex-grow: 1;
+  flex: 1;
 `;
 
 export const NavigationContainer = styled.View`

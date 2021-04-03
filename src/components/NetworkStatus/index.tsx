@@ -107,7 +107,7 @@ const NetworkStatusComponent: React.FC = () => {
   };
 
   const renderButton = ({ name, ...props }: RenderButtonProps) => (
-    <RoundButton size="medium" {...props}>
+    <RoundButton size="large" {...props}>
       {name === status.loading ? (
         <ActivityIndicator size="small" color={theme.colors.primary} />
       ) : (
