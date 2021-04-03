@@ -244,8 +244,6 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
         notification(i18n.t(message), NotificationType.success);
       }
 
-      // Remove any saved drafts before going back
-      await AsyncStorage.removeItem(userEditorDraftItem);
       setEditorLoading(true);
 
       setTimeout(() => {

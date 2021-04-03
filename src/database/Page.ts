@@ -2,6 +2,7 @@ import * as SQLite from "expo-sqlite";
 // Types
 import { PageProps } from "types/page";
 // DB Connection
+import { BookProps } from "types/book";
 import Connection from "./DatabaseConnection";
 
 export const getAllPagesByBookId = async (
@@ -80,6 +81,25 @@ export const deletePageById = async (id: string): Promise<string> =>
       },
       () => {
         resolve("success");
+      }
+    );
+  });
+
+export const getPageById = async (id: string): Promise<BookProps[]> =>
+  new Promise((resolve, reject) => {
+    Connection.transaction(
+      (tx: SQLite.SQLTransaction) => {
+        tx.executeSql(
+          `SELECT * FROM page WHERE id = ?;`,
+          [id],
+          // @ts-ignore
+          (_, { rows: { _array } }) => {
+            resolve(_array);
+          }
+        );
+      },
+      (error: SQLite.SQLError) => {
+        reject(error);
       }
     );
   });
