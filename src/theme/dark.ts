@@ -180,7 +180,7 @@ const Theme = {
   holdButton: {
     color: colors.danger,
     feedbackColor: colors.red600,
-    backgroundColor: colors.gray300,
+    backgroundColor: colors.gray900,
     animationColor: colors.red300,
   },
   passwordScreen: {

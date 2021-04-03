@@ -1,14 +1,22 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Animated, GestureResponderEvent, Pressable } from "react-native";
 import i18n from "locales/index";
-import { MediumTitle } from "components/Typography";
+import { MaterialIcons } from "@expo/vector-icons";
+import { MediumTitle, Text } from "components/Typography";
 import { useTheme } from "styled-components/native";
-import { Container, Loader } from "./styles";
+import {
+  Container,
+  Loader,
+  TextContainer,
+  TextWrapper,
+  Wrapper,
+} from "./styles";
 
 interface HoldButtonProps {
   initialText?: string;
   feedbackText?: string;
   onLongPress?: (event: GestureResponderEvent) => void;
+  title: string;
 }
 
 const LoaderAnimatedLoader = Animated.createAnimatedComponent(Loader);
@@ -17,6 +25,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({
   initialText = i18n.t("holdButton.initialText"),
   feedbackText = i18n.t("holdButton.feedbackText"),
   onLongPress,
+  title = i18n.t("holdButton.title"),
 }) => {
   const [buttonWidth, setButtonWidth] = useState(0);
   const [animate, setAnimate] = useState(false);
@@ -61,13 +70,21 @@ const HoldButton: React.FC<HoldButtonProps> = ({
           setButtonWidth(width);
         }}
       >
-        <MediumTitle
-          color={
-            !animate ? theme.holdButton.color : theme.holdButton.feedbackColor
-          }
-        >
-          {!animate ? initialText : feedbackText}
-        </MediumTitle>
+        <Wrapper>
+          <MaterialIcons
+            name="delete"
+            size={24}
+            color={theme.borderButton.iconColor}
+          />
+          <TextContainer>
+            <TextWrapper>
+              <MediumTitle numberOfLines={1}>{title}</MediumTitle>
+            </TextWrapper>
+            <Text numberOfLines={1}>
+              {!animate ? initialText : feedbackText}
+            </Text>
+          </TextContainer>
+        </Wrapper>
         {animate && (
           <LoaderAnimatedLoader pointerEvents="none" style={animationStyles} />
         )}

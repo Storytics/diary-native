@@ -177,7 +177,7 @@ const Theme = {
   holdButton: {
     color: colors.danger,
     feedbackColor: colors.red600,
-    backgroundColor: colors.gray100,
+    backgroundColor: colors.white,
     animationColor: colors.red300,
   },
   passwordScreen: {

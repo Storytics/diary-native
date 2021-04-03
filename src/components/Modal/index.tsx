@@ -5,14 +5,12 @@ import {
   TouchableWithoutFeedback,
   Animated,
   GestureResponderEvent,
-  ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Theme from "theme/index";
 import { useTheme } from "styled-components/native";
 import RoundButton from "components/RoundButton";
 import Button from "components/Button";
-import HoldButton from "components/HoldButton";
 import { MediumTitle } from "components/Typography";
 // Utils
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -57,12 +55,6 @@ interface ActivityCardProps {
   onPressPrimary?: () => void;
   onPressSecondary?: () => void;
   /**
-   Hold button props
-   */
-  hasHoldButton?: boolean;
-  holdButtonText?: string;
-  holdButtonTextFeedback?: string;
-  /**
    After 5s set Event
    */
   onLongPress?: (event: GestureResponderEvent) => void;
@@ -75,6 +67,8 @@ interface ActivityCardProps {
    */
   hasContentPaddingTop?: boolean;
   hasContentPaddingBottom?: boolean;
+  hasContentPaddingLeft?: boolean;
+  hasContentPaddingRight?: boolean;
 }
 
 const styles = (theme: typeof Theme) =>
@@ -111,12 +105,10 @@ const CustomModal: React.FC<ActivityCardProps> = ({
   secondaryButtonText = "Text",
   hasContentPaddingTop = true,
   hasContentPaddingBottom = true,
-  onLongPress,
+  hasContentPaddingLeft = true,
+  hasContentPaddingRight = true,
   hasPrimaryButton = true,
   hasSecondaryButton = true,
-  hasHoldButton,
-  holdButtonText,
-  holdButtonTextFeedback,
   hasContent = true,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -174,6 +166,8 @@ const CustomModal: React.FC<ActivityCardProps> = ({
                   <ContentContainer
                     hasContentPaddingTop={hasContentPaddingTop}
                     hasContentPaddingBottom={hasContentPaddingBottom}
+                    hasContentPaddingLeft={hasContentPaddingLeft}
+                    hasContentPaddingRight={hasContentPaddingRight}
                   >
                     {children}
                   </ContentContainer>
@@ -193,13 +187,6 @@ const CustomModal: React.FC<ActivityCardProps> = ({
                       <Button
                         text={secondaryButtonText}
                         onPress={onPressSecondary}
-                      />
-                    )}
-                    {hasHoldButton && (
-                      <HoldButton
-                        initialText={holdButtonText}
-                        feedbackText={holdButtonTextFeedback}
-                        onLongPress={onLongPress}
                       />
                     )}
                   </Footer>

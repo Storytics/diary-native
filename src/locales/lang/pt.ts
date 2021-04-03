@@ -73,10 +73,18 @@ export default {
     },
     diaryActions: {
       buttons: {
-        primary: "Editar",
+        edit: {
+          title: "Editar",
+          text: "Título e identificador",
+        },
         hold: {
+          title: "Apagar",
           text: "Segure para apagar",
-          feedbackText: "Segure para apagar",
+          feedbackText: "Tem certeza? Esta ação é permanente",
+        },
+        favorite: {
+          title: "Favorito",
+          text: "Marcar este diario como favorito",
         },
       },
     },
@@ -95,8 +103,9 @@ export default {
   },
   // Hold Button
   holdButton: {
+    title: "Apagar",
     initialText: "Segure para apagar",
-    feedbackText: "Segure para apagar",
+    feedbackText: "Tem certeza? Esta ação é permanente",
   },
   // Notifications
   notifications: {

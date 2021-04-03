@@ -73,10 +73,18 @@ export default {
     },
     diaryActions: {
       buttons: {
-        primary: "Edit",
+        edit: {
+          title: "Edit",
+          text: "Title and identifier",
+        },
         hold: {
-          text: "Hold to Delete",
-          feedbackText: "Sure?",
+          title: "Delete",
+          text: "Hold to delete",
+          feedbackText: "Are you sure? This action is permanent",
+        },
+        favorite: {
+          title: "Favorite",
+          text: "Bookmark this diary as favorite",
         },
       },
     },
@@ -95,8 +103,9 @@ export default {
   },
   // Hold Button
   holdButton: {
-    initialText: "Delete",
-    feedbackText: "Delete",
+    title: "Delete",
+    initialText: "Hold to delete",
+    feedbackText: "Are you sure? This action is permanent",
   },
   // Notifications
   notifications: {

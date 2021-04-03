@@ -5,6 +5,8 @@ import useStore from "hooks/useStore";
 import useNotification from "hooks/useNotification";
 // Components
 import Modal from "components/Modal";
+import DetailedButton from "components/DetailedButton";
+import HoldButton from "components/HoldButton";
 // Database
 import { deleteBookById } from "database/Book";
 // Context
@@ -13,6 +15,8 @@ import { loadActivity, loadBooks } from "context/StoreContext";
 import i18n from "locales/index";
 // Types
 import { NotificationType } from "types/notifications";
+// Styles
+import { Container } from "./styles";
 
 const DiaryActionsModal: React.FC = () => {
   const {
@@ -76,17 +80,35 @@ const DiaryActionsModal: React.FC = () => {
       title={diary.bookTitle}
       isOpen={isDiaryActionsModalOpen}
       onClose={onClose}
-      primaryButtonText={i18n.t("modal.diaryActions.buttons.primary")}
-      holdButtonText={i18n.t("modal.diaryActions.buttons.hold.text")}
-      holdButtonTextFeedback={i18n.t(
-        "modal.diaryActions.buttons.hold.feedbackText"
-      )}
-      onPressPrimary={onEdit}
-      onLongPress={onDelete}
-      hasHoldButton
-      hasSecondaryButton={false}
-      hasContent={false}
-    />
+      hasContentPaddingTop={false}
+      hasContentPaddingBottom={false}
+      hasContentPaddingLeft={false}
+      hasContentPaddingRight={false}
+      hasActionButtons={false}
+    >
+      <Container>
+        {/*
+          <DetailedButton
+            title={i18n.t("modal.diaryActions.buttons.favorite.title")}
+            text={i18n.t("modal.diaryActions.buttons.favorite.text")}
+            onPress={() => null}
+            icon="favorite"
+          />
+        */}
+        <DetailedButton
+          title={i18n.t("modal.diaryActions.buttons.edit.title")}
+          text={i18n.t("modal.diaryActions.buttons.edit.text")}
+          onPress={onEdit}
+          icon="edit"
+        />
+        <HoldButton
+          title={i18n.t("modal.diaryActions.buttons.hold.title")}
+          initialText={i18n.t("modal.diaryActions.buttons.hold.text")}
+          feedbackText={i18n.t("modal.diaryActions.buttons.hold.feedbackText")}
+          onLongPress={onDelete}
+        />
+      </Container>
+    </Modal>
   );
 };
 

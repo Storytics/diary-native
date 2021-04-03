@@ -51,9 +51,19 @@ export const HeaderTextContainer = styled.View`
 export const ContentContainer = styled.View<{
   hasContentPaddingTop?: boolean;
   hasContentPaddingBottom?: boolean;
+  hasContentPaddingLeft?: boolean;
+  hasContentPaddingRight?: boolean;
 }>`
-  padding-left: 30px;
-  padding-right: 30px;
+  ${({ hasContentPaddingRight }) =>
+    hasContentPaddingRight &&
+    css`
+      padding-right: 30px;
+    `};
+  ${({ hasContentPaddingLeft }) =>
+    hasContentPaddingLeft &&
+    css`
+      padding-left: 30px;
+    `};
   ${({ hasContentPaddingBottom }) =>
     hasContentPaddingBottom &&
     css`
