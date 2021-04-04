@@ -5,7 +5,7 @@
     "name": "Diary",
     "description": "Reflect on your daily events and save beautiful moments with Diary by Storytics.",
     "slug": "diary-by-storytics",
-    "version": "0.0.37",
+    "version": "0.0.38",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "backgroundColor": "#ffffff",
@@ -16,19 +16,19 @@
       "backgroundColor": "#276EF1"
     },
     "updates": {
-      "enabled": true,
+      "enabled": false,
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "infoPlist": {
         "NSFaceIDUsageDescription": "This app uses FaceID to protect user personal information like books and pages"
       }
     },
     "android": {
-      "versionCode": 3,
-      "enableDangerousExperimentalLeanBuilds": false,
+      "versionCode": 4,
+      "enableDangerousExperimentalLeanBuilds": true,
       "backgroundColor": "#ffffff",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
