@@ -80,6 +80,8 @@ const Theme = {
     header: {
       dayColor: colors.primary,
     },
+    // gray-800 in rgba, can't use transparent in ios
+    linearGradientText: ["rgba(31, 31, 31, 0)", colors.gray800],
   },
   modal: {
     overLayBackgroundColor: "rgba(31,31,31,0.7)",

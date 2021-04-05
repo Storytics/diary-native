@@ -26,7 +26,7 @@ export const Wrapper = styled.View`
 `;
 
 export const Header = styled.View`
-  padding: 30px 30px 10px 30px;
+  padding: 30px 30px 0 30px;
 `;
 
 const borderStyle = css`
@@ -48,13 +48,10 @@ export const Content = styled.View<{ isSimpleLayout?: boolean }>`
   position: relative;
   flex: 1;
   ${({ isSimpleLayout }) =>
-    isSimpleLayout
-      ? css`
-          padding: 22px 0 30px 0;
-        `
-      : css`
-          padding: 0 30px;
-        `};
+    isSimpleLayout &&
+    css`
+      padding: 22px 0 30px 0;
+    `};
 `;
 
 export const ContentWrapper = styled.View`

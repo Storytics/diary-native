@@ -34,6 +34,13 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
+  linearGradientText: {
+    height: 30,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
 });
 
 const AnimatedLoadingBox = Animated.createAnimatedComponent(LoadingBox);
@@ -113,6 +120,14 @@ const NoteBook: React.FC<ActivityCardProps> = ({
                 ))}
             </LoadingContainer>
           )}
+          <LinearGradient
+            pointerEvents="none"
+            colors={[
+              theme.noteBook.linearGradientText[0],
+              theme.noteBook.linearGradientText[1],
+            ]}
+            style={styles.linearGradientText}
+          />
         </Content>
         {!isSimpleLayout && (
           <Footer>

@@ -175,34 +175,27 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
             hasPaddingBottom={false}
             isLoading={isEditorLoading}
           >
-            <ScrollView
-              style={{ flex: 1 }}
-              contentContainerStyle={{ flexGrow: 1 }}
-              nestedScrollEnabled={false}
-              bounces={false}
-              showsVerticalScrollIndicator={false}
-              fadingEdgeLength={100}
-            >
-              <BookLines />
-              <RichEditor
-                ref={RichTextViewRef}
-                editorStyle={{
-                  backgroundColor: theme.richEditor.backgroundColor,
-                  color: theme.richEditor.textColor,
-                  placeholderColor: theme.richEditor.placeholderColor,
-                  contentCSSText: `font-family: sans-serif; 
+            <RichEditor
+              ref={RichTextViewRef}
+              editorStyle={{
+                backgroundColor: theme.richEditor.backgroundColor,
+                color: theme.richEditor.textColor,
+                placeholderColor: theme.richEditor.placeholderColor,
+                contentCSSText: `font-family: sans-serif; 
                                    font-size: 14px; 
-                                   padding: 0; 
-                                   line-height: 40px; 
+                                   padding: 10px 30px; 
+                                   line-height: 36px; 
                                    display: flex; 
-                                   flex-direction: column;`,
-                }}
-                placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
-                disabled
-                useContainer
-                editorInitializedCallback={editorInitialized}
-              />
-            </ScrollView>
+                                   flex-direction: column; 
+                                   min-height: 200px; 
+                                   position: absolute; 
+                                   top: 0; right: 0; bottom: 0; left: 0;`,
+              }}
+              placeholder={i18n.t("diaryScreen.richEditor.placeholder")}
+              disabled
+              useContainer={false}
+              editorInitializedCallback={editorInitialized}
+            />
           </NoteBook>
         </NoteBookContainer>
         <NavigationContainer>
