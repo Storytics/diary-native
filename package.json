@@ -17,7 +17,7 @@
     "publish:prod": "expo publish --release-channel prod",
     "build:android:dev": "expo build:android --release-channel dev",
     "build:android:staging": "expo build:android --release-channel staging",
-    "build:android:prod": "expo build:android --release-channel prod --no-publish",
+    "build:android:prod": "expo build:android --release-channel prod",
     "url:apk": "expo url:apk"
   },
   "dependencies": {
