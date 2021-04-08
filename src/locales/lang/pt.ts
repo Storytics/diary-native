@@ -237,5 +237,13 @@ export default {
         ok: "Carregar",
       },
     },
+    ota: {
+      title: "Nova atualização disponível",
+      message:
+        "Está disponível uma nova versão do aplicativo, que traz melhorias e correções.",
+      buttons: {
+        ok: "Descarregar",
+      },
+    },
   },
 };

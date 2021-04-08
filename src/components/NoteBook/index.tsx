@@ -9,7 +9,6 @@ import {
   Header,
   HeaderWrapper,
   Content,
-  Line,
   Footer,
   LoadingContainer,
   LoadingBox,
@@ -57,7 +56,6 @@ const NoteBook: React.FC<ActivityCardProps> = ({
 }) => {
   const linesAnimation = useRef(new Animated.Value(0)).current;
   const theme = useTheme();
-  const lineHeight = 40;
 
   useEffect(() => {
     Animated.loop(
@@ -114,10 +112,6 @@ const NoteBook: React.FC<ActivityCardProps> = ({
             <LoadingContainer isSimpleLayout={isSimpleLayout}>
               <AnimatedLoadingBox style={animationStyles} top={16} />
               <AnimatedLoadingBox style={animationStyles} top={56} width={50} />
-              {!isSimpleLayout &&
-                [...Array(20)].map((e, i) => (
-                  <Line key={i.toString()} height={lineHeight} />
-                ))}
             </LoadingContainer>
           )}
           <LinearGradient

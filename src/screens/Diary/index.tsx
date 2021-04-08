@@ -78,6 +78,8 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
             (page: PageProps) => page.id === params.activityPageId
           );
 
+          console.log("activityIndex = ", activityIndex);
+
           setBookPages([...pages, defaultPage]);
           setPageNumber(activityIndex === -1 ? pages.length : activityIndex);
 
@@ -103,12 +105,13 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
   );
 
   useEffect(() => {
-    RichTextViewRef.current?.setContentHTML(unescapeHtml(currentPage.content));
     if (!isEditorLoading) {
+      RichTextViewRef.current?.setContentHTML(
+        unescapeHtml(currentPage.content)
+      );
       setEditorLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, isEditorLoading]);
+  }, [currentPage, isEditorLoading, RichTextViewRef, params.activityPageId]);
 
   const onPrevPage = () => {
     const prevPage = pageNumber - 1;

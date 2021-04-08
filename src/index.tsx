@@ -1,13 +1,7 @@
-import React, {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useCallback,
-} from "react";
-import { AppState, AppStateStatus, StatusBar, View } from "react-native";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Alert, AppState, AppStateStatus, StatusBar, View } from "react-native";
 import AppLoading from "expo-app-loading";
-import * as SplashScreen from "expo-splash-screen";
+import * as Updates from "expo-updates";
 // Components
 import Notification from "components/Notification";
 import { getLastCloudSync, uploadDataToCloud } from "components/NetworkStatus";
@@ -32,6 +26,10 @@ import useStore from "hooks/useStore";
 import useInterval from "hooks/useInterval";
 // Types
 import { NetworkStatus, SubscriptionStatus } from "types/store";
+// Utils
+import Constants from "expo-constants";
+// Locales
+import i18n from "locales/index";
 
 /** URL polyfill. Required for Supabase queries to work in React Native. */
 import "react-native-url-polyfill/auto";
@@ -105,6 +103,40 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHomeScreenLoading, hasPasswordPin, appStateVisible]);
 
+  useEffect(() => {
+    // Over the air updates
+    const checkForOTA = async () => {
+      try {
+        const { isAvailable } = await Updates.checkForUpdateAsync();
+
+        if (isAvailable) {
+          const { isNew } = await Updates.fetchUpdateAsync();
+          if (isNew) {
+            Alert.alert(
+              `${i18n.t("alerts.ota.title")} (v${Constants.manifest.version})`,
+              i18n.t("alerts.ota.message"),
+              [
+                {
+                  text: i18n.t("alerts.ota.buttons.ok"),
+                  onPress: async () => {
+                    await Updates.reloadAsync();
+                  },
+                },
+              ],
+              { cancelable: false }
+            );
+          }
+        }
+      } catch (e) {
+        console.log("Error getting the OTA = ", e);
+      }
+    };
+
+    if (!isHomeScreenLoading) {
+      checkForOTA();
+    }
+  }, [isHomeScreenLoading]);
+
   const handleAppStateChange = (nextAppState: AppStateStatus) => {
     appState.current = nextAppState;
     setAppStateVisible(appState.current);
@@ -117,12 +149,8 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
     };
   }, []);
 
-  const onRemoveSplashScreen = useCallback(async () => {
-    await SplashScreen.hideAsync();
-  }, []);
-
   if ((isFontsLoading && isDatabaseLoading) || isHomeScreenLoading) {
-    return <AppLoading onFinish={onRemoveSplashScreen} autoHideSplash />;
+    return <AppLoading autoHideSplash />;
   }
 
   return (

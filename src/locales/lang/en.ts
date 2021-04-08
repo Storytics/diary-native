@@ -236,5 +236,13 @@ export default {
         ok: "Load Draft",
       },
     },
+    ota: {
+      title: "New update available",
+      message:
+        "A new version of the app is available, which brings improvements and corrections.",
+      buttons: {
+        ok: "Download",
+      },
+    },
   },
 };
