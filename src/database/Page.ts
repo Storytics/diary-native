@@ -2,7 +2,6 @@ import * as SQLite from "expo-sqlite";
 // Types
 import { PageProps } from "types/page";
 // DB Connection
-import { BookProps } from "types/book";
 import Connection from "./DatabaseConnection";
 
 export const getAllPagesByBookId = async (
@@ -85,7 +84,7 @@ export const deletePageById = async (id: string): Promise<string> =>
     );
   });
 
-export const getPageById = async (id: string): Promise<BookProps[]> =>
+export const getPageById = async (id: string): Promise<PageProps[]> =>
   new Promise((resolve, reject) => {
     Connection.transaction(
       (tx: SQLite.SQLTransaction) => {

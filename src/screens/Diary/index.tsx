@@ -6,14 +6,12 @@ import React, {
   useEffect,
 } from "react";
 import { useTheme } from "styled-components/native";
-import { ScrollView } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // Components
 import Container from "components/Container";
 import NoteBook from "components/NoteBook";
 import CustomSafeArea from "components/CustomSafeArea";
-import BookLines from "components/BookLines";
 // Utils
 import { unescapeHtml } from "utils/functions";
 import dayjs from "dayjs";
@@ -78,8 +76,6 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
             (page: PageProps) => page.id === params.activityPageId
           );
 
-          console.log("activityIndex = ", activityIndex);
-
           setBookPages([...pages, defaultPage]);
           setPageNumber(activityIndex === -1 ? pages.length : activityIndex);
 
@@ -106,12 +102,14 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
 
   useEffect(() => {
     if (!isEditorLoading) {
-      RichTextViewRef.current?.setContentHTML(
-        unescapeHtml(currentPage.content)
-      );
+      setTimeout(() => {
+        RichTextViewRef.current?.setContentHTML(
+          unescapeHtml(currentPage.content)
+        );
+      }, 50);
       setEditorLoading(false);
     }
-  }, [currentPage, isEditorLoading, RichTextViewRef, params.activityPageId]);
+  }, [currentPage.content, isEditorLoading, RichTextViewRef]);
 
   const onPrevPage = () => {
     const prevPage = pageNumber - 1;
