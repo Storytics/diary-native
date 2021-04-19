@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "owner": "storytics",
+    "privacy": "hidden",
+    "name": "Diary (Free)",
+    "description": "Reflect on your daily events and save beautiful moments with Diary by Storytics.",
+    "slug": "diary-free-by-storytics",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/lite/icon.png",
+    "backgroundColor": "#ffffff",
+    "primaryColor": "#276EF1",
+    "splash": {
+      "image": "./assets/lite/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app uses FaceID to protect user personal information like books and pages"
+      }
+    },
+    "android": {
+      "versionCode": 9,
+      "enableDangerousExperimentalLeanBuilds": false,
+      "backgroundColor": "#ffffff",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/lite/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "pt.storytics.diary.lite",
+      "permissions": [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "ACCESS_NETWORK_STATE",
+        "ACCESS_WIFI_STATE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
