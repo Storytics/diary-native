@@ -15,7 +15,15 @@ module.exports = {
     sourceType: "module",
     project: ["tsconfig.json"],
   },
-  ignorePatterns: ["node_modules/", "build/", "app.json", ".eslintrc.js"],
+  ignorePatterns: [
+    "node_modules/",
+    "build/",
+    "app.json",
+    "app.lite.json",
+    "app.pro.json",
+    "app.config.js",
+    ".eslintrc.js",
+  ],
   rules: {
     "import/no-unresolved": 0,
     "react/jsx-filename-extension": [
