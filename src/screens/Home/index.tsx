@@ -12,6 +12,7 @@ import DiaryCardList from "components/DiaryCardList";
 import ActivityCardList from "components/ActivityCardList";
 import Navigation from "components/Navigation";
 import CustomSafeArea from "components/CustomSafeArea";
+import AdBanner from "components/AdBanner";
 // Hooks
 import useModals from "hooks/useModals";
 import useStore from "hooks/useStore";
@@ -122,6 +123,7 @@ const HomeScreen: React.FC<HomeNavigationProps> = ({ navigation }) => {
             });
           }}
         />
+        <AdBanner />
       </Container>
     </CustomSafeArea>
   );

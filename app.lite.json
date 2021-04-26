@@ -10,6 +10,9 @@
     "icon": "./assets/lite/icon.png",
     "backgroundColor": "#ffffff",
     "primaryColor": "#276EF1",
+    "extra": {
+      "appType": "lite"
+    },
     "splash": {
       "image": "./assets/lite/splash.png",
       "resizeMode": "contain",
@@ -20,6 +23,9 @@
       "supportsTablet": false,
       "infoPlist": {
         "NSFaceIDUsageDescription": "This app uses FaceID to protect user personal information like books and pages"
+      },
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
       }
     },
     "android": {
@@ -31,6 +37,9 @@
         "backgroundColor": "#ffffff"
       },
       "package": "pt.storytics.diary.lite",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
+      },
       "permissions": [
         "USE_BIOMETRIC",
         "USE_FINGERPRINT",

@@ -38,6 +38,7 @@
     "@supabase/supabase-js": "^1.11.6",
     "dayjs": "^1.10.4",
     "expo": "^41.0.0",
+    "expo-ads-admob": "~10.0.4",
     "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",
     "expo-linear-gradient": "~9.1.0",

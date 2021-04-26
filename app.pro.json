@@ -10,6 +10,9 @@
     "icon": "./assets/icon.png",
     "backgroundColor": "#ffffff",
     "primaryColor": "#276EF1",
+    "extra": {
+      "appType": "pro"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
