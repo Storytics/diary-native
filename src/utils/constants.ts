@@ -5,6 +5,7 @@ export const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxMjgxNDQ4NCwiZXhwIjoxOTI4MzkwNDg0fQ.z-MICAaM9GVzKHcGpN8jY0KSXOngZWz72uwyfEDMCKk";
 
 export const isDev = __DEV__;
+export const isLiteVersion = process.env.APP_ENV === "lite";
 
 export const billing = {
   checkout: `https://billing.storytics.pt/diary/plans/checkout`,

@@ -23,7 +23,7 @@
       }
     },
     "android": {
-      "versionCode": 9,
+      "versionCode": 1,
       "enableDangerousExperimentalLeanBuilds": false,
       "backgroundColor": "#ffffff",
       "adaptiveIcon": {
