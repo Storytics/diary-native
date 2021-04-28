@@ -27,13 +27,21 @@ import useInterval from "hooks/useInterval";
 // Types
 import { NetworkStatus, SubscriptionStatus } from "types/store";
 // Utils
+import {
+  isLiteVersion,
+  isDev,
+  userServePersonalizedAdsItem,
+  userThemeItem,
+} from "utils/constants";
 import Constants from "expo-constants";
 // Locales
 import i18n from "locales/index";
-
+// Ads
+import * as admob from "expo-ads-admob";
 /** URL polyfill. Required for Supabase queries to work in React Native. */
 import "react-native-url-polyfill/auto";
 import supabase from "libs/supabase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {
   isFontsLoading: boolean;
@@ -132,7 +140,51 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
       }
     };
 
-    if (!isHomeScreenLoading) {
+    const getAdmobPermission = async () => {
+      try {
+        const res = await admob.requestPermissionsAsync();
+        const hasPersonalizedAds = await AsyncStorage.getItem(
+          userServePersonalizedAdsItem
+        );
+
+        if (res.granted && !hasPersonalizedAds) {
+          Alert.alert(
+            i18n.t("alerts.ads.title"),
+            i18n.t("alerts.ads.message"),
+            [
+              {
+                text: i18n.t("alerts.ads.buttons.ok"),
+                onPress: async () => {
+                  await AsyncStorage.setItem(
+                    userServePersonalizedAdsItem,
+                    "true"
+                  );
+                },
+              },
+              {
+                text: i18n.t("alerts.ads.buttons.cancel"),
+                onPress: async () => {
+                  await AsyncStorage.setItem(
+                    userServePersonalizedAdsItem,
+                    "false"
+                  );
+                },
+                style: "cancel",
+              },
+            ],
+            { cancelable: false }
+          );
+        }
+      } catch (e) {
+        console.log("Error getting permission for personalized ads = ", e);
+      }
+    };
+
+    if (!isHomeScreenLoading && isLiteVersion) {
+      getAdmobPermission();
+    }
+
+    if (!isHomeScreenLoading && !isDev) {
       checkForOTA();
     }
   }, [isHomeScreenLoading]);

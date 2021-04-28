@@ -12,12 +12,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import CustomSafeArea from "components/CustomSafeArea";
 import NoteBook from "components/NoteBook";
 import { FakeButton } from "components/RoundButton";
+import { showFullscreenAd } from "components/AdBanner";
 // Utils
 import sanitize from "xss";
 import useKeyboard from "hooks/useKeyboard";
 import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { userEditorDraftItem } from "utils/constants";
+import { isLiteVersion, userEditorDraftItem } from "utils/constants";
 import uuid from "uuid-random";
 // Types
 import { EditorNavigationProps } from "types/navigation";
@@ -250,6 +251,10 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
       }
 
       setEditorLoading(true);
+
+      if (isLiteVersion) {
+        await showFullscreenAd();
+      }
 
       setTimeout(() => {
         navigation.navigate("Diary", {

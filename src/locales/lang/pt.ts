@@ -70,6 +70,7 @@ export default {
       logout: "Sair da conta",
       premium: "Sincronizar com Premium",
       portal: "Gerir Subscrição",
+      removeAds: "Remover Anúncios",
     },
     diaryActions: {
       buttons: {
@@ -243,6 +244,15 @@ export default {
         "Está disponível uma nova versão do aplicativo, que traz melhorias e correções.",
       buttons: {
         ok: "Descarregar",
+      },
+    },
+    ads: {
+      title: "Anúncios Personalizados",
+      message:
+        "Ativar anúncios personalizados possibilitará a entrega de anúncios relevantes para você.",
+      buttons: {
+        ok: "Ativar",
+        cancel: "Desativar",
       },
     },
   },

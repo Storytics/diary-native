@@ -11,6 +11,7 @@ import { useTheme } from "styled-components/native";
 import Input from "components/Input";
 import Select, { buttons } from "components/Select";
 import Modal from "components/Modal";
+import { showFullscreenAd } from "components/AdBanner";
 // Database
 import { createBook, updateBookById } from "database/Book";
 // Context
@@ -19,6 +20,7 @@ import { loadActivity, loadBooks } from "context/StoreContext";
 import { NotificationType } from "types/notifications";
 // Utils
 import uuid from "uuid-random";
+import { isLiteVersion } from "utils/constants";
 
 const CreateDiaryModal: React.FC = () => {
   const theme = useTheme();
@@ -88,6 +90,10 @@ const CreateDiaryModal: React.FC = () => {
             i18n.t("notifications.createDiary.success"),
             NotificationType.success
           );
+
+          if (isLiteVersion) {
+            await showFullscreenAd();
+          }
         }
       }
     } catch (e) {
@@ -113,6 +119,9 @@ const CreateDiaryModal: React.FC = () => {
             i18n.t("notifications.editDiary.success"),
             NotificationType.success
           );
+          if (isLiteVersion) {
+            await showFullscreenAd();
+          }
         }
       }
     } catch (e) {

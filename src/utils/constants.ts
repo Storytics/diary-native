@@ -13,7 +13,7 @@ export const isLiteVersion =
 
 // GOOGLE MOB ADS
 export const adUnitID =
-  Constants.isDevice && !__DEV__
+  Constants.isDevice && !isDev
     ? "ca-app-pub-3940256099942544/6300978111"
     : "ca-app-pub-3940256099942544/6300978111";
 
@@ -25,6 +25,7 @@ export const billing = {
 };
 export const termsUrl = "https://www.storytics.pt/diary/terms";
 export const privacyUrl = "https://www.storytics.pt/diary/privacy";
+export const diaryProStoreUrl = "market://details?id=pt.storytics.diary";
 
 // SESSION STORAGE IDS
 export const userCloudLastSyncItem = "@st_dia_cloud_last_sync";

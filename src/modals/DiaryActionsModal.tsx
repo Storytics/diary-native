@@ -7,6 +7,7 @@ import useNotification from "hooks/useNotification";
 import Modal from "components/Modal";
 import DetailedButton from "components/DetailedButton";
 import HoldButton from "components/HoldButton";
+import { showFullscreenAd } from "components/AdBanner";
 // Database
 import { deleteBookById } from "database/Book";
 // Context
@@ -15,6 +16,8 @@ import { loadActivity, loadBooks } from "context/StoreContext";
 import i18n from "locales/index";
 // Types
 import { NotificationType } from "types/notifications";
+// Utils
+import { isLiteVersion } from "utils/constants";
 // Styles
 import { Container } from "./styles";
 
@@ -35,9 +38,7 @@ const DiaryActionsModal: React.FC = () => {
 
   const onDelete = async () => {
     try {
-      console.log("DELETE!");
       const result = await deleteBookById(diary.bookId);
-      console.log("result! = ", result);
 
       if (result === "success") {
         onClose();
@@ -48,6 +49,10 @@ const DiaryActionsModal: React.FC = () => {
           i18n.t("notifications.deleteDiary.success"),
           NotificationType.success
         );
+
+        if (isLiteVersion) {
+          await showFullscreenAd();
+        }
       }
     } catch (e) {
       notification(
