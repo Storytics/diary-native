@@ -16,6 +16,7 @@ import { loadActivity, loadBooks } from "context/StoreContext";
 import i18n from "locales/index";
 // Types
 import { NotificationType } from "types/notifications";
+import { NetworkStatus } from "types/store";
 // Utils
 import { isLiteVersion } from "utils/constants";
 // Styles
@@ -38,6 +39,10 @@ const DiaryActionsModal: React.FC = () => {
 
   const onDelete = async () => {
     try {
+      if (isLiteVersion && store.state.networkStatus === NetworkStatus.online) {
+        await showFullscreenAd();
+      }
+
       const result = await deleteBookById(diary.bookId);
 
       if (result === "success") {
@@ -49,10 +54,6 @@ const DiaryActionsModal: React.FC = () => {
           i18n.t("notifications.deleteDiary.success"),
           NotificationType.success
         );
-
-        if (isLiteVersion) {
-          await showFullscreenAd();
-        }
       }
     } catch (e) {
       notification(

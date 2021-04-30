@@ -28,9 +28,7 @@ export const showFullscreenAd = async (): Promise<void> => {
       userServePersonalizedAdsItem
     );
 
-    await AdMobInterstitial.setAdUnitID(
-      "ca-app-pub-3940256099942544/1033173712"
-    );
+    await AdMobInterstitial.setAdUnitID(adUnitID.interstitial);
     await AdMobInterstitial.requestAdAsync({
       servePersonalizedAds: showPersonalizedAds === "true",
     });
@@ -75,7 +73,7 @@ const AdBanner: React.FC = () => {
         <Container>
           <AdMobBanner
             bannerSize="fullBanner"
-            adUnitID={adUnitID}
+            adUnitID={adUnitID.banner}
             servePersonalizedAds={hasPersonalizedAds}
             onDidFailToReceiveAdWithError={() => setHasAd(false)}
           />

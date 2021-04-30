@@ -53,14 +53,15 @@ const MenuModal: React.FC = () => {
 
   const onChangeTheme = async (value: boolean) => {
     try {
+      if (isLiteVersion && store.state.networkStatus === NetworkStatus.online) {
+        await showFullscreenAd();
+      }
+
       await AsyncStorage.setItem(userThemeItem, String(value));
       store.dispatch({
         type: "SET_DARK_THEME",
         payload: { isDarkTheme: value },
       });
-      if (isLiteVersion) {
-        await showFullscreenAd();
-      }
     } catch (e) {
       notification(
         i18n.t("notifications.changeTheme.error"),

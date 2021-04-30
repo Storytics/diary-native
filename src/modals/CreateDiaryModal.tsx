@@ -18,6 +18,7 @@ import { createBook, updateBookById } from "database/Book";
 import { loadActivity, loadBooks } from "context/StoreContext";
 // Types
 import { NotificationType } from "types/notifications";
+import { NetworkStatus } from "types/store";
 // Utils
 import uuid from "uuid-random";
 import { isLiteVersion } from "utils/constants";
@@ -78,6 +79,13 @@ const CreateDiaryModal: React.FC = () => {
   const onCreate = async () => {
     try {
       if (inputText.trim()) {
+        if (
+          isLiteVersion &&
+          store.state.networkStatus === NetworkStatus.online
+        ) {
+          await showFullscreenAd();
+        }
+
         const result = await createBook(uuid(), inputText, color);
 
         if (result === "success") {
@@ -90,10 +98,6 @@ const CreateDiaryModal: React.FC = () => {
             i18n.t("notifications.createDiary.success"),
             NotificationType.success
           );
-
-          if (isLiteVersion) {
-            await showFullscreenAd();
-          }
         }
       }
     } catch (e) {
@@ -107,6 +111,13 @@ const CreateDiaryModal: React.FC = () => {
   const onEdit = async () => {
     try {
       if (inputText.trim()) {
+        if (
+          isLiteVersion &&
+          store.state.networkStatus === NetworkStatus.online
+        ) {
+          await showFullscreenAd();
+        }
+
         const { bookId } = diary;
         const result = await updateBookById(bookId, inputText, color);
 
@@ -119,9 +130,6 @@ const CreateDiaryModal: React.FC = () => {
             i18n.t("notifications.editDiary.success"),
             NotificationType.success
           );
-          if (isLiteVersion) {
-            await showFullscreenAd();
-          }
         }
       }
     } catch (e) {

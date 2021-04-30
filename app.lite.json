@@ -23,9 +23,6 @@
       "supportsTablet": false,
       "infoPlist": {
         "NSFaceIDUsageDescription": "This app uses FaceID to protect user personal information like books and pages"
-      },
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
       }
     },
     "android": {
@@ -38,7 +35,7 @@
       },
       "package": "pt.storytics.diary.lite",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
+        "googleMobileAdsAppId": "ca-app-pub-3172245439816307~5453992065"
       },
       "permissions": [
         "USE_BIOMETRIC",

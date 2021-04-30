@@ -12,10 +12,17 @@ export const isLiteVersion =
   Constants.manifest.extra?.appType === "lite" || false;
 
 // GOOGLE MOB ADS
-export const adUnitID =
-  Constants.isDevice && !isDev
-    ? "ca-app-pub-3940256099942544/6300978111"
-    : "ca-app-pub-3940256099942544/6300978111";
+export const adIdsDev = {
+  banner: "ca-app-pub-3940256099942544/6300978111",
+  interstitial: "ca-app-pub-3940256099942544/1033173712",
+};
+
+export const adIdsProd = {
+  banner: "ca-app-pub-3172245439816307/2333004707",
+  interstitial: "ca-app-pub-3172245439816307/9146180282",
+};
+
+export const adUnitID = Constants.isDevice && !isDev ? adIdsProd : adIdsDev;
 
 // URLS
 export const billing = {

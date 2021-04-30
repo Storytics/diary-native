@@ -12,7 +12,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Container from "components/Container";
 import NoteBook from "components/NoteBook";
 import CustomSafeArea from "components/CustomSafeArea";
-import AdBanner from "components/AdBanner";
 // Utils
 import { unescapeHtml } from "utils/functions";
 import dayjs from "dayjs";
@@ -209,7 +208,6 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
             onPressRight={onNextPage}
           />
         </NavigationContainer>
-        <AdBanner />
       </Container>
     </CustomSafeArea>
   );
