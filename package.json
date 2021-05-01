@@ -28,7 +28,7 @@
     "lite:publish:prod": "APP_ENV=lite expo publish --release-channel prod",
     "lite:build:android:dev": "APP_ENV=lite expo build:android --release-channel dev",
     "lite:build:android:staging": "APP_ENV=lite expo build:android --release-channel staging",
-    "lite:build:android:prod": "APP_ENV=pro lite build:android --release-channel prod"
+    "lite:build:android:prod": "APP_ENV=lite expo build:android --release-channel prod"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.4",

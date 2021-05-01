@@ -5,7 +5,7 @@
     "name": "Diary",
     "description": "Reflect on your daily events and save beautiful moments with Diary by Storytics.",
     "slug": "diary-by-storytics",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "backgroundColor": "#ffffff",
@@ -26,7 +26,7 @@
       }
     },
     "android": {
-      "versionCode": 9,
+      "versionCode": 10,
       "enableDangerousExperimentalLeanBuilds": false,
       "backgroundColor": "#ffffff",
       "adaptiveIcon": {
