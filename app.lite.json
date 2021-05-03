@@ -5,7 +5,7 @@
     "name": "Diary (Free)",
     "description": "Reflect on your daily events and save beautiful moments with Diary by Storytics.",
     "slug": "diary-free-by-storytics",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/lite/icon.png",
     "backgroundColor": "#ffffff",

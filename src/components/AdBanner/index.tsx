@@ -43,7 +43,7 @@ const AdBanner: React.FC = () => {
     state: { networkStatus },
   } = useStore();
   const [hasPersonalizedAds, setHasPersonalizedAds] = useState(false);
-  const [hasAd, setHasAd] = useState(true);
+  const [hasAd, setHasAd] = useState(false);
 
   useEffect(() => {
     const setPersonalizedAds = async () => {
@@ -76,6 +76,8 @@ const AdBanner: React.FC = () => {
             adUnitID={adUnitID.banner}
             servePersonalizedAds={hasPersonalizedAds}
             onDidFailToReceiveAdWithError={() => setHasAd(false)}
+            onAdViewDidReceiveAd={() => setHasAd(true)}
+            onAdViewWillPresentScreen={() => setHasAd(true)}
           />
         </Container>
       ) : null,
