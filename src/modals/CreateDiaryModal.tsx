@@ -11,14 +11,17 @@ import { useTheme } from "styled-components/native";
 import Input from "components/Input";
 import Select, { buttons } from "components/Select";
 import Modal from "components/Modal";
+import { showFullscreenAd } from "components/AdBanner";
 // Database
 import { createBook, updateBookById } from "database/Book";
 // Context
 import { loadActivity, loadBooks } from "context/StoreContext";
 // Types
 import { NotificationType } from "types/notifications";
+import { NetworkStatus } from "types/store";
 // Utils
 import uuid from "uuid-random";
+import { isLiteVersion } from "utils/constants";
 
 const CreateDiaryModal: React.FC = () => {
   const theme = useTheme();
@@ -76,6 +79,13 @@ const CreateDiaryModal: React.FC = () => {
   const onCreate = async () => {
     try {
       if (inputText.trim()) {
+        if (
+          isLiteVersion &&
+          store.state.networkStatus === NetworkStatus.online
+        ) {
+          await showFullscreenAd();
+        }
+
         const result = await createBook(uuid(), inputText, color);
 
         if (result === "success") {
@@ -101,6 +111,13 @@ const CreateDiaryModal: React.FC = () => {
   const onEdit = async () => {
     try {
       if (inputText.trim()) {
+        if (
+          isLiteVersion &&
+          store.state.networkStatus === NetworkStatus.online
+        ) {
+          await showFullscreenAd();
+        }
+
         const { bookId } = diary;
         const result = await updateBookById(bookId, inputText, color);
 

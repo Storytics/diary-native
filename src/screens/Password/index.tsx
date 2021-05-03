@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // Types
 import { PasswordScreenNavigationProp } from "types/navigation";
 import { NotificationType } from "types/notifications";
+import { NetworkStatus } from "types/store";
 // Components
 import Logo from "components/Logo";
 import Header from "components/Header";
@@ -14,8 +15,9 @@ import Container from "components/Container";
 import CustomSafeArea from "components/CustomSafeArea";
 import RoundButton from "components/RoundButton";
 import { LargeText } from "components/Typography";
+import { showFullscreenAd } from "components/AdBanner";
 // Utils
-import { userPasswordPinItem } from "utils/constants";
+import { isLiteVersion, userPasswordPinItem } from "utils/constants";
 import i18n from "locales/index";
 import * as LocalAuthentication from "expo-local-authentication";
 // Hooks
@@ -75,7 +77,7 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
   const [code, setCode] = useState<Array<string>>([]);
   const [hasFingerprint, setHasFingerprint] = useState(false);
   const {
-    state: { hasPasswordPin, passwordPin },
+    state: { hasPasswordPin, passwordPin, networkStatus },
     dispatch,
   } = useStore();
   const { notification } = useNotification();
@@ -119,6 +121,9 @@ const PasswordScreen: React.FC<Props> = ({ navigation }) => {
 
   const onSave = async () => {
     try {
+      if (isLiteVersion && networkStatus === NetworkStatus.online) {
+        await showFullscreenAd();
+      }
       if (code.length === 4) {
         await AsyncStorage.setItem(userPasswordPinItem, code.toString());
         dispatch({

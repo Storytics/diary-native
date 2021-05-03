@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { userPasswordPinItem, userThemeItem } from "utils/constants";
 import i18n from "locales/index";
 import { navigate } from "navigation/index";
 // Hooks
@@ -11,10 +11,18 @@ import useNotification from "hooks/useNotification";
 import BorderButton from "components/BorderButton";
 import Brand from "components/Brand";
 import Modal from "components/Modal";
+import { showFullscreenAd } from "components/AdBanner";
 // Types
 import { NotificationType } from "types/notifications";
 import { NetworkStatus, SubscriptionStatus } from "types/store";
 import { AuthType } from "types/navigation";
+// Utils
+import {
+  userPasswordPinItem,
+  userThemeItem,
+  isLiteVersion,
+  diaryProStoreUrl,
+} from "utils/constants";
 // Context
 import { setNetworkStatus } from "context/StoreContext";
 // API
@@ -45,6 +53,10 @@ const MenuModal: React.FC = () => {
 
   const onChangeTheme = async (value: boolean) => {
     try {
+      if (isLiteVersion && store.state.networkStatus === NetworkStatus.online) {
+        await showFullscreenAd();
+      }
+
       await AsyncStorage.setItem(userThemeItem, String(value));
       store.dispatch({
         type: "SET_DARK_THEME",
@@ -122,6 +134,17 @@ const MenuModal: React.FC = () => {
         hasArrowIcon={false}
         hasThemeSwitch
       />
+
+      {isLiteVersion && store.state.networkStatus === NetworkStatus.online && (
+        <BorderButton
+          title={i18n.t("modal.menu.removeAds")}
+          onPress={async () => {
+            onClose();
+            await Linking.openURL(diaryProStoreUrl);
+          }}
+        />
+      )}
+
       {!store.state.user && store.state.networkStatus === NetworkStatus.online && (
         <BorderButton
           title={i18n.t("modal.menu.premium")}

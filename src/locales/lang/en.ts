@@ -70,6 +70,7 @@ export default {
       logout: "Logout",
       premium: "Sync with Premium",
       portal: "Manage Subscription",
+      removeAds: "Remove Ads",
     },
     diaryActions: {
       buttons: {
@@ -242,6 +243,15 @@ export default {
         "A new version of the app is available, which brings improvements and corrections.",
       buttons: {
         ok: "Download",
+      },
+    },
+    ads: {
+      title: "Personalized Ads",
+      message:
+        "Turning on personalized Ads will enable the ability to deliver relevant ads to you.",
+      buttons: {
+        ok: "Enable",
+        cancel: "Disable",
       },
     },
   },
