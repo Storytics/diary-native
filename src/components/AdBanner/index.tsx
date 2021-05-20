@@ -6,20 +6,26 @@ import {
   setTestDeviceIDAsync,
 } from "expo-ads-admob";
 // Styles
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 // Utils
 import {
   isLiteVersion,
   adUnitID,
   userServePersonalizedAdsItem,
+  isDev,
 } from "utils/constants";
 // Types
 import { NetworkStatus } from "types/store";
 // Context
 import useStore from "hooks/useStore";
 
-const Container = styled.View`
+const Container = styled.View<{ hasAd: boolean }>`
   top: 30px;
+  ${({ hasAd }) =>
+    !hasAd &&
+    css`
+      height: 0;
+    `}
 `;
 
 export const showFullscreenAd = async (): Promise<void> => {
@@ -61,16 +67,19 @@ const AdBanner: React.FC = () => {
       }
     };
 
+    if (isDev && isLiteVersion) {
+      setAdTestDevice();
+    }
+
     if (isLiteVersion) {
       setPersonalizedAds();
-      setAdTestDevice();
     }
   }, []);
 
   return useMemo(
     () =>
-      networkStatus === NetworkStatus.online && isLiteVersion && hasAd ? (
-        <Container>
+      networkStatus === NetworkStatus.online && isLiteVersion ? (
+        <Container hasAd={hasAd}>
           <AdMobBanner
             bannerSize="fullBanner"
             adUnitID={adUnitID.banner}
