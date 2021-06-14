@@ -42,3 +42,4 @@ export const userPasswordPinItem = "@st_dia_user_password_pin";
 export const userEditorDraftItem = "@st_dia_user_editor_draft";
 export const userServePersonalizedAdsItem =
   "@st_dia_user_serve_personalized_ads";
+export const userStoreReviewTimeItem = "@st_dia_store_review_time";
