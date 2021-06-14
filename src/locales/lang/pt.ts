@@ -223,8 +223,7 @@ export default {
       primaryButton: "Enviar e-mail de recuperação",
       content: {
         title: "Recuperar password",
-        text:
-          "Por favor, indique o seu endereço de e-mail para receber um link de recuperação.",
+        text: "Por favor, indique o seu endereço de e-mail para receber um link de recuperação.",
       },
     },
   },
