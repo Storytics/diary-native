@@ -214,9 +214,6 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
 
     if (!isHomeScreenLoading && !isDev) {
       checkForOTA();
-    }
-
-    if (!isHomeScreenLoading) {
       askUserStoreReview();
     }
   }, [isHomeScreenLoading]);
