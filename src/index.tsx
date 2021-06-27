@@ -31,9 +31,11 @@ import {
   isLiteVersion,
   isDev,
   userServePersonalizedAdsItem,
-  userThemeItem,
+  userStoreReviewTimeItem,
 } from "utils/constants";
+import * as StoreReview from "expo-store-review";
 import Constants from "expo-constants";
+import dayjs from "dayjs";
 // Locales
 import i18n from "locales/index";
 // Ads
@@ -180,12 +182,39 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
       }
     };
 
+    const askUserStoreReview = async () => {
+      try {
+        const lastTimeAskedForReview = await AsyncStorage.getItem(
+          userStoreReviewTimeItem
+        );
+
+        const askAgainForReview =
+          lastTimeAskedForReview &&
+          dayjs(lastTimeAskedForReview).isAfter(
+            dayjs(new Date()).add(3, "days")
+          );
+
+        if (askAgainForReview || !lastTimeAskedForReview) {
+          if (await StoreReview.hasAction()) {
+            await StoreReview.requestReview();
+            await AsyncStorage.setItem(
+              userStoreReviewTimeItem,
+              String(new Date())
+            );
+          }
+        }
+      } catch (error) {
+        console.log("Error asking user for review = ", error);
+      }
+    };
+
     if (!isHomeScreenLoading && isLiteVersion) {
       getAdmobPermission();
     }
 
     if (!isHomeScreenLoading && !isDev) {
       checkForOTA();
+      askUserStoreReview();
     }
   }, [isHomeScreenLoading]);
 

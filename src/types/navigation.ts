@@ -51,6 +51,7 @@ export type RootStackParamList = {
   Portal: BillingNavigationParams;
   Terms: undefined;
   Privacy: undefined;
+  Releases: undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -159,4 +160,13 @@ export type PrivacyScreenNavigationProp = StackNavigationProp<
 
 export interface PrivacyNavigationProps {
   navigation: PrivacyScreenNavigationProp;
+}
+
+export type ReleasesScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Releases"
+>;
+
+export interface ReleasesNavigationProps {
+  navigation: ReleasesScreenNavigationProp;
 }

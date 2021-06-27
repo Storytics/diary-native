@@ -174,6 +174,18 @@ const MenuModal: React.FC = () => {
         onChangeSwitch={onChangePasswordPin}
         hasArrowIcon={false}
       />
+
+      {store.state.networkStatus === NetworkStatus.online && (
+        <BorderButton
+          title={i18n.t("modal.menu.releases")}
+          onPress={() => {
+            onClose();
+            // @ts-ignore
+            navigate("Releases");
+          }}
+        />
+      )}
+
       <BorderButton
         title={i18n.t("terms.section.title")}
         onPress={() => {

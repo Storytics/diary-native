@@ -16,6 +16,7 @@ import CheckoutScreen from "screens/Billing/Checkout";
 import PortalScreen from "screens/Billing/Portal";
 import PrivacyScreen from "screens/Legal/Privacy";
 import TermsScreen from "screens/Legal/Terms";
+import ReleasesScreen from "screens/More/Releases";
 // Types
 import { RootStackParamList } from "types/navigation";
 
@@ -40,6 +41,7 @@ const Navigation: React.FC = () => (
       <Stack.Screen name="Portal" component={PortalScreen} />
       <Stack.Screen name="Terms" component={TermsScreen} />
       <Stack.Screen name="Privacy" component={PrivacyScreen} />
+      <Stack.Screen name="Releases" component={ReleasesScreen} />
     </Stack.Navigator>
   </NavigationContainer>
 );

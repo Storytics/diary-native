@@ -32,6 +32,7 @@ export const billing = {
 };
 export const termsUrl = "https://www.storytics.pt/diary/terms";
 export const privacyUrl = "https://www.storytics.pt/diary/privacy";
+export const releasesUrl = "https://storytics.pt/diary/whats-new";
 export const diaryProStoreUrl = "market://details?id=pt.storytics.diary";
 
 // SESSION STORAGE IDS
@@ -42,3 +43,4 @@ export const userPasswordPinItem = "@st_dia_user_password_pin";
 export const userEditorDraftItem = "@st_dia_user_editor_draft";
 export const userServePersonalizedAdsItem =
   "@st_dia_user_serve_personalized_ads";
+export const userStoreReviewTimeItem = "@st_dia_store_review_time";

@@ -44,6 +44,11 @@ export default {
       title: "Faturamento",
     },
   },
+  releases: {
+    section: {
+      title: "Novidades",
+    },
+  },
   modal: {
     create: {
       title: "Novo Diário",
@@ -71,6 +76,7 @@ export default {
       premium: "Sincronizar com Premium",
       portal: "Gerir Subscrição",
       removeAds: "Remover Anúncios",
+      releases: "Novidades",
     },
     diaryActions: {
       buttons: {
@@ -223,8 +229,7 @@ export default {
       primaryButton: "Enviar e-mail de recuperação",
       content: {
         title: "Recuperar password",
-        text:
-          "Por favor, indique o seu endereço de e-mail para receber um link de recuperação.",
+        text: "Por favor, indique o seu endereço de e-mail para receber um link de recuperação.",
       },
     },
   },

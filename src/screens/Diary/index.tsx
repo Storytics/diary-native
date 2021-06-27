@@ -54,10 +54,10 @@ const DiaryScreen: React.FC<DiaryNavigationProps> = ({
     state: { isDarkTheme },
   } = useStore();
 
-  const isCreatePage = useMemo(() => pageNumber + 1 === bookPages.length, [
-    pageNumber,
-    bookPages,
-  ]);
+  const isCreatePage = useMemo(
+    () => pageNumber + 1 === bookPages.length,
+    [pageNumber, bookPages]
+  );
 
   const currentPage = useMemo(
     () => (bookPages.length > 0 ? bookPages[pageNumber] : defaultPage),

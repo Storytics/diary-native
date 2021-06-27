@@ -44,6 +44,11 @@ export default {
       title: "Billing",
     },
   },
+  releases: {
+    section: {
+      title: "What's new",
+    },
+  },
   modal: {
     create: {
       title: "New Diary",
@@ -71,6 +76,7 @@ export default {
       premium: "Sync with Premium",
       portal: "Manage Subscription",
       removeAds: "Remove Ads",
+      releases: "What's new",
     },
     diaryActions: {
       buttons: {

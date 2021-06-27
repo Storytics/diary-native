@@ -89,9 +89,8 @@ const styles = (theme: typeof Theme) =>
     },
   });
 
-const AnimatedOverLayBackground = Animated.createAnimatedComponent(
-  OverLayBackground
-);
+const AnimatedOverLayBackground =
+  Animated.createAnimatedComponent(OverLayBackground);
 
 const CustomModal: React.FC<ActivityCardProps> = ({
   isOpen = true,
