@@ -25,7 +25,7 @@ const Brand: React.FC<BrandProps> = () => {
         />
         <StyledText>{year}</StyledText>
         <StyledText> | </StyledText>
-        <StyledText>v{Constants.manifest.version}</StyledText>
+        <StyledText> v{Constants.manifest?.version}</StyledText>
       </ContentWrapper>
     </Container>
   );

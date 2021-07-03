@@ -123,7 +123,7 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
           const { isNew } = await Updates.fetchUpdateAsync();
           if (isNew) {
             Alert.alert(
-              `${i18n.t("alerts.ota.title")} (v${Constants.manifest.version})`,
+              `${i18n.t("alerts.ota.title")} (v${Constants.manifest?.version})`,
               i18n.t("alerts.ota.message"),
               [
                 {

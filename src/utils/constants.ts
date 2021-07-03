@@ -9,7 +9,7 @@ export const SUPABASE_KEY =
 // GLOBAL
 export const isDev = __DEV__;
 export const isLiteVersion =
-  Constants.manifest.extra?.appType === "lite" || false;
+  Constants.manifest?.extra?.appType === "lite" || false;
 
 // GOOGLE MOB ADS
 export const adIdsDev = {

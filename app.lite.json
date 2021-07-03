@@ -27,7 +27,6 @@
     },
     "android": {
       "versionCode": 2,
-      "enableDangerousExperimentalLeanBuilds": false,
       "backgroundColor": "#ffffff",
       "adaptiveIcon": {
         "foregroundImage": "./assets/lite/adaptive-icon.png",
