@@ -7,6 +7,7 @@ export const isDev = __DEV__;
 // URLS
 export const termsUrl = "https://www.storytics.pt/diary/terms";
 export const privacyUrl = "https://www.storytics.pt/diary/privacy";
+export const storyticsUrl = "https://www.storytics.pt";
 
 // SESSION STORAGE IDS
 export const userThemeItem = "@st_dia_user_theme";
