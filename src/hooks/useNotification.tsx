@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { NotificationsContext } from "context/NotificationContext";
 import { Context, NotificationType } from "types/notifications";
-import i18n from "locales/index";
 
 interface ReturnType {
   notification: (message: string, type: NotificationType) => void;

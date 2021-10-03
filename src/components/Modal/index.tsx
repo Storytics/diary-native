@@ -55,10 +55,6 @@ interface ActivityCardProps {
   onPressPrimary?: () => void;
   onPressSecondary?: () => void;
   /**
-   After 5s set Event
-   */
-  onLongPress?: (event: GestureResponderEvent) => void;
-  /**
    Set Children true by default
    */
   hasContent?: boolean;

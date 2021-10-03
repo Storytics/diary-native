@@ -7,7 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Placeholder from "components/Placeholder";
 import ActivityCard from "components/ActivityCard";
 // utils
-import { unescapeHtml, cleanUpContent } from "utils//functions";
+import { cleanUpContent } from "utils//functions";
 
 import { Container, ActivityCardContainer } from "./styles";
 

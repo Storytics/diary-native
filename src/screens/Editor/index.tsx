@@ -12,13 +12,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import CustomSafeArea from "components/CustomSafeArea";
 import NoteBook from "components/NoteBook";
 import { FakeButton } from "components/RoundButton";
-import { showFullscreenAd } from "components/AdBanner";
 // Utils
 import sanitize from "xss";
 import useKeyboard from "hooks/useKeyboard";
 import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { isLiteVersion, userEditorDraftItem } from "utils/constants";
+import { userEditorDraftItem } from "utils/constants";
 import uuid from "uuid-random";
 // Types
 import { EditorNavigationProps } from "types/navigation";
@@ -35,7 +34,6 @@ import useNotification from "hooks/useNotification";
 import useDebounce from "hooks/useDebounce";
 // Types
 import { NotificationType } from "types/notifications";
-import { NetworkStatus } from "types/store";
 // Locales
 import i18n from "locales/index";
 // Context
@@ -223,10 +221,6 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
 
   const onSave = async () => {
     try {
-      if (isLiteVersion && networkStatus === NetworkStatus.online) {
-        await showFullscreenAd();
-      }
-
       const newPageId = uuid();
       // create a new page
       if (content && !params.isEdit) {
@@ -374,6 +368,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
               disabled={false}
               iconTint={theme.toolBar.button.default.iconColor}
               selectedIconTint={theme.toolBar.button.active.iconColor}
+              // @ts-ignore
               iconSize={24}
               actions={[
                 "justifyLeft",

@@ -4,36 +4,20 @@ import { getAllActivity, getAllBooks } from "database/Book";
 // Utils
 import { getNetworkStateAsync } from "expo-network";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import dayjs from "dayjs";
-import {
-  userCloudLastSyncItem,
-  userPasswordPinItem,
-  userThemeItem,
-} from "utils/constants";
+import { userPasswordPinItem, userThemeItem } from "utils/constants";
 // Types
-import {
-  Context,
-  NetworkStatus,
-  StoreActions,
-  StoreState,
-  SubscriptionStatus,
-  User,
-} from "types/store";
-// API
-import supabase from "libs/supabase";
+import { Context, NetworkStatus, StoreActions, StoreState } from "types/store";
 
 const initialState = {
   books: [],
   activity: [],
   networkStatus: NetworkStatus.offline,
   user: null,
-  subscriptionStatus: SubscriptionStatus.loading,
   isDarkTheme: false,
   isHomeScreenLoading: true,
   hasPasswordPin: false,
   passwordPin: null,
   isLocalAuthentication: false,
-  checkForBackups: false,
 };
 
 export const StoreContext = createContext<Context>({
@@ -63,12 +47,6 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
         ...state,
         networkStatus: action.payload.status,
       };
-    case "SET_AUTHENTICATION_STATUS":
-      return {
-        ...state,
-        user: action.payload.user,
-        subscriptionStatus: action.payload.subscriptionStatus,
-      };
     case "SET_DARK_THEME":
       return {
         ...state,
@@ -90,11 +68,6 @@ export const Reducer = (state: StoreState, action: StoreActions) => {
         ...state,
         isLocalAuthentication: action.payload.isLocalAuthentication,
       };
-    case "SET_CHECK_FOR_BACKUPS":
-      return {
-        ...state,
-        checkForBackups: action.payload.check,
-      };
     default:
       return state;
   }
@@ -110,41 +83,6 @@ export const setNetworkStatus = (
       status,
     },
   });
-
-export const dispatchAuthenticationStatus = async (
-  user: User,
-  dispatch: React.Dispatch<StoreActions>
-): Promise<unknown> => {
-  try {
-    const { data: profile } = await supabase
-      .from("profile")
-      .select("*")
-      .eq("user_id", user.id);
-
-    if (profile && profile.length > 0) {
-      const hasSubscription = profile[0].active_subscription || false;
-      dispatch({
-        type: "SET_AUTHENTICATION_STATUS",
-        payload: {
-          user,
-          subscriptionStatus: hasSubscription
-            ? SubscriptionStatus.active
-            : SubscriptionStatus.inactive,
-        },
-      });
-
-      setNetworkStatus(
-        dispatch,
-        hasSubscription ? NetworkStatus.authenticated : NetworkStatus.lock
-      );
-
-      return hasSubscription;
-    }
-    return false;
-  } catch {
-    return false;
-  }
-};
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const loadBooks = async (dispatch: React.Dispatch<StoreActions>) => {
@@ -207,59 +145,17 @@ export const StoreContextProvider: React.FC = ({ children }) => {
     const getNetworkStatus = async () => {
       try {
         const { isInternetReachable } = await getNetworkStateAsync();
-        const user = supabase.auth.user();
-        const lastCloudSync = await AsyncStorage.getItem(userCloudLastSyncItem);
-
-        const isSync =
-          lastCloudSync && dayjs(lastCloudSync).isAfter(dayjs(new Date()));
-
-        let status = NetworkStatus.loading;
-
-        if (isInternetReachable && user) {
-          status = NetworkStatus.authenticated;
-        } else if (isInternetReachable && !user) {
-          status = NetworkStatus.online;
-        } else if (isInternetReachable && user && isSync) {
-          status = NetworkStatus.sync;
-        }
 
         setNetworkStatus(
           dispatch,
-          isInternetReachable ? status : NetworkStatus.offline
+          isInternetReachable ? NetworkStatus.online : NetworkStatus.offline
         );
       } catch (e) {
         setNetworkStatus(dispatch, NetworkStatus.offline);
       }
     };
 
-    const getAuthStatus = async () => {
-      try {
-        const { isInternetReachable } = await getNetworkStateAsync();
-        const user = supabase.auth.user();
-        if (isInternetReachable && user) {
-          await dispatchAuthenticationStatus(user as User, dispatch);
-        } else {
-          dispatch({
-            type: "SET_AUTHENTICATION_STATUS",
-            payload: {
-              user: null,
-              subscriptionStatus: SubscriptionStatus.inactive,
-            },
-          });
-        }
-      } catch (e) {
-        dispatch({
-          type: "SET_AUTHENTICATION_STATUS",
-          payload: {
-            user: null,
-            subscriptionStatus: SubscriptionStatus.inactive,
-          },
-        });
-      }
-    };
-
     getNetworkStatus();
-    getAuthStatus();
   }, []);
 
   useEffect(() => {

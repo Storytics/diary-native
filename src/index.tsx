@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, AppState, AppStateStatus, StatusBar, View } from "react-native";
 import AppLoading from "expo-app-loading";
 import * as Updates from "expo-updates";
 // Components
 import Notification from "components/Notification";
-import { getLastCloudSync, uploadDataToCloud } from "components/NetworkStatus";
 import {
   SafeAreaProvider,
   initialWindowMetrics,
@@ -17,87 +16,37 @@ import themeDark from "theme/dark";
 import Navigation, { navigate } from "navigation/index";
 // Contexts
 import { ModalsContextProvider } from "context/ModalsContext";
-import { setNetworkStatus, StoreContextProvider } from "context/StoreContext";
+import { StoreContextProvider } from "context/StoreContext";
 import { NotificationsContextProvider } from "context/NotificationContext";
 // Modals
 import Modals from "modals/index";
 // Hooks
 import useStore from "hooks/useStore";
-import useInterval from "hooks/useInterval";
-// Types
-import { NetworkStatus, SubscriptionStatus } from "types/store";
 // Utils
-import {
-  isLiteVersion,
-  isDev,
-  userServePersonalizedAdsItem,
-  userStoreReviewTimeItem,
-} from "utils/constants";
+import { isDev, userStoreReviewTimeItem } from "utils/constants";
 import * as StoreReview from "expo-store-review";
 import Constants from "expo-constants";
 import dayjs from "dayjs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // Locales
 import i18n from "locales/index";
-// Ads
-import * as admob from "expo-ads-admob";
-/** URL polyfill. Required for Supabase queries to work in React Native. */
-import "react-native-url-polyfill/auto";
-import supabase from "libs/supabase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {
   isFontsLoading: boolean;
   isDatabaseLoading: boolean;
 }
 
-// 15 Minutes
-const backupPollerTime = 900000;
-
 const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const {
     state: {
-      user,
       isDarkTheme,
       isHomeScreenLoading,
       hasPasswordPin,
       isLocalAuthentication,
-      subscriptionStatus,
-      networkStatus,
     },
-    dispatch,
   } = useStore();
-
-  const hasBackupPoller = useMemo(
-    () =>
-      appStateVisible === "active" &&
-      subscriptionStatus === SubscriptionStatus.active &&
-      networkStatus === NetworkStatus.authenticated &&
-      user,
-    [appStateVisible, subscriptionStatus, networkStatus, user]
-  );
-
-  useInterval(
-    async () => {
-      try {
-        if (!isHomeScreenLoading && hasBackupPoller) {
-          const session = supabase.auth.session();
-          if (session && user) {
-            const isSync = await getLastCloudSync();
-            if (!isSync) {
-              await uploadDataToCloud(dispatch, user);
-            }
-          } else {
-            setNetworkStatus(dispatch, NetworkStatus.online);
-          }
-        }
-      } catch (e) {
-        console.log("Error uploading backup from poller = ", e);
-      }
-    },
-    hasBackupPoller ? backupPollerTime : null
-  );
 
   const theme = isDarkTheme ? themeDark : themeLight;
 
@@ -142,46 +91,6 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
       }
     };
 
-    const getAdmobPermission = async () => {
-      try {
-        const res = await admob.requestPermissionsAsync();
-        const hasPersonalizedAds = await AsyncStorage.getItem(
-          userServePersonalizedAdsItem
-        );
-
-        if (res.granted && !hasPersonalizedAds) {
-          Alert.alert(
-            i18n.t("alerts.ads.title"),
-            i18n.t("alerts.ads.message"),
-            [
-              {
-                text: i18n.t("alerts.ads.buttons.ok"),
-                onPress: async () => {
-                  await AsyncStorage.setItem(
-                    userServePersonalizedAdsItem,
-                    "true"
-                  );
-                },
-              },
-              {
-                text: i18n.t("alerts.ads.buttons.cancel"),
-                onPress: async () => {
-                  await AsyncStorage.setItem(
-                    userServePersonalizedAdsItem,
-                    "false"
-                  );
-                },
-                style: "cancel",
-              },
-            ],
-            { cancelable: false }
-          );
-        }
-      } catch (e) {
-        console.log("Error getting permission for personalized ads = ", e);
-      }
-    };
-
     const askUserStoreReview = async () => {
       try {
         const lastTimeAskedForReview = await AsyncStorage.getItem(
@@ -207,10 +116,6 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
         console.log("Error asking user for review = ", error);
       }
     };
-
-    if (!isHomeScreenLoading && isLiteVersion) {
-      getAdmobPermission();
-    }
 
     if (!isHomeScreenLoading && !isDev) {
       checkForOTA();

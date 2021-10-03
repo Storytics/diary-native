@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "locales/index";
 import { navigate } from "navigation/index";
@@ -11,22 +10,10 @@ import useNotification from "hooks/useNotification";
 import BorderButton from "components/BorderButton";
 import Brand from "components/Brand";
 import Modal from "components/Modal";
-import { showFullscreenAd } from "components/AdBanner";
 // Types
 import { NotificationType } from "types/notifications";
-import { NetworkStatus, SubscriptionStatus } from "types/store";
-import { AuthType } from "types/navigation";
 // Utils
-import {
-  userPasswordPinItem,
-  userThemeItem,
-  isLiteVersion,
-  diaryProStoreUrl,
-} from "utils/constants";
-// Context
-import { setNetworkStatus } from "context/StoreContext";
-// API
-import supabase from "libs/supabase";
+import { userPasswordPinItem, userThemeItem } from "utils/constants";
 
 const MenuModal: React.FC = () => {
   const store = useStore();
@@ -53,10 +40,6 @@ const MenuModal: React.FC = () => {
 
   const onChangeTheme = async (value: boolean) => {
     try {
-      if (isLiteVersion && store.state.networkStatus === NetworkStatus.online) {
-        await showFullscreenAd();
-      }
-
       await AsyncStorage.setItem(userThemeItem, String(value));
       store.dispatch({
         type: "SET_DARK_THEME",
@@ -93,25 +76,6 @@ const MenuModal: React.FC = () => {
     }
   };
 
-  const onLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      store.dispatch({
-        type: "SET_AUTHENTICATION_STATUS",
-        payload: {
-          user: null,
-          subscriptionStatus: SubscriptionStatus.inactive,
-        },
-      });
-      setNetworkStatus(store.dispatch, NetworkStatus.online);
-    } catch (e) {
-      notification(
-        i18n.t("notifications.logout.error"),
-        NotificationType.danger
-      );
-    }
-  };
-
   if (!isMenuModalOpen) {
     return null;
   }
@@ -135,38 +99,6 @@ const MenuModal: React.FC = () => {
         hasThemeSwitch
       />
 
-      {isLiteVersion && store.state.networkStatus === NetworkStatus.online && (
-        <BorderButton
-          title={i18n.t("modal.menu.removeAds")}
-          onPress={async () => {
-            onClose();
-            await Linking.openURL(diaryProStoreUrl);
-          }}
-        />
-      )}
-
-      {!store.state.user && store.state.networkStatus === NetworkStatus.online && (
-        <BorderButton
-          title={i18n.t("modal.menu.premium")}
-          onPress={() => {
-            onClose();
-            // @ts-ignore
-            navigate("Cloud", { type: AuthType.signup });
-          }}
-        />
-      )}
-
-      {store.state.user &&
-        store.state.subscriptionStatus === SubscriptionStatus.active && (
-          <BorderButton
-            title={i18n.t("modal.menu.portal")}
-            onPress={() => {
-              onClose();
-              // @ts-ignore
-              navigate("Portal", { user: store.state.user });
-            }}
-          />
-        )}
       <BorderButton
         title={i18n.t("modal.menu.pinProtection")}
         hasCustomSwitch
@@ -174,17 +106,6 @@ const MenuModal: React.FC = () => {
         onChangeSwitch={onChangePasswordPin}
         hasArrowIcon={false}
       />
-
-      {store.state.networkStatus === NetworkStatus.online && (
-        <BorderButton
-          title={i18n.t("modal.menu.releases")}
-          onPress={() => {
-            onClose();
-            // @ts-ignore
-            navigate("Releases");
-          }}
-        />
-      )}
 
       <BorderButton
         title={i18n.t("terms.section.title")}
@@ -202,9 +123,7 @@ const MenuModal: React.FC = () => {
           navigate("Privacy");
         }}
       />
-      {store.state.user && (
-        <BorderButton title={i18n.t("modal.menu.logout")} onPress={onLogout} />
-      )}
+
       <Brand />
     </Modal>
   );
