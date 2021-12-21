@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useMemo } from "react";
 // Types
 import {
   NotificationsState,
@@ -42,9 +42,10 @@ export const Reducer = (
 
 export const NotificationsContextProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
+  const values = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
   return (
-    <NotificationsContext.Provider value={{ state, dispatch }}>
+    <NotificationsContext.Provider value={values}>
       {children}
     </NotificationsContext.Provider>
   );

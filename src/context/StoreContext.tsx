@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer, useMemo } from "react";
 // Database
 import { getAllActivity, getAllBooks } from "database/Book";
 // Utils
@@ -136,6 +136,7 @@ export const loadContent = async (dispatch: React.Dispatch<StoreActions>) => {
 
 export const StoreContextProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
+  const values = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
   useEffect(() => {
     loadContent(dispatch);
@@ -178,8 +179,6 @@ export const StoreContextProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ state, dispatch }}>
-      {children}
-    </StoreContext.Provider>
+    <StoreContext.Provider value={values}>{children}</StoreContext.Provider>
   );
 };

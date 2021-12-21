@@ -112,6 +112,34 @@ const styles = (theme: typeof Theme) =>
 
 const AnimatedHeader = Animated.createAnimatedComponent(HeaderContainer);
 
+const iconMap = (theme: typeof Theme) =>
+  toolBarActions.reduce(
+    (o, item) => ({
+      ...o,
+      [item.id]: ({
+        tintColor,
+        selected,
+        iconSize,
+      }: {
+        tintColor: string;
+        selected: boolean;
+        iconSize: number;
+      }) => (
+        <FakeButton
+          size="medium"
+          backgroundColor={
+            selected
+              ? theme.toolBar.button.active.backgroundColor
+              : theme.toolBar.button.default.backgroundColor
+          }
+        >
+          <MaterialIcons name={item.name} size={iconSize} color={tintColor} />
+        </FakeButton>
+      ),
+    }),
+    {}
+  );
+
 const EditorScreen: React.FC<EditorNavigationProps> = ({
   navigation,
   route: { params },
@@ -123,11 +151,10 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
   // Keyboard Hook
   const { isKeyboardOpen } = useKeyboard();
   const theme = useTheme();
-  const {
-    dispatch,
-    state: { networkStatus },
-  } = useStore();
+  const { dispatch } = useStore();
   const { notification } = useNotification();
+
+  const icons = iconMap(theme);
 
   useDebounce(
     async () => {
@@ -191,33 +218,6 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.bookId, params.isEdit, isEditorLoading]);
-
-  const iconMap = toolBarActions.reduce(
-    (o, item) => ({
-      ...o,
-      [item.id]: ({
-        tintColor,
-        selected,
-        iconSize,
-      }: {
-        tintColor: string;
-        selected: boolean;
-        iconSize: number;
-      }) => (
-        <FakeButton
-          size="medium"
-          backgroundColor={
-            selected
-              ? theme.toolBar.button.active.backgroundColor
-              : theme.toolBar.button.default.backgroundColor
-          }
-        >
-          <MaterialIcons name={item.name} size={iconSize} color={tintColor} />
-        </FakeButton>
-      ),
-    }),
-    {}
-  );
 
   const onSave = async () => {
     try {
@@ -378,7 +378,7 @@ const EditorScreen: React.FC<EditorNavigationProps> = ({
                 "italic",
                 "underline",
               ]}
-              iconMap={iconMap}
+              iconMap={icons}
             />
           </ToolBarWrapper>
         </Container>
