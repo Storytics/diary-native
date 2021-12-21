@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, AppState, AppStateStatus, StatusBar, View } from "react-native";
+import { AppState, AppStateStatus, StatusBar, View } from "react-native";
 import AppLoading from "expo-app-loading";
-import * as Updates from "expo-updates";
 // Components
 import Notification from "components/Notification";
 import {
@@ -25,11 +24,8 @@ import useStore from "hooks/useStore";
 // Utils
 import { isDev, userStoreReviewTimeItem } from "utils/constants";
 import * as StoreReview from "expo-store-review";
-import Constants from "expo-constants";
 import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// Locales
-import i18n from "locales/index";
 
 interface Props {
   isFontsLoading: boolean;
@@ -63,34 +59,6 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
   }, [isHomeScreenLoading, hasPasswordPin, appStateVisible]);
 
   useEffect(() => {
-    // Over the air updates
-    const checkForOTA = async () => {
-      try {
-        const { isAvailable } = await Updates.checkForUpdateAsync();
-
-        if (isAvailable) {
-          const { isNew } = await Updates.fetchUpdateAsync();
-          if (isNew) {
-            Alert.alert(
-              `${i18n.t("alerts.ota.title")} (v${Constants.manifest?.version})`,
-              i18n.t("alerts.ota.message"),
-              [
-                {
-                  text: i18n.t("alerts.ota.buttons.ok"),
-                  onPress: async () => {
-                    await Updates.reloadAsync();
-                  },
-                },
-              ],
-              { cancelable: false }
-            );
-          }
-        }
-      } catch (e) {
-        console.log("Error getting the OTA = ", e);
-      }
-    };
-
     const askUserStoreReview = async () => {
       try {
         const lastTimeAskedForReview = await AsyncStorage.getItem(
@@ -118,7 +86,6 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
     };
 
     if (!isHomeScreenLoading && !isDev) {
-      checkForOTA();
       askUserStoreReview();
     }
   }, [isHomeScreenLoading]);
