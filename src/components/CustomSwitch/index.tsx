@@ -9,7 +9,6 @@ import {
 } from "./styles";
 
 interface CustomSwitchProps {
-  onPress?: () => void;
   isThemeSwitch?: boolean;
   onChangeValue?: (value: boolean) => void;
   isActive: boolean;

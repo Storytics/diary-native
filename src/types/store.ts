@@ -11,12 +11,6 @@ export enum NetworkStatus {
   sync = "sync",
 }
 
-export enum SubscriptionStatus {
-  loading = "loading",
-  active = "active",
-  inactive = "inactive",
-}
-
 export interface User {
   aud: string;
   confirmed_at: string;
@@ -37,13 +31,11 @@ export interface StoreState {
   activity: Array<ActivityProps>;
   networkStatus: NetworkStatus;
   user: User | null;
-  subscriptionStatus: SubscriptionStatus;
   isDarkTheme: boolean;
   isHomeScreenLoading: boolean;
   hasPasswordPin: boolean;
   passwordPin: string | null;
   isLocalAuthentication: boolean;
-  checkForBackups: boolean;
 }
 
 export interface AddBookPayload {
@@ -71,14 +63,6 @@ export interface SetNetworkStatusPayload {
   type: "SET_NETWORK_STATUS";
   payload: {
     status: NetworkStatus;
-  };
-}
-
-export interface SetAuthenticationStatusPayload {
-  type: "SET_AUTHENTICATION_STATUS";
-  payload: {
-    user: User | null;
-    subscriptionStatus: SubscriptionStatus;
   };
 }
 
@@ -111,24 +95,15 @@ export interface SetLocalAuthPayload {
   };
 }
 
-export interface SetCheckForBackupsPayload {
-  type: "SET_CHECK_FOR_BACKUPS";
-  payload: {
-    check: boolean;
-  };
-}
-
 export type StoreActions =
   | AddBookPayload
   | LoadBooksPayload
   | LoadActivityPayload
   | SetNetworkStatusPayload
-  | SetAuthenticationStatusPayload
   | SetDarkThemePayload
   | SetIsHomeScreenLoadingPayload
   | SetPasswordPinPayload
-  | SetLocalAuthPayload
-  | SetCheckForBackupsPayload;
+  | SetLocalAuthPayload;
 
 export interface Context {
   state: StoreState;

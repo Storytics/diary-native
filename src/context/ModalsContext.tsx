@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useMemo } from "react";
 // Types
 import { ModalsState, ModalsActions, Context } from "types/modals";
 
@@ -60,10 +60,9 @@ export const Reducer = (
 
 export const ModalsContextProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
+  const values = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
   return (
-    <ModalsContext.Provider value={{ state, dispatch }}>
-      {children}
-    </ModalsContext.Provider>
+    <ModalsContext.Provider value={values}>{children}</ModalsContext.Provider>
   );
 };

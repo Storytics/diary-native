@@ -7,7 +7,6 @@ import useNotification from "hooks/useNotification";
 import Modal from "components/Modal";
 import DetailedButton from "components/DetailedButton";
 import HoldButton from "components/HoldButton";
-import { showFullscreenAd } from "components/AdBanner";
 // Database
 import { deleteBookById } from "database/Book";
 // Context
@@ -16,9 +15,6 @@ import { loadActivity, loadBooks } from "context/StoreContext";
 import i18n from "locales/index";
 // Types
 import { NotificationType } from "types/notifications";
-import { NetworkStatus } from "types/store";
-// Utils
-import { isLiteVersion } from "utils/constants";
 // Styles
 import { Container } from "./styles";
 
@@ -39,10 +35,6 @@ const DiaryActionsModal: React.FC = () => {
 
   const onDelete = async () => {
     try {
-      if (isLiteVersion && store.state.networkStatus === NetworkStatus.online) {
-        await showFullscreenAd();
-      }
-
       const result = await deleteBookById(diary.bookId);
 
       if (result === "success") {
@@ -95,14 +87,6 @@ const DiaryActionsModal: React.FC = () => {
       hasActionButtons={false}
     >
       <Container>
-        {/*
-          <DetailedButton
-            title={i18n.t("modal.diaryActions.buttons.favorite.title")}
-            text={i18n.t("modal.diaryActions.buttons.favorite.text")}
-            onPress={() => null}
-            icon="favorite"
-          />
-        */}
         <DetailedButton
           title={i18n.t("modal.diaryActions.buttons.edit.title")}
           text={i18n.t("modal.diaryActions.buttons.edit.text")}

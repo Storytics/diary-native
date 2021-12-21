@@ -6,7 +6,7 @@ import { useTheme } from "styled-components/native";
 import { Container, BookIdentifier, Line, Wrapper } from "./styles";
 
 interface BookIllustrationProps {
-  bookColor?: string;
+  bookColor: string;
 }
 
 const styles = (theme: typeof Theme) =>

@@ -1,11 +1,11 @@
 {
   "expo": {
     "owner": "storytics",
-    "privacy": "hidden",
-    "name": "Diary (Free)",
+    "privacy": "public",
+    "name": "Diary",
     "description": "Reflect on your daily events and save beautiful moments with Diary by Storytics.",
     "slug": "diary-free-by-storytics",
-    "version": "1.0.9",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/lite/icon.png",
     "backgroundColor": "#ffffff",
@@ -26,8 +26,7 @@
       }
     },
     "android": {
-      "versionCode": 2,
-      "enableDangerousExperimentalLeanBuilds": false,
+      "versionCode": 3,
       "backgroundColor": "#ffffff",
       "adaptiveIcon": {
         "foregroundImage": "./assets/lite/adaptive-icon.png",

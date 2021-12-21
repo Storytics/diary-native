@@ -17,7 +17,7 @@ interface DiaryCardProps {
   onPress: () => void;
   onPressMore: () => void;
   title: string;
-  bookColor?: string;
+  bookColor: string;
 }
 
 const DiaryCard: React.FC<DiaryCardProps> = ({
