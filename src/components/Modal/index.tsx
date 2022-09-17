@@ -65,6 +65,7 @@ interface ActivityCardProps {
   hasContentPaddingBottom?: boolean;
   hasContentPaddingLeft?: boolean;
   hasContentPaddingRight?: boolean;
+  children: React.ReactNode;
 }
 
 const styles = (theme: typeof Theme) =>
@@ -88,7 +89,7 @@ const styles = (theme: typeof Theme) =>
 const AnimatedOverLayBackground =
   Animated.createAnimatedComponent(OverLayBackground);
 
-const CustomModal: React.FC<ActivityCardProps> = ({
+const CustomModal = ({
   isOpen = true,
   onClose,
   title = "Title",
@@ -105,7 +106,7 @@ const CustomModal: React.FC<ActivityCardProps> = ({
   hasPrimaryButton = true,
   hasSecondaryButton = true,
   hasContent = true,
-}) => {
+}: ActivityCardProps) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

@@ -134,7 +134,11 @@ export const loadContent = async (dispatch: React.Dispatch<StoreActions>) => {
   }
 };
 
-export const StoreContextProvider: React.FC = ({ children }) => {
+export const StoreContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
   const values = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 

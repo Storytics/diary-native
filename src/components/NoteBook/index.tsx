@@ -23,6 +23,7 @@ interface ActivityCardProps {
   noteBookHeight?: number;
   isLoading: boolean;
   isSimpleLayout?: boolean;
+  children: React.ReactNode;
 }
 
 const styles = StyleSheet.create({
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
 
 const AnimatedLoadingBox = Animated.createAnimatedComponent(LoadingBox);
 
-const NoteBook: React.FC<ActivityCardProps> = ({
+const NoteBook = ({
   page = "1",
   date,
   day,
@@ -53,7 +54,7 @@ const NoteBook: React.FC<ActivityCardProps> = ({
   noteBookHeight,
   isLoading = true,
   isSimpleLayout = false,
-}) => {
+}: ActivityCardProps) => {
   const linesAnimation = useRef(new Animated.Value(0)).current;
   const theme = useTheme();
 

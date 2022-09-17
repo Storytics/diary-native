@@ -58,7 +58,11 @@ export const Reducer = (
   }
 };
 
-export const ModalsContextProvider: React.FC = ({ children }) => {
+export const ModalsContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
   const values = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 

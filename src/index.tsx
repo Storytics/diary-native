@@ -96,9 +96,13 @@ const Register: React.FC<Props> = ({ isFontsLoading, isDatabaseLoading }) => {
   };
 
   useEffect(() => {
-    AppState.addEventListener("change", handleAppStateChange);
+    const stateEvent = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
+
     return () => {
-      AppState.removeEventListener("change", handleAppStateChange);
+      stateEvent.remove();
     };
   }, []);
 
