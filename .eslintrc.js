@@ -56,5 +56,6 @@ module.exports = {
     "react/jsx-no-useless-fragment": "off",
     "react/function-component-definition": "off",
     camelcase: "off",
+    "react/no-array-index-key": "off",
   },
 };

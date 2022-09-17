@@ -107,7 +107,7 @@ const Notification: React.FC = () => {
   useEffect(() => {
     let timer = 0;
     if (isOpen) {
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         dispatch({
           type: "CLOSE_NOTIFICATION",
           payload: {

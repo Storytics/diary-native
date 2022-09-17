@@ -40,7 +40,11 @@ export const Reducer = (
   }
 };
 
-export const NotificationsContextProvider: React.FC = ({ children }) => {
+export const NotificationsContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
   const values = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 

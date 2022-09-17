@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface CustomSafeAreaProps {
   backgroundColor?: string;
+  children: React.ReactNode;
 }
 
 const styles = (
@@ -25,10 +26,7 @@ const styles = (
     },
   });
 
-const CustomSafeArea: React.FC<CustomSafeAreaProps> = ({
-  children,
-  backgroundColor,
-}) => {
+const CustomSafeArea = ({ children, backgroundColor }: CustomSafeAreaProps) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   return (

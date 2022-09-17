@@ -8,6 +8,7 @@ interface RoundButtonProps {
 }
 
 const RoundButton = styled.TouchableHighlight.attrs(
+  // @ts-ignore
   ({ theme, underlayColor }) => ({
     underlayColor: underlayColor || theme.roundButton.underlayColor,
   })
@@ -83,6 +84,7 @@ export const FakeButton = styled.View<RoundButtonProps>`
     `};
 `;
 
+// @ts-ignore
 RoundButton.defaultProps = {
   size: "medium",
 };

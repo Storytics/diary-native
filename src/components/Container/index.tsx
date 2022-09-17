@@ -4,7 +4,7 @@ const Container = styled.View<{
   hasPadding?: boolean;
   backgroundColor?: string;
 }>`
-  ${({ hasPadding }) =>
+  ${({ hasPadding = true }) =>
     hasPadding &&
     css`
       padding: 30px 0;
@@ -13,9 +13,5 @@ const Container = styled.View<{
   background-color: ${({ theme, backgroundColor }) =>
     backgroundColor || theme.container.backgroundColor};
 `;
-
-Container.defaultProps = {
-  hasPadding: true,
-};
 
 export default Container;

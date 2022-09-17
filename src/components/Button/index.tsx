@@ -7,7 +7,6 @@ type variant = "primary" | "default";
 interface StyledButtonProps {
   variant?: variant;
 }
-
 const Button = styled.TouchableHighlight.attrs(({ theme, underlayColor }) => ({
   underlayColor: underlayColor || theme.button.primary.underlayColor,
 }))<StyledButtonProps>`

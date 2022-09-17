@@ -1,5 +1,10 @@
 import React, { useCallback, useRef, useState } from "react";
-import { Animated, GestureResponderEvent, Pressable } from "react-native";
+import {
+  Animated,
+  GestureResponderEvent,
+  Pressable,
+  LayoutChangeEvent,
+} from "react-native";
 import i18n from "locales/index";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MediumTitle, Text } from "components/Typography";
@@ -65,7 +70,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({
       onLongPress={onLongPress}
     >
       <Container
-        onLayout={(event) => {
+        onLayout={(event: LayoutChangeEvent) => {
           const { width } = event.nativeEvent.layout;
           setButtonWidth(width);
         }}
